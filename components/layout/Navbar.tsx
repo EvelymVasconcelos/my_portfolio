@@ -12,7 +12,6 @@ import { CV_URL } from "@/lib/cv";
 
 const NAV_LINKS = [
   { label: "about",      href: "#about" },
-  { label: "skills",     href: "#skills" },
   { label: "experience", href: "#experience" },
   { label: "research",   href: "#research" },
   { label: "contact",    href: "#contact" },
