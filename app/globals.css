@@ -1,0 +1,205 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Google Fonts: Roboto + Roboto Slab ────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@600;700;800&display=swap');
+
+/* ─── Design System: Samsung Color Tokens ───────────────────────────────────── */
+/* Reference: https://developer.samsung.com/design-system                        */
+
+:root {
+  /* ─── Light Mode (padrão) ─── */
+  --background:        #FFFFFF;
+  --surface:           #F5F6FA;
+  --surface-elevated:  #FFFFFF;
+  --border:            rgba(0, 0, 0, 0.10);
+  --border-strong:     rgba(0, 0, 0, 0.20);
+
+  /* Samsung Text */
+  --text-primary:      #12172A;   /* Samsung dark navy */
+  --text-secondary:    #4A4F66;
+  --text-muted:        #9EA3B8;
+
+  /* Samsung Lilac — cor principal do portfólio */
+  --accent-primary:       #6852D6;   /* Lilac Samsung — contraste 5.46:1 no branco ✓ AA */
+  --accent-primary-hover: #5740C0;   /* Lilac escuro no hover */
+  --accent-secondary:     #9B7AE8;   /* Lilac claro para highlights */
+  --accent-teal:          #00B4D8;   /* Teal para acentos secundários */
+
+  /* Status */
+  --accent-success: #00C853;
+  --accent-warning: #FFB300;
+  --accent-danger:  #D32F2F;
+
+  /* Glass / Elevation */
+  --glass-bg:     rgba(255, 255, 255, 0.80);
+  --glass-border: rgba(104, 82, 214, 0.10);
+  --glass-shadow: 0 2px 12px rgba(104, 82, 214, 0.08);
+}
+
+.dark {
+  /* ─── Dark Mode — Navy profundo com toque púrpura ─── */
+  --background:        #0A0E1A;
+  --surface:           #12172A;
+  --surface-elevated:  #1C1830;   /* purple-navy: combina com o lilás */
+  --border:            rgba(255, 255, 255, 0.08);
+  --border-strong:     rgba(255, 255, 255, 0.16);
+
+  --text-primary:      #F0F2FF;
+  --text-secondary:    #9EA3C8;
+  --text-muted:        #5A6080;
+
+  /* Lilac claro — mais legível no escuro */
+  --accent-primary:       #A98AEF;   /* Lilac claro — contraste 4.6:1 no navy ✓ AA */
+  --accent-primary-hover: #BBA4F5;
+  --accent-secondary:     #C4AEFF;   /* Lilac pastel para highlights */
+  --accent-teal:          #00B4D8;
+
+  --accent-success: #00E676;
+  --accent-warning: #FFD740;
+  --accent-danger:  #FF5252;
+
+  /* Glass — Dark */
+  --glass-bg:     rgba(28, 24, 50, 0.80);
+  --glass-border: rgba(169, 138, 239, 0.12);
+  --glass-shadow: 0 4px 32px rgba(0, 0, 0, 0.40);
+}
+
+/* ─── Base Reset ────────────────────────────────────────────────────────────── */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-text-primary font-sans;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Focus visible ring — Accessibility (Samsung Blue) */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent-primary ring-offset-2 ring-offset-background;
+  }
+
+  :focus:not(:focus-visible) {
+    @apply outline-none;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-surface;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 9999px;
+    opacity: 0.4;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    opacity: 0.7;
+  }
+
+  /* Selection — Samsung Blue */
+  ::selection {
+    background: rgba(20, 40, 160, 0.15);
+    color: var(--text-primary);
+  }
+
+  .dark ::selection {
+    background: rgba(45, 107, 244, 0.30);
+    color: var(--text-primary);
+  }
+}
+
+/* ─── Utility Classes ──────────────────────────────────────────────────────── */
+
+@layer utilities {
+  /* Samsung Card */
+  .glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Gradient Text — Samsung Blue */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  }
+
+  /* Samsung blue gradient border */
+  .border-gradient {
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+  }
+
+  .border-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+  }
+
+  /* Section padding */
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Container width */
+  .container-content {
+    @apply mx-auto w-full max-w-6xl;
+  }
+
+  /* Samsung card style — lilac-tinted shadow */
+  .card-samsung {
+    @apply bg-surface-elevated border border-border rounded-md;
+    box-shadow: 0 2px 12px rgba(104, 82, 214, 0.08);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .card-samsung:hover {
+    border-color: rgba(104, 82, 214, 0.28);
+    box-shadow: 0 4px 24px rgba(104, 82, 214, 0.14);
+  }
+
+  .dark .card-samsung:hover {
+    border-color: rgba(169, 138, 239, 0.35);
+    box-shadow: 0 4px 24px rgba(169, 138, 239, 0.12);
+  }
+}
+
+/* ─── Reduced Motion ────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
