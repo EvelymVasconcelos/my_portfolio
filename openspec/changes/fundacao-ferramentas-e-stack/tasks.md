@@ -9,7 +9,7 @@
 - [x] 1.3 Copiar as skills da Mangue escolhidas (D1) de `~/Downloads/skills-mangue-codex/skills/` para `~/.claude/skills/`,
       sem rodar os scripts delas, e listar no `CLAUDE.md` quais existem e de onde reinstalar
 - [x] 1.4 Criar `.mcp.json` com o servidor do Pencil e a pasta `design/prototipos/`
-- [ ] 1.5 Conferir numa sessão nova do Claude Code no projeto: `/opsx:*`, `/graphify` e as skills da Mangue aparecem, e
+- [x] 1.5 Conferir numa sessão nova do Claude Code no projeto: `/opsx:*`, `/graphify` e as skills da Mangue aparecem, e
       `graphify query` responde
 
 ## 2. Organização e limpeza (sem mudar versões)
