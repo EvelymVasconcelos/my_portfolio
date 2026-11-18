@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pt-BR" data-dir="1" data-theme="escuro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evelym Marinho — protótipo de identidade</title>
+<script>
+  /* Antes da pintura: direção, tema, sem WebGL e movimento reduzido vêm da URL. */
+  (function () {
+    var h = document.documentElement, q = new URLSearchParams(location.search);
+    var d = ["1", "2", "3"].indexOf(q.get("d")) >= 0 ? q.get("d") : "1";
+    var sys = matchMedia("(prefers-color-scheme: dark)").matches ? "escuro" : "claro";
+    var padrao = { "1": "escuro", "2": "claro", "3": sys }[d];
+    var t = q.get("tema"); if (t !== "claro" && t !== "escuro") t = padrao;
+    h.dataset.dir = d; h.dataset.theme = t; h.classList.add("js");
+    if (q.get("webgl") === "0") h.dataset.nowebgl = "1";
+    if (q.get("mov") === "0") h.dataset.reduce = "1";
+    var f = {
+      "1": "family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700",
+      "2": "family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600",
+      "3": "family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700"
+    }[d];
+    document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?' + f + '&display=swap">');
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="base.css">
+<style>
+  html[data-theme="escuro"] .i-moon, html[data-theme="claro"] .i-sun { display: none; }
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio"><b>EM</b><span>Evelym Marinho</span></a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#sobre">Sobre</a><a href="#projetos">Projetos</a><a href="#experiencia">Experiência</a><a href="#pesquisa">Pesquisa</a><a href="#contato">Contato</a>
+    </nav>
+    <button class="icon-btn" type="button" data-theme-toggle aria-label="Mudar o tema">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="conteudo">
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="inicio" aria-labelledby="titulo">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="rule" data-only="2"></div>
+        <p class="status"><i aria-hidden="true"></i>Disponível para oportunidades</p>
+        <p class="eyebrow">Engenharia de Software Backend · Manaus</p>
+        <h1 id="titulo">
+          <span data-only="1">APIs de alta disponibilidade, <em>do primeiro teste ao deploy.</em></span>
+          <span data-only="2">Qualidade de software, <em>na pesquisa e em produção.</em></span>
+          <span data-only="3">Backend em Python com <em>rigor de engenharia e de pesquisa.</em></span>
+        </h1>
+        <p class="lead">Sou engenheira de software backend, com mais de 6 anos no ecossistema Python. Construo APIs RESTful com FastAPI e Django em microsserviços com Docker e Kubernetes, e pesquiso automação de testes e CI/CD, com artigos no IEEE SEAI 2024 e no ICSCA 2026.</p>
+        <div class="btns">
+          <a class="btn btn-primary" href="#projetos">Ver projetos
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          <a class="btn btn-ghost" href="../../../public/cv-pt.pdf" download>Baixar currículo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg></a>
+        </div>
+        <div class="term" data-only="1" aria-label="Stack da Evelym em formato de terminal">
+          <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i></div>
+<pre>$ evelym --stack
+<b>linguagens</b>  Python (sênior) · FastAPI · Django · Flask · Java
+<b>qualidade</b>   TDD · Pytest · Clean Code · SOLID · BDD
+<b>infra</b>       Docker · Kubernetes · CI/CD · GitHub Actions · AWS
+<b>dados</b>       PostgreSQL · MySQL · Redis · MongoDB · ETL</pre>
+        </div>
+        <ul class="stats" data-only="2 3">
+          <li><strong>6+</strong><span>anos com Python</span></li>
+          <li><strong>2</strong><span>empresas: Sidia e Bemol Digital</span></li>
+          <li><strong>2</strong><span>artigos internacionais</span></li>
+        </ul>
+      </div>
+
+      <figure class="visual" aria-labelledby="legenda-cena">
+        <canvas aria-hidden="true"></canvas>
+        <div class="poster" aria-hidden="true">
+          <!-- Direção 1: rede de serviços -->
+          <svg data-only="1" viewBox="0 0 400 400" fill="none">
+            <g stroke="currentColor" stroke-opacity=".55" stroke-width="1.5">
+              <path d="M40 200H120M120 200L120 90M120 200L210 140M120 200L210 260M210 140L320 280M210 260L320 280M210 140L250 330M210 260L250 330M210 140L280 190M210 260L280 190M280 190L340 140M340 140L320 280"/>
+            </g>
+            <g style="stroke:var(--accent)" stroke-width="1.5" fill="var(--surface)">
+              <rect x="26" y="186" width="28" height="28" rx="3"/><rect x="104" y="184" width="32" height="32" rx="3"/><rect x="104" y="74" width="32" height="32" rx="3"/>
+              <rect x="194" y="244" width="32" height="32" rx="3"/><rect x="264" y="174" width="32" height="32" rx="3"/><rect x="324" y="124" width="32" height="32" rx="3"/>
+              <rect x="304" y="258" width="32" height="44" rx="3"/><rect x="234" y="308" width="32" height="44" rx="3"/>
+            </g>
+            <rect x="194" y="124" width="32" height="32" rx="3" style="fill:var(--fail)"/>
+            <g style="fill:var(--accent)"><circle cx="80" cy="200" r="4"/><circle cx="165" cy="230" r="4"/><circle cx="265" cy="270" r="4"/><circle cx="300" cy="165" r="4"/><circle cx="120" cy="140" r="4"/></g>
+            <g fill="currentColor" font-family="ui-monospace, monospace" font-size="11">
+              <text x="16" y="236">cliente</text><text x="98" y="236">gateway</text><text x="108" y="66">auth</text><text x="168" y="116">serviço A (fora)</text>
+              <text x="186" y="296">serviço B</text><text x="268" y="166">fila</text><text x="320" y="116">worker</text><text x="294" y="322">PostgreSQL</text><text x="232" y="372">Redis</text>
+            </g>
+          </svg>
+          <!-- Direção 2: pipeline -->
+          <svg data-only="2" viewBox="0 0 400 400" fill="none">
+            <path d="M10 250H390" stroke="currentColor" stroke-opacity=".35" stroke-width="8"/>
+            <g stroke="#c4b5fd" stroke-width="1.5"><rect x="62" y="150" width="16" height="96"/><rect x="152" y="150" width="16" height="96"/><rect x="242" y="150" width="16" height="96"/><rect x="332" y="150" width="16" height="96"/></g>
+            <g fill="#3a3a44"><rect x="20" y="222" width="24" height="24"/></g>
+            <g fill="#c4b5fd"><rect x="100" y="222" width="24" height="24"/><rect x="190" y="222" width="24" height="24"/></g>
+            <rect x="276" y="276" width="24" height="24" fill="#f87171" transform="rotate(18 288 288)"/>
+            <rect x="362" y="222" width="24" height="24" fill="#4ade80"/>
+            <g fill="currentColor" font-family="ui-monospace, monospace" font-size="12">
+              <text x="50" y="136">build</text><text x="140" y="136">testes</text><text x="236" y="136">E2E</text><text x="318" y="136">deploy</text>
+              <text x="222" y="330">falha detectada antes do deploy</text>
+            </g>
+          </svg>
+          <!-- Direção 3: esquema de banco -->
+          <svg data-only="3" viewBox="0 0 400 400" fill="none">
+            <g style="stroke:var(--accent)" stroke-opacity=".7" stroke-width="1.5">
+              <path d="M110 110C150 70 210 70 230 100M110 140C80 180 80 220 100 250M260 130C270 190 260 220 230 250M300 130C330 180 330 220 320 260"/>
+            </g>
+            <g style="fill:var(--accent-fill)"><rect x="30" y="80" width="120" height="20" rx="4"/><rect x="200" y="70" width="140" height="20" rx="4"/><rect x="40" y="250" width="120" height="20" rx="4"/><rect x="210" y="250" width="140" height="20" rx="4"/></g>
+            <g style="stroke:var(--border);fill:var(--bg)">
+              <rect x="30" y="104" width="120" height="14" rx="3"/><rect x="30" y="122" width="120" height="14" rx="3"/><rect x="30" y="140" width="120" height="14" rx="3"/>
+              <rect x="200" y="94" width="140" height="14" rx="3"/><rect x="200" y="112" width="140" height="14" rx="3"/>
+              <rect x="40" y="274" width="120" height="14" rx="3"/><rect x="40" y="292" width="120" height="14" rx="3"/><rect x="40" y="310" width="120" height="14" rx="3"/>
+              <rect x="210" y="274" width="140" height="14" rx="3"/><rect x="210" y="292" width="140" height="14" rx="3"/>
+            </g>
+            <g style="fill:var(--on-accent)" font-family="ui-monospace, monospace" font-size="11">
+              <text x="40" y="94">experiencia</text><text x="210" y="84">publicacoes</text><text x="50" y="264">projetos</text><text x="220" y="264">competencias</text>
+            </g>
+          </svg>
+        </div>
+        <figcaption id="legenda-cena">
+          <span data-only="1">Requisições atravessam gateway, serviços, fila e bancos. Na rolagem, o serviço A cai e o tráfego desvia sozinho.</span>
+          <span data-only="2">Cada commit passa por build, testes, E2E e deploy. A falha aparece no E2E, antes de chegar à produção.</span>
+          <span data-only="3">As tabelas do próprio site (experiência, projetos, publicações) se montam e trocam dados pelas relações.</span>
+          <span data-scene-state>Carregando a cena 3D depois da página…</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= SOBRE ================= -->
+  <section class="alt" id="sobre" aria-labelledby="h-sobre">
+    <div class="wrap two">
+      <div data-reveal>
+        <p class="eyebrow">Sobre</p>
+        <h2 id="h-sobre">Backend com rigor de engenharia</h2>
+        <p class="lead">Há mais de 6 anos construo backend no ecossistema Python: APIs RESTful escaláveis e de alta disponibilidade, com FastAPI e Django, em ambientes conteinerizados com Docker e Kubernetes, integrando PostgreSQL e bancos NoSQL.</p>
+        <p class="muted">Trabalho com TDD, Pytest, Clean Code e SOLID, e levo esse rigor para a pesquisa: sou autora principal de artigos sobre automação de testes e CI/CD apresentados no IEEE SEAI 2024 e no ICSCA 2026.</p>
+        <ul class="chips" aria-label="Idiomas"><li class="chip">Português: nativo</li><li class="chip">Inglês: comando muito bom</li></ul>
+      </div>
+      <div class="groups" data-reveal>
+        <div class="card"><h3>Linguagens e frameworks</h3><ul class="chips"><li class="chip">Python (sênior)</li><li class="chip">FastAPI</li><li class="chip">Django</li><li class="chip">Flask</li><li class="chip">Java</li><li class="chip">JavaScript</li></ul></div>
+        <div class="card"><h3>Qualidade e engenharia</h3><ul class="chips"><li class="chip">TDD</li><li class="chip">Pytest</li><li class="chip">Clean Code</li><li class="chip">SOLID</li><li class="chip">Design Patterns</li><li class="chip">Code Review</li><li class="chip">BDD</li></ul></div>
+        <div class="card"><h3>Infraestrutura e cloud</h3><ul class="chips"><li class="chip">Docker</li><li class="chip">Kubernetes</li><li class="chip">CI/CD</li><li class="chip">GitHub Actions</li><li class="chip">AWS</li><li class="chip">Linux</li></ul></div>
+        <div class="card"><h3>Dados e integração</h3><ul class="chips"><li class="chip">PostgreSQL</li><li class="chip">MySQL</li><li class="chip">Redis</li><li class="chip">MongoDB</li><li class="chip">ETL</li><li class="chip">Microsserviços</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROJETOS ================= -->
+  <section id="projetos" aria-labelledby="h-projetos">
+    <div class="wrap">
+      <div data-reveal>
+        <p class="eyebrow">Projetos</p>
+        <h2 id="h-projetos">O que já construí</h2>
+        <p class="lead">Sistemas backend e pesquisa aplicada, do contexto à stack.</p>
+      </div>
+      <div class="projects">
+        <article class="card project" data-reveal>
+          <span class="kind">Pesquisa aplicada · ICSCA 2026</span>
+          <h3>E2E-CIFlow</h3>
+          <dl><dt>O que é</dt><dd>Processo automatizado de testes End-to-End integrado a pipelines de CI/CD, com Playwright e GitHub Actions. Acelera a entrega e reduz o tempo de detecção de falhas.</dd></dl>
+          <ul class="chips"><li class="chip">Python</li><li class="chip">Playwright</li><li class="chip">GitHub Actions</li><li class="chip">CI/CD</li><li class="chip">Docker</li></ul>
+        </article>
+        <article class="card project" data-reveal>
+          <span class="kind">Sidia · produtos globais</span>
+          <h3><span class="validar">API Gateway de Microsserviços</span></h3>
+          <dl><dt>O que é</dt><dd>APIs REST de alta performance em arquitetura de microsserviços, em Python, com deploy em Kubernetes, pipelines de CI/CD e testes com TDD e Pytest.</dd></dl>
+          <ul class="chips"><li class="chip">Python</li><li class="chip">FastAPI</li><li class="chip">Docker</li><li class="chip">Kubernetes</li><li class="chip">PostgreSQL</li></ul>
+        </article>
+        <article class="card project" data-reveal>
+          <span class="kind">Bemol Digital · varejo</span>
+          <h3><span class="validar">Pipeline ETL para Varejo</span></h3>
+          <dl><dt>O que é</dt><dd>Sistemas de alta disponibilidade com grandes volumes de dados: processos de ETL, consultas SQL otimizadas em PostgreSQL e <span class="validar">cache com Redis</span>, integrando APIs e interfaces.</dd></dl>
+          <ul class="chips"><li class="chip">Python</li><li class="chip">PostgreSQL</li><li class="chip">Redis</li><li class="chip">ETL</li><li class="chip">SQL</li></ul>
+        </article>
+        <article class="card project" data-reveal>
+          <span class="kind">Pesquisa · IEEE SEAI 2024</span>
+          <h3>Agile Blueprint Model</h3>
+          <dl><dt>O que é</dt><dd>Método de modelagem ágil para o processo de desenvolvimento de software com incremento de versão.</dd></dl>
+          <ul class="chips"><li class="chip">Engenharia de Software</li><li class="chip">Métodos ágeis</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXPERIÊNCIA ================= -->
+  <section class="alt" id="experiencia" aria-labelledby="h-exp">
+    <div class="wrap">
+      <div data-reveal>
+        <p class="eyebrow">Experiência</p>
+        <h2 id="h-exp">Onde trabalhei</h2>
+      </div>
+      <ol class="timeline">
+        <li data-reveal><time>Jan 2022 – hoje<br>Manaus, presencial</time>
+          <div><h3>Software Engineer, Backend <span>· Sidia Instituto de Ciência e Tecnologia</span></h3>
+          <p class="muted">Soluções backend em Python e Java para produtos globais. Lidero a criação de APIs REST de alta performance em microsserviços, com Docker, Kubernetes e pipelines de CI/CD, aplicando TDD, Pytest e code review.</p></div></li>
+        <li data-reveal><time>Ago 2019 – Jan 2022<br>Manaus</time>
+          <div><h3>Software Engineer, Backend <span>· Bemol Digital</span></h3>
+          <p class="muted">Sistemas de alta disponibilidade para o varejo, com grandes volumes de dados. Estruturei processos de ETL, otimizei consultas SQL em PostgreSQL e NoSQL (Redis) e integrei APIs e interfaces em ciclos ágeis.</p></div></li>
+        <li data-reveal><time>Jun 2014 – Ago 2019<br>Itacoatiara, AM</time>
+          <div><h3>Sistemas de Informação <span>· Universidade Federal do Amazonas</span></h3>
+          <p class="muted">Graduação. TCC aprovado com nota 10.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ================= PESQUISA ================= -->
+  <section id="pesquisa" aria-labelledby="h-pesquisa">
+    <div class="wrap">
+      <div data-reveal>
+        <p class="eyebrow">Pesquisa</p>
+        <h2 id="h-pesquisa">Publicações acadêmicas</h2>
+        <p class="lead">Pesquisa internacional sobre qualidade, automação de testes e engenharia de software.</p>
+      </div>
+      <div class="papers">
+        <article class="card paper" data-reveal>
+          <p class="venue">ICSCA 2026 · ACM <span>Langkawi, Malásia</span></p>
+          <h3>E2E-CIFlow: An automated End-to-End testing process</h3>
+          <p>Autora principal. Processo prático e automatizado de testes E2E integrados a CI/CD, com Playwright e GitHub Actions. Publicação prevista na ACM Digital Library.</p>
+        </article>
+        <article class="card paper" data-reveal>
+          <p class="venue">IEEE SEAI 2024 <span>Xiamen, China</span></p>
+          <h3>Agile Blueprint Model Method in the Software Development Process with Increment of Version</h3>
+          <p>Autora principal. 4th International Conference on Software Engineering and Artificial Intelligence.</p>
+          <a href="https://doi.org/10.1109/SEAI62072.2024.10674366">DOI 10.1109/SEAI62072.2024.10674366</a>
+        </article>
+        <article class="card paper" data-reveal>
+          <p class="venue">TCC · UFAM 2019 <span>Itacoatiara, Brasil</span></p>
+          <h3>Uma Análise sobre a Participação Feminina na Área da Tecnologia da Informação</h3>
+          <p>Nota máxima (10). Analisou a representatividade feminina na TI nos simpósios da SBC ao longo de 10 anos.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTATO ================= -->
+  <section class="alt" id="contato" aria-labelledby="h-contato">
+    <div class="wrap contact">
+      <div data-reveal>
+        <p class="eyebrow">Contato</p>
+        <h2 id="h-contato">Vamos conversar</h2>
+        <p class="lead">Aberta a oportunidades em engenharia de software backend.</p>
+        <ul class="links">
+          <li><a href="mailto:evelymmarinho.dev@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>evelymmarinho.dev@gmail.com</a></li>
+          <li><a href="https://github.com/EvelymVasconcelos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/evelym-marinho-0741a6121/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>LinkedIn</a></li>
+          <li><a href="https://lattes.cnpq.br/5534406024447727"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>Currículo Lattes</a></li>
+        </ul>
+      </div>
+      <form data-reveal novalidate>
+        <label>Nome<input name="nome" autocomplete="name" required></label>
+        <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
+        <label>Mensagem<textarea name="mensagem" rows="5" required></textarea></label>
+        <button class="btn btn-primary" type="submit">Enviar mensagem</button>
+        <p class="form-note" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 Evelym Marinho</span><span>Protótipo de identidade visual. Textos do currículo; o que tem a etiqueta “validar” não está nele.</span></div>
+</footer>
+
+<nav class="proto-bar" aria-label="Controles do protótipo">
+  <a href="index.html">← Comparar</a>
+  <span class="sep" aria-hidden="true"></span>
+  <a href="?d=1" data-go-dir="1">1 Fluxo</a><a href="?d=2" data-go-dir="2">2 Pipeline</a><a href="?d=3" data-go-dir="3">3 Esquema</a>
+  <span class="sep" aria-hidden="true"></span>
+  <button type="button" data-theme-btn="claro">Claro</button><button type="button" data-theme-btn="escuro">Escuro</button>
+  <span class="sep hide-sm" aria-hidden="true"></span>
+  <button type="button" data-toggle-webgl>Sem WebGL</button><button type="button" data-toggle-motion>Movimento reduzido</button>
+</nav>
+
+<script src="cenas.js"></script>
+<script src="base.js"></script>
+</body>
+</html>
