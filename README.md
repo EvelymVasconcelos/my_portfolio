@@ -1,44 +1,49 @@
-# Francisco Marinho — Portfolio
+# Evelym Marinho — Portfólio
 
-Personal portfolio built with Next.js 14, featuring multilingual support, Apple-inspired design system, and professional animations.
+Portfólio pessoal de Evelym Marinho, Engenheira de Software Backend e autora de pesquisas publicadas na ACM e na IEEE.
+Página única em português, inglês e espanhol, com tema claro e escuro.
 
-## Tech Stack
+## Stack
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript (strict)
-- **Styling:** Tailwind CSS + CSS Variables
-- **Animations:** Framer Motion + Lottie
-- **i18n:** next-intl (PT, EN, ES)
-- **Theme:** next-themes (dark/light)
-- **Forms:** React Hook Form + Zod
-- **Icons:** Lucide React
+- **Framework:** Next.js 14 (App Router), no Node.js 24 LTS
+- **Linguagem:** TypeScript (strict)
+- **Estilo:** Tailwind CSS 3 + variáveis CSS
+- **Animações:** Framer Motion
+- **Idiomas:** next-intl (pt, en, es)
+- **Tema:** next-themes (claro e escuro)
+- **Formulário:** React Hook Form + Zod, com envio pelo Resend
+- **Ícones:** Lucide React
 
-## Getting Started
+A stack está sendo atualizada (Next.js 16, React 19, Tailwind 4). O plano está em `openspec/changes/`.
+
+## Como rodar
 
 ```bash
+nvm use        # Node 24, lido do .nvmrc
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — redirects to `/pt` automatically.
+Abra [http://localhost:3000](http://localhost:3000). A página redireciona para `/pt`.
 
-For full setup instructions, see [SETUP.md](./SETUP.md).
+Instruções completas em [SETUP.md](./SETUP.md).
 
-## Features
+## O que tem
 
-- Multilingual (PT 🇧🇷 / EN 🇺🇸 / ES 🇪🇸) with auto-translation via Claude API
-- Dark / light mode toggle
-- Responsive (mobile, tablet, desktop)
-- Accessible (ARIA, skip-to-content, reduced motion)
-- Apple-inspired design system (colors, typography, spacing)
-- Sections: Hero, About, Projects, Experience, Contact
+- Três idiomas (pt, en, es). O inglês e o espanhol são gerados a partir do português pelo DeepL
+- Tema claro e escuro
+- Layout para celular, tablet e computador
+- Link para pular para o conteúdo; com movimento reduzido, as animações de entrada e o fundo de partículas param
+- Seções: Hero, Sobre, Projetos, Experiência e Contato
+- Currículo para baixar no idioma da página
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run lint` | Run ESLint |
-| `npm run format` | Format with Prettier |
-| `npm run translate` | Auto-generate EN/ES from PT via Claude API |
+| Comando             | O que faz                                                   |
+| ------------------- | ----------------------------------------------------------- |
+| `npm run dev`       | Servidor de desenvolvimento                                 |
+| `npm run build`     | Build de produção                                           |
+| `npm run start`     | Serve o build de produção                                   |
+| `npm run lint`      | ESLint                                                      |
+| `npm run format`    | Formata com o Prettier                                      |
+| `npm run translate` | Gera `en.json` e `es.json` a partir do `pt.json` pelo DeepL |

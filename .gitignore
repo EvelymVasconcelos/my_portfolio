@@ -37,8 +37,7 @@ Thumbs.db
 *.tsbuildinfo
 next-env.d.ts
 
-# Lock files (use npm install normally — lock is reproduced locally)
-package-lock.json
+# Lock files: o projeto usa npm, e o package-lock.json é versionado (build reproduzível, CI com npm ci)
 yarn.lock
 pnpm-lock.yaml
 

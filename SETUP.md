@@ -1,124 +1,111 @@
-# Francisco Marinho — Portfolio Setup
+# Evelym Marinho — Portfólio: configuração
 
-## Requirements
+## Requisitos
 
-- Node.js 18+
-- npm 9+
+- Node.js 24 LTS (a versão está em `.nvmrc`: rode `nvm use`)
+- npm 10 ou mais
 
 ---
 
-## Installation
+## Instalação
 
 ```bash
+nvm use
 npm install
 ```
 
+O `package-lock.json` é versionado. Para instalar exatamente as versões dele, use `npm ci`.
+
 ---
 
-## Running locally
+## Rodar localmente
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — the app redirects to `/pt` automatically.
+Abra [http://localhost:3000](http://localhost:3000). A página redireciona para `/pt`.
 
-Available routes: `/pt`, `/en`, `/es`
+Rotas: `/pt`, `/en` e `/es`.
 
 ---
 
-## Environment variables
+## Variáveis de ambiente
 
-Copy `.env.local.example` to `.env.local`:
+Copie `.env.local.example` para `.env.local`:
 
 ```bash
 cp .env.local.example .env.local
 ```
 
-| Variable | Required | Description |
-|---|---|---|
-| `DEEPL_API_KEY` | Only for translations | Free key at [deepl.com/pro-api](https://deepl.com/pro-api) |
-| `RESEND_API_KEY` | Contact form | Free key at [resend.com](https://resend.com) |
+| Variável         | Quando é preciso      | Onde conseguir                                                 |
+| ---------------- | --------------------- | -------------------------------------------------------------- |
+| `DEEPL_API_KEY`  | Só para as traduções  | Chave grátis em [deepl.com/pro-api](https://deepl.com/pro-api) |
+| `RESEND_API_KEY` | Formulário de contato | Chave grátis em [resend.com](https://resend.com)               |
+
+O `.env.local` não vai para o Git.
 
 ---
 
-## Auto-generating translations
+## Traduções
 
-Edit `messages/pt.json` with your content in Portuguese, then run:
+Edite `messages/pt.json` em português e rode:
 
 ```bash
 npm run translate
 ```
 
-This calls the DeepL API and overwrites `messages/en.json` and `messages/es.json` automatically.
-
-Free plan: 500.000 characters/month — more than enough for a portfolio.
-
----
-
-## Replacing placeholder content
-
-### Profile photo
-Replace the `FM` initials placeholder in `components/sections/Hero.tsx`:
-```tsx
-// Replace the initials block with:
-<Image src="/images/photo.jpg" alt="Francisco Marinho" fill className="object-cover" />
-```
-Place the photo at `public/images/photo.jpg`.
-
-### CV / Resume
-Place your PDF at `public/cv.pdf` — the "Download CV" button already points to this path.
-
-Currently the PDF is at `curriculum/Francisco_Marinho_-_Desenvolvedor_Frontend_Sênior.pdf`.
-Just copy it:
-```bash
-cp "curriculum/Francisco_Marinho_-_Desenvolvedor_Frontend_Sênior.pdf" public/cv.pdf
-```
-
-### Lottie animations
-Place `.json` Lottie files at `public/lottie/`. Recommended source: [lottiefiles.com](https://lottiefiles.com).
-
-Use the `LottiePlayer` component:
-```tsx
-import { LottiePlayer } from "@/components/animations/LottiePlayer";
-
-<LottiePlayer src="/lottie/your-animation.json" />
-```
-
-### Project images
-Place project images at `public/images/projects/`. They are referenced in `messages/pt.json` under `projects.items[].image`.
-
-### Inspiration references
-Add design references to `inspirations/` — this folder is not committed to git.
+O script (`scripts/translate.ts`) chama a API do DeepL e sobrescreve `messages/en.json` e `messages/es.json`. Revise o
+resultado antes de commitar. O plano grátis do DeepL dá 500.000 caracteres por mês.
 
 ---
 
-## Folder structure
+## Conteúdo
+
+### Foto
+
+A foto fica em `public/images/profile.jpeg` e aparece no Hero e na seção Sobre. Para trocar, substitua o arquivo
+mantendo o nome.
+
+### Currículo
+
+Os dados profissionais saem dos PDFs em `curriculum/` (pt, en e es). O botão "Download CV" serve o currículo no idioma
+da página, pelos arquivos `public/cv-pt.pdf`, `public/cv-en.pdf` e `public/cv-es.pdf` (configurados em `lib/cv.ts`).
+Ao atualizar o currículo, troque os três arquivos de `public/` junto com os de `curriculum/`.
+
+### Imagens dos projetos
+
+Os projetos ficam em `messages/pt.json`, em `projects.items[]`. Hoje o campo `image` aponta para imagens provisórias
+(`picsum.photos`). Para usar imagens próprias, coloque os arquivos em `public/images/projects/` e aponte o `image` para
+eles.
+
+---
+
+## Estrutura
 
 ```
 ├── app/
-│   └── [locale]/          # i18n routes (pt, en, es)
+│   ├── [locale]/          # páginas por idioma (pt, en, es)
+│   └── api/contact/       # rota do formulário de contato (Resend)
 ├── components/
-│   ├── animations/        # FadeInView, StaggerChildren, LottiePlayer
+│   ├── animations/        # CountUp, FadeInView, Particles, StaggerChildren
 │   ├── layout/            # Navbar, Footer, ThemeToggle, LanguageSwitcher
 │   ├── sections/          # Hero, About, Projects, Experience, Contact
-│   └── ui/                # Button, Badge, Card, Input, Textarea
-├── curriculum/            # Source CV PDF
-├── i18n/                  # next-intl config and routing
-├── inspirations/          # Design references (not committed)
-├── lib/                   # Utility functions
-├── messages/              # Translation files (pt, en, es)
-├── public/                # Static assets
-│   ├── cv.pdf             # Resume (add manually)
-│   ├── images/            # Photos and project images
-│   └── lottie/            # Lottie animation JSON files
+│   └── ui/                # Button, Badge, Card, Input, Textarea e ícones de marca
+├── curriculum/            # PDFs do currículo (fonte da verdade)
+├── design/prototipos/     # protótipos (Pencil e HTML)
+├── i18n/                  # configuração e navegação do next-intl
+├── lib/                   # utilitários, links do CV e redes sociais
+├── messages/              # textos (pt, en, es)
+├── openspec/              # especificações e mudanças planejadas
+├── public/                # arquivos estáticos (CVs e imagens)
 └── scripts/
-    └── translate.ts       # Auto-translation script
+    └── translate.ts       # tradução pelo DeepL
 ```
 
 ---
 
-## Build for production
+## Build de produção
 
 ```bash
 npm run build

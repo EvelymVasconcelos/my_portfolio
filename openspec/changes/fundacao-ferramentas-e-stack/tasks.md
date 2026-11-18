@@ -14,13 +14,13 @@
 
 ## 2. Organização e limpeza (sem mudar versões)
 
-- [ ] 2.1 Tirar `package-lock.json` do `.gitignore` e criar `.nvmrc` com o Node 24 LTS (D3)
-- [ ] 2.2 Remover `lottie-react`, `components/animations/LottiePlayer.tsx` e `@anthropic-ai/sdk`, confirmando que nada os
+- [x] 2.1 Tirar `package-lock.json` do `.gitignore` e criar `.nvmrc` com o Node 24 LTS (D3)
+- [x] 2.2 Remover `lottie-react`, `components/animations/LottiePlayer.tsx` e `@anthropic-ai/sdk`, confirmando que nada os
       importa
 - [ ] 2.3 Remover `public/cv.pdf` (cópia sem uso de `cv-pt.pdf`) e, com o ok da dona, o PDF de manual de fechadura em
       `public/images/` (D12)
-- [ ] 2.4 Corrigir `README.md` e `SETUP.md` para o estado real (DeepL, CVs em `public/cv-*.pdf`, Node 24)
-- [ ] 2.5 `npm install`, `npm run lint` e `npm run build`. A dona confere `/pt`, `/en` e `/es` no navegador local
+- [x] 2.4 Corrigir `README.md` e `SETUP.md` para o estado real (DeepL, CVs em `public/cv-*.pdf`, Node 24)
+- [x] 2.5 `npm install`, `npm run lint` e `npm run build`. A dona confere `/pt`, `/en` e `/es` no navegador local
 
 ## 3. Rede de testes na stack atual
 
