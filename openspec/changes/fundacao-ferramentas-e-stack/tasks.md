@@ -1,14 +1,14 @@
 ## 1. Ferramentas de trabalho
 
-- [ ] 1.1 Reescrever `claude.md` como `CLAUDE.md` em português, no formato do portfólio do Francisco (comandos, ponto de
+- [x] 1.1 Reescrever `claude.md` como `CLAUDE.md` em português, no formato do portfólio do Francisco (comandos, ponto de
       partida medido, regras inegociáveis, convenções, "antes de entregar", OpenSpec, Pencil, graphify, skills da
       Mangue com os conflitos). Manter: currículo como fonte da verdade, ela/dela e a pesquisa com destaque. Tirar a
       identidade "Samsung" e o "não faça perguntas" (D1)
-- [ ] 1.2 `graphify install --platform claude`, `.claude/settings.json` com os ganchos `graphify hook-guard`,
+- [x] 1.2 `graphify install --platform claude`, `.claude/settings.json` com os ganchos `graphify hook-guard`,
       `graphify-out/` no `.gitignore` e o primeiro `graphify update .`
-- [ ] 1.3 Copiar as skills da Mangue escolhidas (D1) de `~/Downloads/skills-mangue-codex/skills/` para `~/.claude/skills/`,
+- [x] 1.3 Copiar as skills da Mangue escolhidas (D1) de `~/Downloads/skills-mangue-codex/skills/` para `~/.claude/skills/`,
       sem rodar os scripts delas, e listar no `CLAUDE.md` quais existem e de onde reinstalar
-- [ ] 1.4 Criar `.mcp.json` com o servidor do Pencil e a pasta `design/prototipos/`
+- [x] 1.4 Criar `.mcp.json` com o servidor do Pencil e a pasta `design/prototipos/`
 - [ ] 1.5 Conferir numa sessão nova do Claude Code no projeto: `/opsx:*`, `/graphify` e as skills da Mangue aparecem, e
       `graphify query` responde
 
