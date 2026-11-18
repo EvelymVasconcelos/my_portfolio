@@ -1,0 +1,67 @@
+schema: spec-driven
+
+# Contexto mostrado à IA ao criar cada artefato.
+context: |
+  Portfólio pessoal de Evelym Marinho, Engenheira de Software Backend (Python, APIs, microsserviços) e autora de
+  pesquisas publicadas (ICSCA 2026 na ACM, IEEE SEAI 2024). Página única com Hero, Sobre, Projetos, Experiência,
+  Pesquisa e Contato, em pt/en/es, tema claro e escuro. Quem lê são recrutadores e líderes técnicos: o site é a
+  própria prova de competência, e ele precisa comunicar profundidade técnica de backend (arquitetura, dados,
+  confiabilidade, testes), não só aparência. Ela usa os pronomes ela/dela. Cores preferidas: roxo, preto e branco.
+
+  Stack atual (ponto de partida, 2026-11-18):
+  - Next.js 14 (App Router, páginas por idioma) + React 18 + TypeScript strict
+  - Tailwind v3 + variáveis CSS (app/globals.css, tailwind.config.ts); identidade "Samsung Lilac" (#6852D6)
+  - framer-motion 11, lottie-react, canvas próprio (components/animations/Particles.tsx)
+  - next-intl 3 (messages/pt.json; en/es gerados por script DeepL em scripts/translate.ts), next-themes, lucide-react
+  - formulário de contato com React Hook Form + Zod no cliente e Resend no servidor (app/api/contact/route.ts)
+  - sem testes, sem CI, sem lockfile versionado
+
+  Estrutura: app/[locale]/ → components/sections/ → components/{layout,animations,ui}/ → lib/, i18n/, messages/.
+  Dados profissionais: curriculum/*.pdf é a fonte da verdade; nada de conteúdo inventado.
+
+  Objetivo: elevar o site ao nível dos melhores do mercado (Awwwards, Linear, Vercel, Apple), com animações ligadas
+  à rolagem, 3D em tempo real (Three.js), efeitos visuais e acessibilidade de verdade, no mesmo padrão do portfólio
+  de Francisco Marinho (~/Documentos/Gabriel Projetos/my-portfolio), que serve de referência de stack e de processo.
+
+  Stack-alvo:
+  - Next.js atual (16), React 19, TypeScript strict, next-intl 4, Tailwind v4 (CSS-first, `@theme`, tokens em CSS)
+  - Three.js puro para o 3D, carregado depois do LCP; animação em CSS, `motion` só se um efeito exigir
+  - lucide-react como única família de ícones
+  - Vitest + Testing Library, teste de hidratação, Playwright + axe nos três idiomas, Lighthouse no CI
+
+  Ferramentas: OpenSpec (este fluxo), graphify (graphify-out/) para navegar o código, Pencil para protótipos em
+  design/prototipos/, e as skills de site da Mangue (montar-site-mangue e as de apoio) como roteiro de design,
+  animação, copy e qualidade.
+
+rules:
+  proposal:
+    - Escrever em português do Brasil.
+    - Incluir a seção "Fora do escopo".
+    - Dizer o que quem visita percebe de diferente, e não só o que muda no código.
+    - Mudança grande se divide em changes menores e independentes, entregues uma de cada vez.
+  specs:
+    - Requisitos com SHALL e cenários verificáveis.
+    - Todo requisito com movimento ou 3D tem um cenário para `prefers-reduced-motion` e outro para a falta de WebGL.
+    - Todo requisito interativo tem um cenário de uso só com teclado.
+    - Todo texto visível, inclusive aria-label e alt, vem de messages/ nos três idiomas.
+  design:
+    - Justificar cada biblioteca nova pelo custo em KB e pelo que ela permite. Uma ferramenta por finalidade.
+    - Para cada efeito ou cena 3D, definir como carrega (import dinâmico, sem SSR, depois do LCP), o que aparece enquanto carrega, o alternativo sem WebGL ou com movimento reduzido e o comportamento em celular fraco.
+    - O conteúdo principal é HTML real renderizado no servidor. O LCP nunca depende de canvas ou WebGL.
+    - Definir orçamento de desempenho a partir dos limiares bons do Core Web Vitals (LCP abaixo de 2,5 s, CLS abaixo de 0,1, INP abaixo de 200 ms, medidos em celular).
+    - Mudança visual nova passa por protótipo (Pencil ou HTML) antes do código.
+    - Avaliar telas novas contra as 10 heurísticas de Nielsen.
+  tasks:
+    - Organizar em blocos entregáveis, cada um terminando em um estado que a dona consegue testar no navegador.
+    - Incluir tarefas de `npm run lint`, `npm run build` e testes.
+    - Incluir conferência em pt/en/es, claro/escuro, celular e computador, teclado e leitor de tela, com axe sem violações WCAG 2.2 AA.
+    - Testar movimento reduzido e WebGL desligado de verdade, no navegador.
+
+operations:
+  apply:
+    guidance:
+      - Entregar um bloco por vez, com status curto, e parar para a dona testar no navegador local.
+      - Rodar `graphify update .` depois de mexer no código.
+  archive:
+    guidance:
+      - Resumir o que foi entregue e o que ficou de fora antes de encerrar.
