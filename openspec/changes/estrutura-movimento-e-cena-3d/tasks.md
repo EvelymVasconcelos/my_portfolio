@@ -115,23 +115,29 @@ layout.
 - [x] 4.10 Testes: unitários da onda e da inclinação (mudam com ponteiro fino, nada com movimento reduzido ou toque);
       de navegador com `reducedMotion: 'reduce'` (nada preso, nada se move, conteúdo final, números no valor final), com
       teclado na sequência e na pilha, e com o leitor de tela nos títulos animados e no nome do Hero
-- [ ] 4.11 Lint, tipos, testes e build passando. A dona confere o Hero com o mouse, com movimento reduzido ligado de
+- [x] 4.11 Lint, tipos, testes e build passando. A dona confere o Hero com o mouse, com movimento reduzido ligado de
       verdade no sistema e no celular
 
 ## 5. Cena 3D
 
-- [ ] 5.1 `lib/scene/can-run-scene.ts` (movimento reduzido, economia de dados, aparelho fraco, sem WebGL) com testes de
-      cada condição (D6)
-- [ ] 5.2 Módulo da cena escolhida, portado do protótipo: `three` com import seletivo, `setTheme`, `setProgress`,
-      `dispose`, pausa fora da tela e com a aba oculta, perda de contexto e rebaixamento por quadros por segundo (D3, D6)
-- [ ] 5.3 `HeroSceneLoader`: import dinâmico depois do `load` e do navegador ocioso, troca da imagem pela cena sem salto
-- [ ] 5.4 Modo de captura e imagens estáticas `public/images/scene/<conceito>-{claro,escuro}.webp` geradas pela cena,
-      com `alt` e a descrição da cena traduzidos
-- [ ] 5.5 Rótulos da cena em HTML fora do canvas, canvas escondido da tecnologia assistiva e sem foco
-- [ ] 5.6 Testes de navegador: a cena aparece com WebGL; não baixa `three` com WebGL desligado, com movimento reduzido ou
+- [x] 5.1 `lib/scene/can-run-scene.ts` (movimento reduzido, economia de dados, aparelho fraco, sem WebGL) com testes de
+      cada condição (D6). Aparelho fraco como na spec daqui: 4 GB ou menos **e** até 4 núcleos
+- [x] 5.2 Módulo da cena escolhida, portado do protótipo: `three` com import seletivo, `setTheme`, `setProgress`,
+      `dispose`, pausa fora da tela e com a aba oculta, perda de contexto e rebaixamento por quadros por segundo (D3, D6).
+      A história começa no estado final (o quadro do pôster) e segue o ciclo de 24 s; os textos dos painéis vêm de
+      `messages/` (`hero.scene`), e o código do editor fica em inglês nos três idiomas
+- [x] 5.3 `HeroSceneLoader`: import dinâmico depois do `load` e do navegador ocioso, troca da imagem pela cena sem salto.
+      Começa com o Hero perto da tela, sem esperar interação (a referência espera; rever se o TBT do bloco 7 pedir)
+- [x] 5.4 Modo de captura e imagens estáticas `public/images/scene/<conceito>-{claro,escuro}.webp` geradas pela cena,
+      com `alt` e a descrição da cena traduzidos (`npm run scene:posters`, `scripts/render-scene-posters.ts`)
+- [x] 5.5 Rótulos da cena em HTML fora do canvas, canvas escondido da tecnologia assistiva e sem foco. A cena D não tem
+      rótulos sobre as peças (a escolha da dona tirou o cartão de legenda); a descrição traduzida fica no `aria-label`
+      do contêiner (`role="img"`), e o canvas tem `aria-hidden` e `tabindex=-1`
+- [x] 5.6 Testes de navegador: a cena aparece com WebGL; não baixa `three` com WebGL desligado, com movimento reduzido ou
       com economia de dados; pausa fora da tela; acompanha a troca de tema
-- [ ] 5.7 Medir o custo da cena (KB gzip, quadros por segundo no computador e com CPU 4x mais lenta) e registrar em
-      `docs/otimizacao-de-desempenho.md`
+- [x] 5.7 Medir o custo da cena (KB gzip, quadros por segundo no computador e com CPU 4x mais lenta) e registrar em
+      `docs/otimizacao-de-desempenho.md`. Medido: 140,4 kB gzip fora do carregamento inicial; 60,1 quadros por segundo
+      na Iris Xe com densidade 2 e 59,9 com a CPU 4x mais lenta
 - [ ] 5.8 Lint, tipos, testes e build passando. A dona confere com WebGL desligado de verdade no navegador
       (`chrome://flags` ou `--disable-webgl`) e num celular
 

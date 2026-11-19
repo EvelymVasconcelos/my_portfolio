@@ -28,7 +28,15 @@
     "cta_projects": "Ver projetos",
     "cta_cv": "Baixar CV",
     "built_label": "Onde já construí",
-    "scene_alt": "Ilustração em 3D: eu, de moletom roxo e headphone, programando num notebook. Em volta, três painéis mostram o código Python de uma API sendo escrito, os testes automáticos passando e o selo de deploy em produção."
+    "scene_alt": "Ilustração em 3D: eu, de moletom roxo e headphone, programando num notebook. Em volta, três painéis mostram o código Python de uma API sendo escrito, os testes automáticos passando e o selo de deploy em produção.",
+    "scene": {
+      "editor_title": "Código Python · api/orders.py",
+      "tests_title": "Testes automáticos",
+      "tests_running": "rodando os testes…",
+      "tests_passed": "✓ todos os testes passaram",
+      "deploy_waiting": "Aguardando deploy",
+      "deploy_live": "Em produção ✓"
+    }
   },
   "about": {
     "label": "Sobre",

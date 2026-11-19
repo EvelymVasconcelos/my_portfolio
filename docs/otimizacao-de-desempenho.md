@@ -1,0 +1,51 @@
+# Desempenho do portfólio
+
+Registro do que foi medido no próprio site durante as changes `fundacao-ferramentas-e-stack` e
+`estrutura-movimento-e-cena-3d` (novembro de 2026). Nenhum número aqui é estimativa: cada um diz como foi medido. O
+Lighthouse (LCP, CLS e TBT no perfil de celular) entra no bloco 7 da change `estrutura-movimento-e-cena-3d`.
+
+## Como medi
+
+- **JavaScript inicial:** um script lê o HTML gerado de `/pt` (`.next/server/app/pt.html`), pega todos os
+  `<script src>` e soma o tamanho de cada arquivo comprimido com gzip. É o JavaScript que o navegador baixa antes de
+  qualquer interação.
+- **Fontes:** soma dos `.woff2` baixados ao abrir `/pt` num Chromium do Playwright, com a rede registrada.
+- **Cena 3D:** soma, com gzip, dos arquivos que contêm o Three.js e o módulo da cena; confirmado que nenhum deles está
+  no HTML inicial.
+- **Quadros por segundo da cena:** Chromium do Playwright com a GPU da máquina (`--use-angle=gl`; o WebGL informa
+  "Mesa Intel Iris Xe Graphics (RPL-U)"), janela de 1440 × 900 com densidade 2, contando `requestAnimationFrame` por
+  5 s com a cena rodando. A CPU 4x mais lenta usa `Emulation.setCPUThrottlingRate` do DevTools.
+
+## JavaScript inicial de `/pt` (gzip)
+
+| Momento | kB | O que mudou |
+|---|---|---|
+| Bloco 3 (estrutura nova, ainda com framer-motion) | 289 | Seções de servidor; só as mensagens das ilhas de cliente vão ao navegador |
+| Bloco 4 (movimento) | 252 | framer-motion saiu; movimento em CSS e ilhas de cerca de 1 kB cada |
+| Bloco 5 (cena 3D) | 256 | Entrou só o carregador da cena; a cena em si é baixada depois |
+
+Meta da design: abaixo de 206 kB. Ainda não atingida. Cerca de 155 kB são React 19 e Next 16; o maior peso restante
+do site é a validação do formulário com Zod, que sai no bloco 6 da change `fundacao-ferramentas-e-stack`.
+
+## Fontes
+
+Bricolage Grotesque e Instrument Sans pré-carregadas (104,3 kB) e JetBrains Mono logo depois: 134,9 kB ao abrir `/pt`,
+em 3 arquivos. Orçamento: 140 kB.
+
+## Cena 3D do Hero
+
+| Medida | Valor | Meta |
+|---|---|---|
+| Código da cena (Three.js com import seletivo e o módulo) | 140,4 kB gzip, fora do carregamento inicial | até 200 kB |
+| Quadros por segundo, Iris Xe, densidade 2 | 60,1 | 60 |
+| Quadros por segundo com a CPU 4x mais lenta | 59,9 | acima de 30 |
+| Imagens estáticas (pôsteres, WebP com transparência) | 33 kB (claro) e 35 kB (escuro) | — |
+
+Como a cena se protege:
+
+- só carrega depois do `load`, com o navegador ocioso e o Hero perto da tela, e não carrega com movimento reduzido,
+  economia de dados, aparelho fraco (4 GB ou menos e até 4 núcleos) ou sem WebGL;
+- pausa fora da tela e com a aba oculta;
+- se a média ficar abaixo de 30 quadros por segundo por 3 s, cai para densidade 1; se continuar lenta, devolve a imagem;
+- o primeiro quadro é o mesmo da imagem estática, então a troca não tem salto (CLS zero);
+- os pôsteres são gerados pela própria cena (`npm run scene:posters`).

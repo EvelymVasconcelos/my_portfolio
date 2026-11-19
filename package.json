@@ -13,7 +13,8 @@
     "test:watch": "vitest",
     "test:e2e": "next build && playwright test",
     "test:e2e:update": "next build && playwright test --update-snapshots=all",
-    "translate": "tsx scripts/translate.ts"
+    "translate": "tsx scripts/translate.ts",
+    "scene:posters": "tsx scripts/render-scene-posters.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.2",
@@ -27,6 +28,7 @@
     "react-hook-form": "^7.92.0",
     "resend": "^6.39.0",
     "tailwind-merge": "^3.7.0",
+    "three": "^0.187.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -40,6 +42,7 @@
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.187.0",
     "@vitejs/plugin-react": "^6.3.0",
     "deepl-node": "^1.24.0",
     "dotenv": "^17.3.1",

@@ -28,7 +28,15 @@
     "cta_projects": "Ver proyectos",
     "cta_cv": "Descargar CV",
     "built_label": "Dónde he construido",
-    "scene_alt": "Ilustración en 3D: yo, con una sudadera morada y auriculares, programando en un portátil. A mi alrededor, tres paneles muestran el código Python de una API que se está escribiendo, las pruebas automáticas superadas y el sello de despliegue en producción."
+    "scene_alt": "Ilustración en 3D: yo, con una sudadera morada y auriculares, programando en un portátil. A mi alrededor, tres paneles muestran el código Python de una API que se está escribiendo, las pruebas automáticas superadas y el sello de despliegue en producción.",
+    "scene": {
+      "editor_title": "Código Python · api/orders.py",
+      "tests_title": "Pruebas automáticas",
+      "tests_running": "ejecutando las pruebas…",
+      "tests_passed": "✓ todas las pruebas pasaron",
+      "deploy_waiting": "Esperando el deploy",
+      "deploy_live": "En producción ✓"
+    }
   },
   "about": {
     "label": "Acerca de",

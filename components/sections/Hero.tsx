@@ -4,17 +4,11 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { HeroPointer } from "@/components/motion/HeroPointer";
 import { NameWave } from "@/components/motion/NameWave";
 import { SplitText } from "@/components/motion/SplitText";
+import { HeroSceneLoader } from "@/components/scene/HeroSceneLoader";
 import { HeroBackdrop } from "@/components/sections/HeroBackdrop";
 import { buttonVariants } from "@/components/ui/Button";
 import { BUILT_AT } from "@/lib/content/career";
 import { CV_URL } from "@/lib/cv";
-
-/**
- * Hero de servidor: HTML completo e final sem JavaScript. O nome entra letra a letra (só CSS) e ganha a onda sob o
- * ponteiro; o fundo tem formas em traço fino e uma luz que seguem o ponteiro (ilhas mínimas, decisão 11 da design).
- * À direita, a imagem estática da cena (a Evelym programando), por tema, em CSS (.hero-scene em globals.css); a cena
- * 3D entra por cima no bloco 5.
- */
 
 /** Estrelinhas de quatro pontas perto do nome ("detalhes delicados" do protótipo): posição, tamanho e atraso. */
 const SPARKLES = [
@@ -26,6 +20,13 @@ const SPARKLES = [
 ];
 const SPARKLE_PATH =
   "M12 0c.6 6.6 5.4 11.4 12 12-6.6.6-11.4 5.4-12 12-.6-6.6-5.4-11.4-12-12C6.6 11.4 11.4 6.6 12 0Z";
+
+/**
+ * Hero de servidor: HTML completo e final sem JavaScript. O nome entra letra a letra (só CSS) e ganha a onda sob o
+ * ponteiro; o fundo tem formas em traço fino e uma luz que seguem o ponteiro (ilhas mínimas, decisão 11 da design).
+ * À direita, a imagem estática da cena (a Evelym programando), por tema, em CSS (.hero-scene em globals.css); a cena
+ * 3D entra por cima depois do carregamento, quando pode rodar (components/scene/HeroSceneLoader.tsx).
+ */
 export async function Hero() {
   const t = await getTranslations("hero");
   const tA11y = await getTranslations("accessibility");
@@ -104,7 +105,18 @@ export async function Hero() {
           role="img"
           aria-label={t("scene_alt")}
           className="hero-scene mx-auto w-full max-w-[34rem] lg:max-w-none"
-        />
+        >
+          <HeroSceneLoader
+            labels={{
+              editorTitle: t("scene.editor_title"),
+              testsTitle: t("scene.tests_title"),
+              testsRunning: t("scene.tests_running"),
+              testsPassed: t("scene.tests_passed"),
+              deployWaiting: t("scene.deploy_waiting"),
+              deployLive: t("scene.deploy_live"),
+            }}
+          />
+        </div>
       </div>
 
       <div className="border-y border-line">

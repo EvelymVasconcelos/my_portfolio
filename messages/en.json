@@ -28,7 +28,15 @@
     "cta_projects": "View projects",
     "cta_cv": "Download CV",
     "built_label": "Where I've built",
-    "scene_alt": "3D illustration: me, wearing a purple sweatshirt and headphones, coding on a laptop. Around me, three panels show the Python code for an API being written, the automated tests passing, and the \"deploy to production\" badge."
+    "scene_alt": "3D illustration: me, wearing a purple sweatshirt and headphones, coding on a laptop. Around me, three panels show the Python code for an API being written, the automated tests passing, and the \"deploy to production\" badge.",
+    "scene": {
+      "editor_title": "Python code · api/orders.py",
+      "tests_title": "Automated tests",
+      "tests_running": "running the tests…",
+      "tests_passed": "✓ all tests passed",
+      "deploy_waiting": "Waiting for deploy",
+      "deploy_live": "In production ✓"
+    }
   },
   "about": {
     "label": "About",
