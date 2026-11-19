@@ -37,15 +37,15 @@
 
 ## 4. Next 16, React 19, next-intl 4 e ESLint flat
 
-- [ ] 4.1 Migrar para o Next 16 pela documentação em `node_modules/next/dist/docs`: `middleware.ts` vira `proxy.ts`,
+- [x] 4.1 Migrar para o Next 16 pela documentação em `node_modules/next/dist/docs`: `middleware.ts` vira `proxy.ts`,
       `params` assíncronos e `setRequestLocale` no layout e na página para manter `/pt`, `/en` e `/es` estáticas
-- [ ] 4.2 React, React DOM e tipos na 19, e framer-motion na versão compatível
-- [ ] 4.3 next-intl 4 pelo guia oficial (`i18n/request.ts`, `routing`, navegação), com `timeZone` configurado no servidor
-- [ ] 4.4 Trocar `.eslintrc.json` por `eslint.config.mjs` com `eslint-config-next` e ajustar o script `lint`
-- [ ] 4.5 TypeScript na versão mais nova que o Next 16 suporta, e script `typecheck`
-- [ ] 4.6 Demais dependências diretas (Zod 4, `@hookform/resolvers`, `lucide-react`, `resend`, Prettier). O lucide 1.x
+- [x] 4.2 React, React DOM e tipos na 19, e framer-motion na versão compatível
+- [x] 4.3 next-intl 4 pelo guia oficial (`i18n/request.ts`, `routing`, navegação), com `timeZone` configurado no servidor
+- [x] 4.4 Trocar `.eslintrc.json` por `eslint.config.mjs` com `eslint-config-next` e ajustar o script `lint`
+- [x] 4.5 TypeScript na versão mais nova que o Next 16 suporta, e script `typecheck`
+- [x] 4.6 Demais dependências diretas (Zod 4, `@hookform/resolvers`, `lucide-react`, `resend`, Prettier). O lucide 1.x
       removeu os ícones de marca: GitHub e LinkedIn viram componentes próprios, como o `DiscordIcon` que já existe
-- [ ] 4.7 Trocar o next-themes pelo script de tema no `<head>` (D4), com teste de hidratação nos dois temas
+- [x] 4.7 Trocar o next-themes pelo script de tema no `<head>` (D4), com teste de hidratação nos dois temas
 - [ ] 4.8 Lint, tipos, testes, capturas e build passando. A dona confere no navegador
 
 ## 5. Tailwind CSS 4

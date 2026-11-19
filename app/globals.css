@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Google Fonts: Roboto + Roboto Slab ────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@600;700;800&display=swap');
+/* Fontes: Roboto e Roboto Slab vêm do next/font em app/[locale]/layout.tsx (o @import daqui era inválido e ignorado). */
 
 /* ─── Design System: Samsung Color Tokens ───────────────────────────────────── */
 /* Reference: https://developer.samsung.com/design-system                        */

@@ -3,7 +3,7 @@
 import { useTranslations, useMessages, useLocale } from "next-intl";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/lib/theme";
 import { ArrowDown, Download, ArrowRight, MapPin } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
@@ -20,7 +20,8 @@ export function Hero() {
   const t = useTranslations("hero");
   const locale = useLocale();
   const cvUrl = CV_URL[locale] ?? CV_URL.en;
-  const { resolvedTheme } = useTheme();
+  // `undefined` no servidor e na hidratação, como era o resolvedTheme do next-themes.
+  const resolvedTheme = useTheme();
   const messages = useMessages();
   const roles = (messages as unknown as { hero: { roles: string[] } }).hero.roles;
   const [roleIndex, setRoleIndex] = useState(0);

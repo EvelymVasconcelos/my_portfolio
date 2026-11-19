@@ -1,9 +1,9 @@
 "use client";
 
-import { ThemeProvider } from "next-themes";
 import { NextIntlClientProvider } from "next-intl";
 import type { AbstractIntlMessages } from "next-intl";
 import type { ReactNode } from "react";
+import { TIME_ZONE } from "@/i18n/routing";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -13,15 +13,8 @@ interface ProvidersProps {
 
 export function Providers({ children, locale, messages }: ProvidersProps) {
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem
-        disableTransitionOnChange={false}
-      >
-        {children}
-      </ThemeProvider>
+    <NextIntlClientProvider locale={locale} messages={messages} timeZone={TIME_ZONE}>
+      {children}
     </NextIntlClientProvider>
   );
 }

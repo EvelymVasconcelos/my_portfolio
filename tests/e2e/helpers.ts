@@ -1,4 +1,9 @@
+import path from "node:path";
 import type { Page } from "@playwright/test";
+
+// As fotos provisórias dos projetos vêm de picsum.photos/…?random=N, que devolve uma foto diferente a cada busca.
+// Nos testes, elas são servidas por uma imagem fixa, para a captura não depender de conteúdo externo aleatório.
+const FOTO_PROVISORIA = path.join(__dirname, "fixtures", "foto-provisoria.png");
 
 export const LOCALES = ["pt", "en", "es"] as const;
 export const THEMES = ["dark", "light"] as const;
@@ -8,6 +13,12 @@ export const THEMES = ["dark", "light"] as const;
  * e a página inteira percorrida, para que as entradas que esperam a rolagem já tenham acontecido.
  */
 export async function openStable(page: Page, path: string, theme: (typeof THEMES)[number]) {
+  await page.route(
+    (url) =>
+      url.pathname === "/_next/image" &&
+      (url.searchParams.get("url") ?? "").startsWith("https://picsum.photos/"),
+    (route) => route.fulfill({ path: FOTO_PROVISORIA, contentType: "image/png" })
+  );
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: theme });
   await page.addInitScript((t) => window.localStorage.setItem("theme", t), theme);
   await page.goto(path);

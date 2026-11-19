@@ -24,7 +24,7 @@ export const Contact = () => {
 
   const schema = z.object({
     name:    z.string().min(2, tValidation("name_min")),
-    email:   z.string().email(tValidation("email_invalid")),
+    email:   z.email(tValidation("email_invalid")),
     subject: z.string().min(1, tValidation("subject_required")),
     message: z.string().min(10, tValidation("message_min")),
   });

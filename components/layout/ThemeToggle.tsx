@@ -1,21 +1,17 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useTranslations } from "next-intl";
+import { setTheme, useTheme } from "@/lib/theme";
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  // O tema só é conhecido no navegador: `undefined` no servidor e na hidratação (lib/theme.ts).
+  const theme = useTheme();
   const t = useTranslations("theme");
 
-  // Avoid hydration mismatch
-  useEffect(() => setMounted(true), []);
-
-  if (!mounted) {
+  if (!theme) {
     return <div className="h-10 w-10" aria-hidden="true" />;
   }
 

@@ -4,7 +4,8 @@ import { useTranslations, useMessages } from "next-intl";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { Github, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
+import { GithubIcon } from "@/components/ui/GithubIcon";
 import { Badge } from "@/components/ui/Badge";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { FadeInView } from "@/components/animations/FadeInView";
@@ -189,7 +190,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
                   )}
                 >
-                  <Github className="h-3.5 w-3.5" aria-hidden />
+                  <GithubIcon className="h-3.5 w-3.5" />
                   GitHub
                 </a>
               )}

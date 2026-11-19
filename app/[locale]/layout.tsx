@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Roboto, Roboto_Slab } from "next/font/google";
 import { notFound } from "next/navigation";
-import { getMessages } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { Providers } from "@/components/providers";
+import { ThemeScript } from "@/components/layout/ThemeScript";
 import "@/app/globals.css";
 
 // ─── Samsung Design System Fonts ─────────────────────────────────────────────
@@ -84,10 +85,16 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     notFound();
   }
 
+  // Permite gerar as páginas de cada idioma no build (renderização estática com next-intl).
+  setRequestLocale(locale);
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">
+      <head>
+        {/* Tema antes da primeira pintura, sem piscar (components/layout/ThemeScript.tsx). */}
+        <ThemeScript />
+      </head>
       <body className={`${roboto.variable} ${robotoSlab.variable} font-sans antialiased`}>
         {/* Skip to main content — Accessibility */}
         <a

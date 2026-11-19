@@ -1,4 +1,6 @@
-import { Github, Linkedin, Mail, GraduationCap } from "lucide-react";
+import { Mail, GraduationCap } from "lucide-react";
+import { GithubIcon } from "@/components/ui/GithubIcon";
+import { LinkedinIcon } from "@/components/ui/LinkedinIcon";
 import type { ComponentType } from "react";
 
 export interface SocialLink {
@@ -8,8 +10,8 @@ export interface SocialLink {
 }
 
 export const SOCIAL_LINKS: SocialLink[] = [
-  { label: "GitHub",   href: "https://github.com/EvelymVasconcelos",                       icon: Github },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/evelym-marinho-0741a6121/",      icon: Linkedin },
+  { label: "GitHub",   href: "https://github.com/EvelymVasconcelos",                       icon: GithubIcon },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/evelym-marinho-0741a6121/",      icon: LinkedinIcon },
   { label: "Lattes",   href: "https://lattes.cnpq.br/5534406024447727",                    icon: GraduationCap },
   { label: "Email",    href: "mailto:evelymmarinho.dev@gmail.com",                         icon: Mail },
 ];
