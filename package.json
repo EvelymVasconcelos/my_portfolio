@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "translate": "tsx scripts/translate.ts"
+    "translate": "tsx scripts/translate.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "next build && playwright test",
+    "test:e2e:update": "next build && playwright test --update-snapshots=all"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -27,21 +31,30 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20.14.10",
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.13",
+    "@types/node": "^24.19.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@typescript-eslint/parser": "^7.16.0",
+    "@vitejs/plugin-react": "^6.3.0",
     "autoprefixer": "^10.4.19",
     "deepl-node": "^1.24.0",
     "dotenv": "^17.3.1",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.5",
+    "jsdom": "^29.1.1",
     "postcss": "^8.4.39",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "tailwindcss": "^3.4.6",
     "tsx": "^4.16.2",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "vitest": "^5.1.1"
   }
 }

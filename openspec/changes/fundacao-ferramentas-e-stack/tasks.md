@@ -25,13 +25,13 @@
 
 ## 3. Rede de testes na stack atual
 
-- [ ] 3.1 Configurar Vitest com jsdom e Testing Library (`vitest.config.mts`, `npm test`)
-- [ ] 3.2 Teste de hidratação sem divergência das seções da página
-- [ ] 3.3 Playwright contra o build de produção (`npm run test:e2e`), só Chromium
-- [ ] 3.4 Testes de navegador: `/pt`, `/en` e `/es` carregam com o `lang` certo e sem erro no console
-- [ ] 3.5 Capturas de referência em 1440 e 390 px, claro e escuro, nos três idiomas, para provar "visualmente idêntico"
+- [x] 3.1 Configurar Vitest com jsdom e Testing Library (`vitest.config.mts`, `npm test`)
+- [x] 3.2 Teste de hidratação sem divergência das seções da página
+- [x] 3.3 Playwright contra o build de produção (`npm run test:e2e`), só Chromium
+- [x] 3.4 Testes de navegador: `/pt`, `/en` e `/es` carregam com o `lang` certo e sem erro no console
+- [x] 3.5 Capturas de referência em 1440 e 390 px, claro e escuro, nos três idiomas, para provar "visualmente idêntico"
       (usar `--update-snapshots=all`, porque o padrão ignora mudanças abaixo de 1%)
-- [ ] 3.6 Varredura axe WCAG 2.2 A/AA com a lista de exceções nomeada (cada uma com a change que a corrige), falhando com
+- [x] 3.6 Varredura axe WCAG 2.2 A/AA com a lista de exceções nomeada (cada uma com a change que a corrige), falhando com
       qualquer violação nova
 - [ ] 3.7 `npm run lint`, `npm test`, `npm run test:e2e` e `npm run build` passando. A dona revisa o relatório do axe
 

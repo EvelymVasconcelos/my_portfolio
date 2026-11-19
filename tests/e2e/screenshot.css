@@ -1,0 +1,6 @@
+/* Aplicado só durante as capturas de referência, para esconder o que muda sozinho a cada execução. */
+
+/* Cargo do Hero: troca a cada 3 s mesmo com movimento reduzido (setInterval em Hero.tsx). */
+#hero .text-gradient {
+  visibility: hidden;
+}
