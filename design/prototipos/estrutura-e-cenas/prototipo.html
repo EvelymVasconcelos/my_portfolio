@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="pt-BR" data-cena="a" data-cor="1" data-theme="escuro" data-marca="mono" data-cartao="sobre">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evelym Marinho · protótipo de estrutura e cenas</title>
+<script>
+  /* Antes da pintura: cena, cor, tema, marca, sem WebGL, movimento reduzido e captura vêm da URL. */
+  (function () {
+    var h = document.documentElement, q = new URLSearchParams(location.search);
+    var cena = ["a", "b", "c"].indexOf(q.get("cena")) >= 0 ? q.get("cena") : "a";
+    var cor = ["1", "2", "3"].indexOf(q.get("cor")) >= 0 ? q.get("cor") : { a: "1", b: "3", c: "2" }[cena];
+    /* Tema inicial: sempre o escuro (decisão da dona, 2026-11-18), mesmo com o sistema em claro. */
+    var tema = q.get("tema") === "claro" ? "claro" : "escuro";
+    var marca = q.get("marca") === "sig" ? "sig" : "mono";
+    h.dataset.cartao = q.get("cartao") === "abaixo" ? "abaixo" : "sobre";
+    h.dataset.cena = cena; h.dataset.cor = cor; h.dataset.theme = tema; h.dataset.marca = marca; h.classList.add("js");
+    if (q.get("webgl") === "0") h.dataset.nowebgl = "1";
+    if (q.get("mov") === "0" || matchMedia("(prefers-reduced-motion: reduce)").matches) h.dataset.reduce = "1";
+    if (q.get("captura") === "1") h.dataset.captura = "1";
+    var f = {
+      "1": "family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700",
+      "2": "family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@500",
+      "3": "family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600"
+    }[cor];
+    if (marca === "sig") f += "&family=Mrs+Saint+Delafield";
+    document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?' + f + '&display=swap">');
+  })();
+</script>
+<script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+                 "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="estilo.css">
+<style>
+  html:not([data-cena="a"]) [data-so-cena="a"], html:not([data-cena="b"]) [data-so-cena="b"], html:not([data-cena="c"]) [data-so-cena="c"],
+  html:not([data-marca="mono"]) [data-so-marca="mono"], html:not([data-marca="sig"]) [data-so-marca="sig"] { display: none !important; }
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#inicio" aria-label="Evelym Marinho, voltar ao início">
+      <svg class="mark-mono" data-so-marca="mono" viewBox="0 0 44 44" aria-hidden="true"><path pathLength="1" d="M20 10H8v24h12M8 22h9"/><path pathLength="1" d="M25 34V10l6 14 6-14v24"/></svg>
+      <span class="mark-sig" data-so-marca="sig" aria-hidden="true">Evelym Marinho</span>
+    </a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#sobre"><span>01</span>Sobre</a><a href="#projetos"><span>02</span>Projetos</a><a href="#experiencia"><span>03</span>Experiência</a>
+      <a href="#pesquisa"><span>04</span>Pesquisa</a><a href="#recomendacoes"><span>05</span>Recomendações</a><a href="#contato"><span>06</span>Contato</a>
+    </nav>
+    <p class="lang" aria-label="Idioma: português (protótipo só em português)"><b>PT</b><span aria-hidden="true">EN</span><span aria-hidden="true">ES</span></p>
+    <button class="icon-btn" type="button" data-theme-toggle aria-label="Mudar o tema">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="conteudo">
+  <!-- ========== HERO ========== -->
+  <section class="band hero" id="inicio" aria-labelledby="hero-title">
+    <div class="hero-bg" aria-hidden="true"><span class="sh sh1" style="--d:18"></span><span class="sh sh2" style="--d:-26"></span><span class="sh sh3" style="--d:34"></span></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="type-eyebrow status"><i aria-hidden="true"></i>Disponível para oportunidades</p>
+        <h1 id="hero-title" class="type-giant" data-split="l">Evelym Marinho</h1>
+        <p class="role">Engenheira de Software Backend · Python, APIs e microsserviços</p>
+        <p class="type-lead">Mais de 6 anos construindo APIs RESTful escaláveis e de alta disponibilidade, do primeiro teste ao deploy em Kubernetes. Autora de pesquisas internacionais sobre automação de testes e CI/CD.</p>
+        <div class="btns">
+          <a class="btn btn-primary" href="#projetos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Ver projetos</a>
+          <a class="btn btn-secondary" href="../../../public/cv-pt.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Baixar currículo</a>
+        </div>
+      </div>
+
+      <figure class="hero-visual" style="margin:0">
+        <div class="scene-wrap">
+        <div class="scene-box" aria-describedby="cena-desc">
+          <img class="poster" src="posters/a-1-escuro.jpg" alt="" width="900" height="900" fetchpriority="high">
+          <canvas aria-hidden="true" tabindex="-1"></canvas>
+          <ul class="scene-tags" data-so-cena="a" aria-hidden="true">
+            <li data-de="0" data-ate="1">interface</li><li data-de="0" data-ate=".35">gateway</li><li data-de="0" data-ate=".6">serviços v1</li>
+            <li data-de="0" data-ate="1">fila</li><li data-de="0" data-ate="1">dados</li><li data-de=".45" data-ate="1">deploy azul-verde · v2</li>
+          </ul>
+          <ul class="scene-tags" data-so-cena="b" aria-hidden="true">
+            <li data-de="0" data-ate="1">entrada</li><li data-de="0" data-ate="1">pods</li><li data-de=".05" data-ate=".36">deploy gradual</li>
+            <li data-de=".36" data-ate=".68">nó com falha · reagendando</li><li data-de=".68" data-ate="1">autoescala</li>
+          </ul>
+          <ul class="scene-tags" data-so-cena="c" aria-hidden="true">
+            <li data-de="0" data-ate="1">código → container</li><li data-de="0" data-ate="1">testes</li><li data-de=".1" data-ate=".9">balsa a caminho</li><li data-de=".88" data-ate="1">produção</li>
+          </ul>
+        </div>
+        <aside class="profile" aria-label="Cartão de perfil">
+          <div class="profile-in" data-tilt>
+            <div class="p-head"><img src="../../../public/images/profile.jpeg" alt="Foto de Evelym Marinho" width="64" height="64"><div><b>Evelym Marinho</b><span>Engenheira de Software Backend · Manaus</span></div></div>
+            <ul class="p-nums">
+              <li><strong><span data-count="6">6</span>+</strong><span>anos com Python</span></li>
+              <li><strong><span data-count="2">2</span></strong><span>empresas</span></li>
+              <li><strong><span data-count="2">2</span></strong><span>artigos internacionais</span></li>
+            </ul>
+            <ul class="chips"><li class="chip">Python</li><li class="chip">FastAPI</li><li class="chip">Django</li><li class="chip">Docker</li><li class="chip">Kubernetes</li><li class="chip">PostgreSQL</li></ul>
+            <i class="p-shine" aria-hidden="true"></i>
+          </div>
+        </aside>
+        </div>
+        <figcaption class="scene-cap" id="cena-desc">
+          <span data-so-cena="a">Abaixo da superfície: sob a interface, requisições descem por gateway, serviços, fila e bancos e voltam com a resposta. Ao rolar, a câmera desce e uma versão nova dos serviços entra ao lado da antiga, num deploy azul-verde.</span>
+          <span data-so-cena="b">Cluster que se cura: pods recebem tráfego em três nós. Ao rolar, um deploy gradual troca os pods um a um, um nó falha e os pods mudam de nó, e a autoescala cria pods para o pico.</span>
+          <span data-so-cena="c">Porto de deploy: o código vira container, passa pelo portal de testes, e o que falha volta. Ao rolar, a balsa leva os containers aprovados até o cluster, onde viram serviços rodando.</span>
+          <span data-scene-state>Carregando a cena 3D depois da página…</span>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="built">
+      <div class="wrap">
+        <p class="type-eyebrow">Onde construí</p>
+        <ul><li>Sidia</li><li>Bemol Digital</li></ul>
+        <p class="type-eyebrow" style="margin-left:auto">Pesquisa apresentada em</p>
+        <ul><li>IEEE SEAI 2024</li><li>ICSCA 2026</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 01 SOBRE ========== -->
+  <section class="band-alt pad" id="sobre" aria-labelledby="sobre-title">
+    <div class="wrap">
+      <div class="about-grid">
+        <div>
+          <p class="type-eyebrow accent" style="margin-bottom:20px"><span aria-hidden="true">01 · </span>Sobre</p>
+          <h2 id="sobre-title" class="type-display" tabindex="-1" data-split="w">Backend com rigor de engenharia e de pesquisa</h2>
+          <div data-reveal style="margin-top:32px">
+            <p class="type-lead">Construo backend no ecossistema Python há mais de 6 anos: APIs RESTful com FastAPI e Django, em microsserviços com Docker e Kubernetes, integrando PostgreSQL e bancos NoSQL.</p>
+            <p class="muted">Aplico TDD, Pytest, Clean Code e SOLID no dia a dia e levo o mesmo rigor para a pesquisa: sou autora principal de artigos sobre automação de testes e CI/CD apresentados no IEEE SEAI 2024 e no ICSCA 2026.</p>
+          </div>
+        </div>
+        <ul class="facts" data-reveal="children">
+          <li><strong>6+</strong><span>anos no ecossistema Python</span></li>
+          <li><strong>2</strong><span>empresas: Sidia e Bemol Digital</span></li>
+          <li><strong>2</strong><span>artigos internacionais, IEEE e ACM</span></li>
+          <li><strong>3</strong><span>idiomas no site; inglês com comando muito bom</span></li>
+        </ul>
+      </div>
+
+      <div class="skills">
+        <p class="type-eyebrow">Competências</p>
+        <h3 class="type-title" style="margin-top:10px">O que uso para levar sistemas à produção</h3>
+        <div class="skill-grid" data-reveal="children">
+          <div class="card glow"><h3>Linguagens e frameworks</h3><ul class="chips"><li class="chip">Python (sênior)</li><li class="chip">FastAPI</li><li class="chip">Django</li><li class="chip">Flask</li><li class="chip">Java</li><li class="chip">JavaScript</li></ul></div>
+          <div class="card glow"><h3>Qualidade e engenharia</h3><ul class="chips"><li class="chip">TDD</li><li class="chip">Pytest</li><li class="chip">Clean Code</li><li class="chip">SOLID</li><li class="chip">Design Patterns</li><li class="chip">Code Review</li><li class="chip">BDD</li></ul></div>
+          <div class="card glow"><h3>Infraestrutura e cloud</h3><ul class="chips"><li class="chip">Docker</li><li class="chip">Kubernetes</li><li class="chip">CI/CD</li><li class="chip">GitHub Actions</li><li class="chip">AWS</li><li class="chip">Linux</li></ul></div>
+          <div class="card glow"><h3>Dados e integração</h3><ul class="chips"><li class="chip">PostgreSQL</li><li class="chip">MySQL</li><li class="chip">Redis</li><li class="chip">MongoDB</li><li class="chip">ETL</li><li class="chip">APIs RESTful</li></ul></div>
+        </div>
+      </div>
+
+      <!-- Sequência presa: a arquitetura se monta com a rolagem -->
+      <div class="seq" data-scrub aria-labelledby="seq-title">
+        <div class="seq-stage">
+          <div>
+            <p class="type-eyebrow accent">Da requisição ao deploy</p>
+            <h3 id="seq-title" class="type-title" style="margin-top:10px">Como levo um sistema à produção</h3>
+            <p class="muted lead-seq" style="margin-top:12px">Role para montar a arquitetura, etapa por etapa.</p>
+            <ol class="seq-steps">
+              <li><b data-n="01">Requisição</b>APIs RESTful escaláveis e de alta disponibilidade, com FastAPI e Django.</li>
+              <li><b data-n="02">Serviços</b>Microsserviços em Python e Java, cada um com sua responsabilidade.</li>
+              <li><b data-n="03">Dados</b>PostgreSQL e MySQL, Redis e MongoDB, e ETL para grandes volumes de dados.</li>
+              <li><b data-n="04">Testes</b>TDD e Pytest desde a primeira linha, e testes End-to-End no pipeline.</li>
+              <li><b data-n="05">Deploy</b>Docker, Kubernetes e CI/CD com GitHub Actions até a produção.</li>
+            </ol>
+          </div>
+          <svg class="seq-svg" viewBox="0 0 650 470" role="img" aria-labelledby="seq-svg-t">
+            <title id="seq-svg-t">Diagrama: cliente, API REST, três serviços, fila, PostgreSQL e Redis, testes em cada parte e o conjunto empacotado em container e entregue num cluster Kubernetes em produção.</title>
+            <!-- 1 requisição -->
+            <g class="n" style="--from:0"><rect x="16" y="40" width="112" height="52" rx="8"/><text x="30" y="62">Cliente</text><text class="sub" x="30" y="80">HTTPS</text></g>
+            <g class="n" style="--from:.3"><rect x="186" y="40" width="160" height="52" rx="8"/><text x="200" y="62">API REST</text><text class="sub" x="200" y="80">FastAPI · Django</text></g>
+            <path class="lnk" pathLength="1" style="--from:.15" d="M128 66H186"/>
+            <path class="pkt" pathLength="1" style="--from:.2" d="M128 66H186"/>
+            <!-- 2 serviços -->
+            <g class="n" style="--from:1"><rect x="420" y="8" width="150" height="40" rx="8"/><text x="434" y="33">serviço A</text></g>
+            <g class="n" style="--from:1.2"><rect x="420" y="62" width="150" height="40" rx="8"/><text x="434" y="87">serviço B</text></g>
+            <g class="n" style="--from:1.4"><rect x="420" y="116" width="150" height="40" rx="8"/><text x="434" y="141">serviço C</text></g>
+            <path class="lnk" pathLength="1" style="--from:1.1" d="M346 60C384 60 384 28 420 28"/>
+            <path class="lnk" pathLength="1" style="--from:1.3" d="M346 70C384 70 384 82 420 82"/>
+            <path class="lnk" pathLength="1" style="--from:1.5" d="M346 80C384 80 384 136 420 136"/>
+            <path class="pkt" pathLength="1" style="--from:1.4" d="M346 70C384 70 384 82 420 82"/>
+            <!-- 3 dados -->
+            <g class="n" style="--from:2"><rect x="186" y="200" width="160" height="52" rx="8"/><text x="200" y="222">Fila</text><text class="sub" x="200" y="240">eventos · ETL</text></g>
+            <g class="n" style="--from:2.3"><path class="shape" d="M420 214a54 12 0 0 1 108 0v52a54 12 0 0 1-108 0Z"/><path class="shape" d="M420 214a54 12 0 0 0 108 0" style="fill:none"/><text x="436" y="252">PostgreSQL</text></g>
+            <g class="n" style="--from:2.5"><rect x="546" y="206" width="96" height="52" rx="8"/><text x="560" y="228">Redis</text><text class="sub" x="560" y="246">NoSQL</text></g>
+            <path class="lnk" pathLength="1" style="--from:2.1" d="M266 92V200"/>
+            <path class="lnk" pathLength="1" style="--from:2.35" d="M495 156V202"/>
+            <path class="lnk" pathLength="1" style="--from:2.55" d="M560 156C590 170 594 186 594 206"/>
+            <path class="pkt" pathLength="1" style="--from:2.4" d="M495 156V202"/>
+            <!-- 4 testes -->
+            <g class="n" style="--from:3"><rect x="16" y="200" width="140" height="52" rx="8"/><text x="30" y="222">Testes</text><text class="sub" x="30" y="240">TDD · Pytest · E2E</text></g>
+            <g class="chk" style="--from:3.2"><circle cx="346" cy="40" r="10"/><path d="M341 40l3.5 3.5 6-6.5"/></g>
+            <g class="chk" style="--from:3.35"><circle cx="570" cy="8" r="10"/><path d="M565 8l3.5 3.5 6-6.5"/></g>
+            <g class="chk" style="--from:3.5"><circle cx="528" cy="210" r="10"/><path d="M523 210l3.5 3.5 6-6.5"/></g>
+            <g class="chk" style="--from:3.65"><circle cx="346" cy="200" r="10"/><path d="M341 200l3.5 3.5 6-6.5"/></g>
+            <!-- 5 deploy -->
+            <rect class="box-out" style="--from:4" x="174" y="-2" width="472" height="290" rx="14"/>
+            <text style="--from:4;fill:var(--accent);font:600 12px var(--f-mono)" x="186" y="282">container Docker</text>
+            <path class="lnk" pathLength="1" style="--from:4.2" d="M86 252V384H174"/>
+            <text style="--from:4.2;fill:var(--muted);font:500 11px var(--f-mono)" x="26" y="374">GitHub Actions</text>
+            <g class="n" style="--from:4.4"><rect x="174" y="320" width="472" height="128" rx="14"/><text x="190" y="346">Kubernetes</text><text class="sub" x="190" y="364">3 réplicas</text></g>
+            <g style="--from:4.55"><rect class="prod" x="330" y="374" width="90" height="50" rx="8"/><rect class="prod" x="434" y="374" width="90" height="50" rx="8"/><rect class="prod" x="538" y="374" width="90" height="50" rx="8"/></g>
+            <text style="--from:4.75;fill:var(--ok);font:700 13px var(--f-mono)" x="190" y="420">● produção</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 02 PROJETOS ========== -->
+  <section class="band pad" id="projetos" aria-labelledby="projetos-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="type-eyebrow accent"><span aria-hidden="true">02 · </span>Projetos</p>
+          <h2 id="projetos-title" class="type-display" tabindex="-1" data-split="w">O que já construí</h2></div>
+        <p class="type-lead" data-reveal>Sistemas backend e pesquisa aplicada, do contexto à stack.</p>
+      </div>
+      <article class="featured" aria-labelledby="p1" data-reveal>
+        <div class="copy">
+          <p class="type-eyebrow"><span aria-hidden="true">01 · </span>Pesquisa aplicada · ICSCA 2026</p>
+          <h3 id="p1" class="type-title">E2E-CIFlow</h3>
+          <p class="type-lead" style="margin:0">Um processo automatizado de testes End-to-End integrado a pipelines de CI/CD, que acelera a entrega, aumenta a frequência de deploys e reduz o tempo de detecção de falhas.</p>
+          <dl><dt class="type-eyebrow">O que fiz</dt><dd>Autora principal: propus o processo e o integrei ao pipeline com Playwright e GitHub Actions.</dd></dl>
+          <p class="type-eyebrow">Python · Playwright · GitHub Actions · CI/CD · Docker</p>
+        </div>
+        <div class="diagram" data-parallax data-speed="-0.08">
+          <svg viewBox="0 0 560 300" role="img" aria-label="Pipeline do E2E-CIFlow: commit, build, testes End-to-End com Playwright e deploy, cada etapa aprovada.">
+            <g class="st"><rect x="10" y="120" width="110" height="60" rx="8"/><text x="28" y="155">commit</text></g>
+            <g class="st"><rect x="150" y="120" width="110" height="60" rx="8"/><text x="174" y="155">build</text></g>
+            <g class="st on"><rect x="290" y="100" width="120" height="100" rx="8"/><text x="306" y="140">testes E2E</text><text x="306" y="162" style="fill:var(--muted)">Playwright</text></g>
+            <g class="st"><rect x="440" y="120" width="110" height="60" rx="8"/><text x="462" y="155">deploy</text></g>
+            <path class="ar" d="M120 150h30M260 150h30M410 150h30"/>
+            <circle class="ok" cx="120" cy="120" r="7"/><circle class="ok" cx="260" cy="120" r="7"/><circle class="ok" cx="410" cy="100" r="7"/><circle class="ok" cx="550" cy="120" r="7"/>
+            <text x="150" y="250" style="fill:var(--muted)">GitHub Actions roda tudo a cada push</text>
+          </svg>
+        </div>
+      </article>
+      <ol class="others" data-reveal="children">
+        <li><span class="num">02</span><div><p class="type-eyebrow">Sidia · produtos globais</p><h3>APIs REST de alta performance <span class="validar" style="font-size:.7rem">nome sugerido: API Gateway de Microsserviços</span></h3><p class="muted" style="margin:0">APIs em arquitetura de microsserviços, em Python, com deploy em Kubernetes, CI/CD e testes com TDD e Pytest.</p></div><p class="stack">Python · FastAPI · Docker · Kubernetes · PostgreSQL</p></li>
+        <li><span class="num">03</span><div><p class="type-eyebrow">Bemol Digital · varejo</p><h3>Alta disponibilidade para o varejo <span class="validar" style="font-size:.7rem">nome sugerido: Pipeline ETL para Varejo</span></h3><p class="muted" style="margin:0">Grandes volumes de dados com ETL, consultas SQL otimizadas em PostgreSQL e NoSQL com Redis, integrando APIs e interfaces.</p></div><p class="stack">Python · PostgreSQL · Redis · ETL · SQL</p></li>
+        <li><span class="num">04</span><div><p class="type-eyebrow">Pesquisa · IEEE SEAI 2024</p><h3>Agile Blueprint Model</h3><p class="muted" style="margin:0">Método de modelagem ágil para o desenvolvimento de software com incremento de versão.</p></div><p class="stack">Engenharia de Software · Métodos ágeis</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ========== 03 EXPERIÊNCIA ========== -->
+  <section class="band-alt pad" id="experiencia" aria-labelledby="exp-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="type-eyebrow accent"><span aria-hidden="true">03 · </span>Experiência</p>
+          <h2 id="exp-title" class="type-display" tabindex="-1" data-split="w">Onde trabalhei</h2></div>
+        <p class="type-lead" data-reveal>Backend para produtos globais e para o varejo, sempre em Manaus.</p>
+      </div>
+      <ol class="tl" data-scrub>
+        <li data-reveal><time>Jan 2022 – hoje<br>Manaus, presencial</time><div><h3>Software Engineer, Backend<span>Sidia Instituto de Ciência e Tecnologia</span></h3>
+          <p class="muted" style="margin:0">Soluções backend em Python e Java para produtos globais. Lidero a criação de APIs REST de alta performance em microsserviços, com Docker, Kubernetes e pipelines de CI/CD, aplicando TDD, Pytest e code review.</p></div></li>
+        <li data-reveal><time>Ago 2019 – Jan 2022<br>Manaus</time><div><h3>Software Engineer, Backend<span>Bemol Digital</span></h3>
+          <p class="muted" style="margin:0">Sistemas de alta disponibilidade para o varejo, com grandes volumes de dados. Estruturei processos de ETL, otimizei consultas SQL em PostgreSQL e NoSQL (Redis) e integrei APIs e interfaces em ciclos ágeis.</p></div></li>
+      </ol>
+      <p class="type-eyebrow" style="margin-top:32px">Formação e idiomas</p>
+      <ul class="edu" data-reveal="children">
+        <li class="card"><h3>Sistemas de Informação</h3><p class="muted" style="margin:0">Universidade Federal do Amazonas · Jun 2014 – Ago 2019 · Itacoatiara, AM</p></li>
+        <li class="card"><h3>TCC com nota 10</h3><p class="muted" style="margin:0">Participação feminina na TI, nos simpósios da SBC</p></li>
+        <li class="card"><h3>Idiomas</h3><p class="muted" style="margin:0">Português nativo · Inglês com comando muito bom</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========== 04 PESQUISA (pilha presa) ========== -->
+  <section class="band pad" id="pesquisa" aria-labelledby="pesquisa-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="type-eyebrow accent"><span aria-hidden="true">04 · </span>Pesquisa</p>
+          <h2 id="pesquisa-title" class="type-display" tabindex="-1" data-split="w">Publicações acadêmicas</h2></div>
+        <p class="type-lead" data-reveal>Pesquisa internacional sobre qualidade, automação de testes e engenharia de software.</p>
+      </div>
+      <div class="stack" data-scrub>
+        <article class="paper" style="--i:0" aria-labelledby="r1">
+          <div><p class="venue">ICSCA 2026 · ACM</p><h3 id="r1">E2E-CIFlow: An automated End-to-End testing process</h3>
+            <p class="muted" style="margin-top:16px">Um processo prático e automatizado para testes End-to-End integrados a pipelines de CI/CD, com Playwright e GitHub Actions.</p></div>
+          <dl><div><dt>Papel</dt><dd>Autora principal</dd></div><div><dt>Onde</dt><dd>Langkawi, Malásia · 2026</dd></div><div><dt>Situação</dt><dd>Publicação prevista na ACM Digital Library <span class="validar">confirmar</span></dd></div></dl>
+        </article>
+        <article class="paper" style="--i:1" aria-labelledby="r2">
+          <div><p class="venue">IEEE SEAI 2024</p><h3 id="r2">Agile Blueprint Model Method in the Software Development Process with Increment of Version</h3>
+            <p class="muted" style="margin-top:16px">4th International Conference on Software Engineering and Artificial Intelligence.</p></div>
+          <dl><div><dt>Papel</dt><dd>Autora principal</dd></div><div><dt>Onde</dt><dd>Xiamen, China · 2024</dd></div><div><dt>DOI</dt><dd><a href="https://doi.org/10.1109/SEAI62072.2024.10674366">10.1109/SEAI62072.2024.10674366</a></dd></div></dl>
+        </article>
+        <article class="paper" style="--i:2" aria-labelledby="r3">
+          <div><p class="venue">TCC · UFAM 2019</p><h3 id="r3">Uma Análise sobre a Participação Feminina na Área da Tecnologia da Informação</h3>
+            <p class="muted" style="margin-top:16px">Analisou a representatividade feminina na TI nos simpósios da SBC ao longo de 10 anos.</p></div>
+          <dl><div><dt>Resultado</dt><dd>Nota máxima (10)</dd></div><div><dt>Onde</dt><dd>Itacoatiara, Brasil · 2019</dd></div></dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 05 RECOMENDAÇÕES ========== -->
+  <section class="band-alt pad" id="recomendacoes" aria-labelledby="rec-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="type-eyebrow accent"><span aria-hidden="true">05 · </span>Recomendações</p>
+          <h2 id="rec-title" class="type-display" tabindex="-1" data-split="w">Quem trabalhou comigo</h2></div>
+        <p class="type-lead" data-reveal>Recomendações reais do LinkedIn, com o texto exato. <span class="validar">aguardando os textos</span></p>
+      </div>
+      <div class="carousel" aria-roledescription="carrossel" aria-label="Recomendações">
+        <div class="track" tabindex="0" aria-label="Recomendações, role para o lado">
+          <figure class="rec card" role="group" aria-roledescription="recomendação" aria-label="1 de 2"><blockquote><span class="validar">Aqui entra o texto exato de uma recomendação do LinkedIn, enviado pela Evelym.</span></blockquote><figcaption><b>Nome de quem escreveu</b><span class="muted">Cargo · Empresa · mês e ano</span></figcaption></figure>
+          <figure class="rec card" role="group" aria-roledescription="recomendação" aria-label="2 de 2"><blockquote><span class="validar">Segunda recomendação, também com o texto exato e a autoria.</span></blockquote><figcaption><b>Nome de quem escreveu</b><span class="muted">Cargo · Empresa · mês e ano</span></figcaption></figure>
+        </div>
+        <div class="ctrl">
+          <button class="icon-btn" type="button" data-prev aria-label="Recomendação anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+          <button class="icon-btn" type="button" data-next aria-label="Próxima recomendação"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+          <output aria-live="polite">1 de 2</output>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 06 CONTATO ========== -->
+  <section class="band-invert pad" id="contato" aria-labelledby="contato-title">
+    <div class="wrap">
+      <p class="type-eyebrow accent" style="margin-bottom:20px"><span aria-hidden="true">06 · </span>Contato</p>
+      <h2 id="contato-title" class="type-giant" tabindex="-1" data-split="w">Vamos conversar</h2>
+      <div class="contact-grid">
+        <div data-reveal>
+          <p class="type-lead">Aberta a oportunidades em engenharia de software backend.</p>
+          <ul class="links">
+            <li><a href="mailto:evelymmarinho.dev@gmail.com">evelymmarinho.dev@gmail.com<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a></li>
+            <li><a href="https://www.linkedin.com/in/evelym-marinho-0741a6121/">LinkedIn<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+            <li><a href="https://github.com/EvelymVasconcelos">GitHub<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+            <li><a href="https://lattes.cnpq.br/5534406024447727">Currículo Lattes<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></li>
+          </ul>
+        </div>
+        <form data-reveal novalidate>
+          <label>Nome<input name="nome" autocomplete="name" required></label>
+          <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
+          <label>Mensagem<textarea name="mensagem" rows="5" required></textarea></label>
+          <button class="btn btn-primary" type="submit">Enviar mensagem</button>
+          <p class="form-note" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 Evelym Marinho</span><span>Protótipo: textos do currículo; o que tem “validar” precisa da confirmação dela.</span></div></footer>
+
+<nav class="proto-bar" aria-label="Controles do protótipo">
+  <a href="index.html">← Comparar</a><span class="sep" aria-hidden="true"></span>
+  <span class="lbl">Cena</span><button type="button" data-set="cena" data-v="a">A Superfície</button><button type="button" data-set="cena" data-v="b">B Cluster</button><button type="button" data-set="cena" data-v="c">C Porto</button><span class="sep" aria-hidden="true"></span>
+  <span class="lbl">Cor</span><button type="button" data-set="cor" data-v="1">1</button><button type="button" data-set="cor" data-v="2">2</button><button type="button" data-set="cor" data-v="3">3</button><span class="sep" aria-hidden="true"></span>
+  <span class="lbl">Marca</span><button type="button" data-set="marca" data-v="mono">EM</button><button type="button" data-set="marca" data-v="sig">Manuscrita</button><span class="sep" aria-hidden="true"></span>
+  <span class="lbl">Cartão</span><button type="button" data-set="cartao" data-v="sobre">Sobre a cena</button><button type="button" data-set="cartao" data-v="abaixo">Abaixo</button><span class="sep" aria-hidden="true"></span>
+  <button type="button" data-theme-btn="claro">Claro</button><button type="button" data-theme-btn="escuro">Escuro</button><span class="sep" aria-hidden="true"></span>
+  <button type="button" data-toggle="webgl">Sem WebGL</button><button type="button" data-toggle="mov">Mov. reduzido</button>
+</nav>
+
+<script src="cena-a.js"></script>
+<script src="cena-b.js"></script>
+<script src="cena-c.js"></script>
+<script src="movimento.js"></script>
+</body>
+</html>

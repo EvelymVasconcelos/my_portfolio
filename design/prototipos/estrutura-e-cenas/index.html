@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estrutura e cenas 3D · rodada de protótipos</title>
+<style>
+  :root { --bg: #0b0b0d; --surface: #151518; --border: #2a2a31; --text: #f4f4f5; --muted: #a1a1aa; --accent: #a78bfa; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 400 1rem/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { width: min(1200px, 100% - 32px); margin: 0 auto; padding: 48px 0 80px; }
+  .eyebrow { font: 600 .8rem/1 ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; margin: 12px 0; }
+  h2 { font-size: 1.35rem; margin: 0 0 8px; letter-spacing: -0.01em; }
+  h3 { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 16px 0 4px; }
+  p { margin: 0 0 .8em; } .lead { color: var(--muted); max-width: 76ch; font-size: 1.075rem; }
+  a { color: var(--accent); } :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 32px; }
+  @media (max-width: 980px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+  .card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border-bottom: 1px solid var(--border); }
+  .body { padding: 18px 20px 22px; display: flex; flex-direction: column; flex: 1; }
+  ul, ol { margin: 0; padding-left: 18px; } li { margin: 3px 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 18px; }
+  .actions a { text-decoration: none; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: .875rem; color: var(--text); }
+  .actions a.main { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 600; }
+  .box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; margin-top: 24px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; } @media (max-width: 860px) { .cols { grid-template-columns: 1fr; } }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; } th { color: var(--muted); font-weight: 600; }
+  code { font: .9em ui-monospace, monospace; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="eyebrow">Portfólio Evelym Marinho · bloco 1 de estrutura-movimento-e-cena-3d</p>
+  <h1>Estrutura, movimento e três cenas 3D de backend</h1>
+  <p class="lead">A página inteira na estrutura do portfólio do Francisco, com a Pesquisa a mais, o texto do currículo e o movimento da Mangue. Mude a cena, a cor, a marca e a posição do cartão de perfil na barra de baixo, de forma independente. Role até o fim, passe o mouse no nome e no cartão, troque o tema e teste “sem WebGL” e “movimento reduzido”.</p>
+
+  <div class="grid">
+    <article class="card">
+      <img src="posters/a-1-escuro.jpg" alt="Cena A: uma placa translúcida com três telas; embaixo, camadas de gateway, quatro serviços, uma fila e bancos de dados, com pontos de luz descendo entre elas.">
+      <div class="body">
+        <h2>A · Abaixo da superfície</h2>
+        <p>A interface é uma placa translúcida; embaixo, em camadas, ficam gateway, serviços, fila e dados. Requisições descem como luz e voltam com a resposta (verde).</p>
+        <h3>Ao rolar</h3><p>A câmera desce abaixo da superfície e um deploy azul-verde troca a camada de serviços: a v1 recua, a v2 entra.</p>
+        <h3>Mensagem</h3><p>O backend é tudo o que sustenta o que se vê.</p>
+        <div class="actions"><a class="main" href="prototipo.html?cena=a">Abrir A</a><a href="prototipo.html?cena=a&cor=3">com a cor 3</a><a href="prototipo.html?cena=a&tema=claro">Claro</a><a href="prototipo.html?cena=a&webgl=0">Sem WebGL</a></div>
+      </div>
+    </article>
+    <article class="card">
+      <img src="posters/b-3-escuro.jpg" alt="Cena B: uma plataforma com três nós, pods em forma de cápsula e pontos de tráfego saindo de um arco de entrada.">
+      <div class="body">
+        <h2>B · Cluster que se cura</h2>
+        <p>Três nós de um cluster, pods recebendo tráfego de uma entrada.</p>
+        <h3>Ao rolar</h3><p>Um deploy gradual troca os pods um a um, com o anel verde de prontidão; o nó 3 falha e os pods dele mudam de nó em arco; a autoescala cria pods para o pico.</p>
+        <h3>Mensagem</h3><p>Kubernetes, deploy sem queda e resiliência.</p>
+        <div class="actions"><a class="main" href="prototipo.html?cena=b">Abrir B</a><a href="prototipo.html?cena=b&cor=1">com a cor 1</a><a href="prototipo.html?cena=b&tema=claro">Claro</a><a href="prototipo.html?cena=b&webgl=0">Sem WebGL</a></div>
+      </div>
+    </article>
+    <article class="card">
+      <img src="posters/c-2-escuro.jpg" alt="Cena C: uma doca com guindaste e portal de testes, e uma balsa com três containers sobre água escura.">
+      <div class="body">
+        <h2>C · Porto de deploy</h2>
+        <p>Blocos de código viram container, o guindaste o leva pelo portal de testes, e o que falha fica vermelho e volta. Água escura, de Manaus.</p>
+        <h3>Ao rolar</h3><p>A balsa leva os containers aprovados até o píer do cluster, onde eles acendem como serviços em produção.</p>
+        <h3>Mensagem</h3><p>CI/CD do commit à produção, ligado ao E2E-CIFlow.</p>
+        <div class="actions"><a class="main" href="prototipo.html?cena=c">Abrir C</a><a href="prototipo.html?cena=c&cor=1">com a cor 1</a><a href="prototipo.html?cena=c&tema=claro">Claro</a><a href="prototipo.html?cena=c&webgl=0">Sem WebGL</a></div>
+      </div>
+    </article>
+  </div>
+
+  <section class="box">
+    <h2>O que vale para as três</h2>
+    <div class="cols">
+      <ul>
+        <li><strong>Estrutura do Francisco + Pesquisa:</strong> Hero, Sobre (competências e a sequência “Da requisição ao deploy”), Projetos, Experiência, Pesquisa (pilha de cartões presa), Recomendações (carrossel, aguardando os textos) e Contato.</li>
+        <li><strong>Hero interativo:</strong> o nome entra letra a letra e ondula sob o ponteiro, uma luz roxa segue o mouse, e o cartão de perfil inclina em 3D com os números contando. No toque ou com movimento reduzido, tudo fica parado e pronto.</li>
+        <li><strong>Tema escuro na primeira visita</strong>, com a troca em círculo a partir do botão.</li>
+      </ul>
+      <ul>
+        <li><strong>Sem biblioteca de animação nem de rolagem:</strong> CSS e um condutor próprio de rolagem; a cena carrega o Three.js só depois da página, só com WebGL.</li>
+        <li><strong>Imagens estáticas geradas pela própria cena</strong> (pasta <code>posters/</code>), usadas sem WebGL, com movimento reduzido ou em aparelho modesto.</li>
+        <li><strong>Só em português</strong> neste protótipo; o formulário não envia.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="box" id="medicoes">
+    <h2>Conferência (tarefa 1.7), em 2026-11-18</h2>
+    <table>
+      <tr><th>O quê</th><th>Resultado</th></tr>
+      <tr><td>Console e rolagem lateral</td><td>Sem erro e sem rolagem lateral nas 3 cenas, em 1440 e 390 px.</td></tr>
+      <tr><td>Quadros por segundo</td><td>60 nas 3 cenas, com densidade de pixels 2, na Intel Iris Xe desta máquina; 60 também com a CPU 4x mais lenta. Em renderização por software (sem GPU), 24 a 30: é aí que a cena rebaixa a qualidade e, se não bastar, volta à imagem.</td></tr>
+      <tr><td>Contraste</td><td>Todos os pares de texto e fundo passam no AA nas 3 cores, nos dois temas e no bloco do Contato (o menor é 5,7:1). Bordas dos campos entre 4,4 e 6,4:1.</td></tr>
+      <tr><td>Fontes</td><td>Cor 1: 77 KB; cor 2: 93 KB (cortada de 181 KB); cor 3: 68 KB; letra manuscrita da marca: mais 18 KB. Todas abaixo do limite de 120 KB.</td></tr>
+      <tr><td>Movimento reduzido</td><td>A cena não carrega (o Three.js nem é baixado), a sequência vira lista com as 5 etapas, nada fica invisível e os números aparecem no valor final.</td></tr>
+      <tr><td>Sem WebGL (de verdade)</td><td>Imagem estática no lugar, o Three.js não é baixado e nada vai para o console.</td></tr>
+      <tr><td>Sem JavaScript</td><td>Todo o conteúdo visível, sequência como lista, imagem estática no Hero.</td></tr>
+      <tr><td>Teclado</td><td>O 1º Tab é “Pular para o conteúdo”; os links da barra levam o foco ao título da seção; o carrossel e o tema funcionam pelo Enter, com o foco no botão e o rótulo atualizado.</td></tr>
+      <tr><td>Não testado</td><td>Celular de verdade, Safari do iPhone (barra de endereço com a área presa), Firefox e leitor de tela.</td></tr>
+    </table>
+    <h3>10 heurísticas de Nielsen</h3>
+    <table>
+      <tr><th>Heurística</th><th>Como a página responde</th></tr>
+      <tr><td>1. Visibilidade do estado</td><td>Etiquetas da cena acendem conforme a etapa; a etapa ativa da sequência fica marcada; o carrossel diz “1 de 2”; a legenda diz quando a cena virou imagem e por quê.</td></tr>
+      <tr><td>2. Correspondência com o mundo real</td><td>Termos do dia a dia de backend (gateway, fila, pods, deploy azul-verde, container) e metáforas físicas (camadas, cluster, porto).</td></tr>
+      <tr><td>3. Controle e liberdade</td><td>Rolagem nativa nos dois sentidos, a sequência desmonta ao voltar, nada avança sozinho e nada prende a rolagem.</td></tr>
+      <tr><td>4. Consistência e padrões</td><td>Mesma estrutura do portfólio do Francisco: seções numeradas 01 a 06, títulos e botões iguais em toda a página.</td></tr>
+      <tr><td>5. Prevenção de erros</td><td>O formulário usa campos com tipo e preenchimento automático; o envio de verdade e as mensagens de erro chegam no bloco do formulário da fundação.</td></tr>
+      <tr><td>6. Reconhecer em vez de lembrar</td><td>A barra do topo mostra todas as seções; cada etapa da sequência repete o nome da tecnologia que usa.</td></tr>
+      <tr><td>7. Flexibilidade e eficiência</td><td>Link para pular ao conteúdo, âncoras diretas e currículo para baixar no Hero.</td></tr>
+      <tr><td>8. Estética e minimalismo</td><td>Um efeito forte por área (cena no Hero, sequência no Sobre, pilha na Pesquisa); roxo só nos destaques. Ponto de atenção: com o cartão “sobre a cena”, o Hero fica denso no computador.</td></tr>
+      <tr><td>9. Ajudar a reconhecer e corrigir erros</td><td>Sem WebGL ou com falha da cena, a legenda explica o motivo e a imagem fica no lugar.</td></tr>
+      <tr><td>10. Ajuda e documentação</td><td>A legenda da cena descreve o que ela mostra; o diagrama da sequência tem descrição em texto.</td></tr>
+    </table>
+  </section>
+
+  <section class="box">
+    <h2>O que eu preciso de você</h2>
+    <ol>
+      <li><strong>Cena:</strong> A, B ou C.</li>
+      <li><strong>Cor e tipografia:</strong> 1, 2 ou 3 (independente da cena).</li>
+      <li><strong>Marca da barra do topo:</strong> monograma “EM” desenhado, ou o nome em letra manuscrita. Se quiser a sua assinatura de verdade, me mande uma foto dela em papel branco.</li>
+      <li><strong>Cartão de perfil:</strong> sobre a cena, ou abaixo dela.</li>
+    </ol>
+  </section>
+</main>
+</body>
+</html>
