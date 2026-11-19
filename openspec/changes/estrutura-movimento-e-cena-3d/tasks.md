@@ -18,24 +18,24 @@ layout.
 - [x] 1.6 Duas opções de marca animada (assinatura própria, se a dona enviar a foto, e fonte manuscrita OFL) (D1)
 - [x] 1.7 Conferir cada protótipo: sem erro no console e sem rolagem lateral em 1440 e 390 px, contraste dos tokens,
       quadros por segundo da cena no computador e com CPU 4x mais lenta, e as 10 heurísticas de Nielsen
-- [ ] 1.8 Medir a referência rodando (cópia do build fora do repositório dela): container, espaçamentos, escala
+- [x] 1.8 Medir a referência rodando (cópia do build fora do repositório dela): container, espaçamentos, escala
       tipográfica e os componentes de cada seção, com capturas em 1440 e 390 px fora do repositório (D1, D2)
-- [ ] 1.9 Refazer a base em `design/prototipos/layout-referencia/` com o layout idêntico ao da referência: container,
+- [x] 1.9 Refazer a base em `design/prototipos/layout-referencia/` com o layout idêntico ao da referência: container,
       faixas com trama de pontos, fontes e tamanhos, barra do topo (marca, links, PT/EN/ES, tema, "Agendar call", "Baixar
       CV"), Hero (cena solta, formas, "Onde já construí"), Sobre (frase-título, foto, 4 fatos, 6 cartões de competência
       numerados com logos, "Também:"), Projetos (destaque e lista), Trajetória (barras por ano, linhas, formação), Pesquisa,
       Recomendações (destaque e carrossel), Contato (faixa invertida, linhas rótulo/valor, "Agendar call" com link
       provisório marcado `validar`, formulário em "Prefere escrever por aqui?") e rodapé, com o texto do currículo (D1, D12)
-- [ ] 1.10 Paleta roxo, preto e branco nos tokens com os nomes da referência, nos dois temas e na faixa invertida, com 2
+- [x] 1.10 Paleta roxo, preto e branco nos tokens com os nomes da referência, nos dois temas e na faixa invertida, com 2
       ou 3 variações de roxo na barra de controles, e contraste AA conferido em todas (D7)
-- [ ] 1.11 Portar da rodada 1, sem mudar o comportamento: nome em onda, luz do ponteiro, transição de tema, títulos e
+- [x] 1.11 Portar da rodada 1, sem mudar o comportamento: nome em onda, luz do ponteiro, transição de tema, títulos e
       blocos, sequência da arquitetura no fim do Sobre, pilha da Pesquisa, as 3 cenas e o carregador; a foto do Sobre
       ganha a inclinação 3D e os fatos contam; imagens estáticas das cenas geradas de novo para a paleta e o fundo novos
       (D3, D4, D11)
-- [ ] 1.12 Comparar lado a lado com a referência, seção por seção, em 1440 e 390 px, e repetir a conferência da 1.7
+- [x] 1.12 Comparar lado a lado com a referência, seção por seção, em 1440 e 390 px, e repetir a conferência da 1.7
       (console, rolagem lateral, quadros por segundo, contraste, fontes até 140 KB, movimento reduzido, sem WebGL, sem
       JavaScript, teclado)
-- [ ] 1.13 A dona escolhe cena, variação de roxo e marca (tema inicial escuro, layout, fontes e foto 3D no Sobre já
+- [x] 1.13 A dona escolhe cena, variação de roxo e marca (tema inicial escuro, layout, fontes e foto 3D no Sobre já
       decididos). Registrar a escolha, com a data, na D2 da design.md e commitar os protótipos
 
 ## 2. Identidade visual no código

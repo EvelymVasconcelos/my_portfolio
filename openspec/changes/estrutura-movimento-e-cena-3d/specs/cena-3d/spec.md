@@ -42,11 +42,13 @@ substituir a imagem sem salto de layout e sem diferença visível de composiçã
 - **WHEN** o navegador não tem WebGL
 - **THEN** o Three.js não é baixado
 
-### Requirement: Conceito de backend sênior
-A cena SHALL mostrar, sem texto embutido no 3D, um sistema de backend com arquitetura e deploy visíveis: ao menos
-serviços que se comunicam, dados persistidos e uma entrega para produção (por exemplo, deploy gradual, autoescala ou
-recuperação de falha). Todo rótulo SHALL ficar em HTML, fora do canvas, vindo de `messages/`. A cena SHALL usar só
-geometria procedural, sem modelos externos e sem logotipos de terceiros.
+### Requirement: Evelym programando, com o trabalho de backend à vista
+A cena SHALL mostrar a Evelym como personagem 3D estilizada (pele dourada, cabelo preto em chanel com risca de lado,
+moletom roxo, headphone), concentrada, programando num notebook, e em volta o trabalho de backend em três painéis: o
+código Python de uma API sendo digitado, os testes automáticos rodando e passando, e o selo de deploy em produção. A
+história SHALL rodar sozinha, devagar (um ciclo de cerca de 24 segundos), para quem olha o Hero ver o fim dela. A cena
+SHALL usar só geometria procedural, sem modelos externos e sem logotipos de terceiros. O texto dos painéis vem de
+`messages/` nos três idiomas (decisão da dona em 2026-11-19; a arquitetura continua contada na sequência do Sobre).
 
 #### Scenario: Leitura sem a cena
 - **WHEN** a pessoa usa leitor de tela
@@ -54,16 +56,15 @@ geometria procedural, sem modelos externos e sem logotipos de terceiros.
 
 #### Scenario: Movimento reduzido
 - **WHEN** o sistema pede `prefers-reduced-motion: reduce`
-- **THEN** a imagem estática mostra o mesmo conceito, no estado que melhor o resume (por exemplo, o deploy concluído)
+- **THEN** a imagem estática mostra a Evelym programando, com os três painéis visíveis
 
 #### Scenario: Sem WebGL
 - **WHEN** o navegador não tem WebGL
 - **THEN** a imagem estática e a descrição em texto comunicam o mesmo conceito
 
 ### Requirement: Resposta ao ponteiro, à rolagem e ao tema
-A cena SHALL reagir de leve ao ponteiro e avançar a história conforme a rolagem (por exemplo, o deploy acontece enquanto a
-pessoa sai do Hero), sempre determinada pela posição da rolagem. Ela SHALL trocar de cores junto com o tema, sem
-recarregar.
+A cena SHALL reagir de leve ao ponteiro (a câmera e a cabeça acompanham) e aproximar a câmera conforme a rolagem, sem
+prender a rolagem. Ela SHALL trocar de cores junto com o tema, sem recarregar.
 
 #### Scenario: Teclado
 - **WHEN** a pessoa navega só com o teclado, sem ponteiro

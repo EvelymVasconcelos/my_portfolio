@@ -120,11 +120,35 @@ prova, e protótipo navegável decide melhor.
   e só então começa o código da identidade.
 - **Avaliação de cada protótipo:** as 10 heurísticas de Nielsen, o contraste AA (pelo script de tokens) e o desempenho
   da cena (quadros por segundo no computador e com CPU 4x mais lenta).
-- **Escolha registrada:** _(preencher depois da rodada)_
+- **Escolha registrada (2026-11-19):** cena **D, a Evelym programando** (decisão 3), roxo **1 violeta** (`#7c3aed`)
+  como cor principal com a orquídea (`#b5179e`) de apoio nos retoques, e a **assinatura manuscrita** como marca. O
+  protótipo de referência é `design/prototipos/layout-referencia/` (rodada 2).
 - **Já decidido antes da rodada:** o tema inicial é o **escuro** (2026-11-18); o layout, as fontes e o Contato são os
   da referência, e o cartão 3D vira a foto do Sobre (2026-11-19).
+- **Retoques femininos (pedido da dona, 2026-11-19), já no protótipo da rodada 2:**
+  - a **assinatura manuscrita** vira a marca padrão: o nome em Mrs Saint Delafield (OFL) convertido em caminhos SVG, uma
+    letra por caminho, escrito a traço e preenchido como a assinatura da referência. Não baixa fonte nenhuma, então o
+    orçamento de 140 KB continua de pé;
+  - a **4ª variação de cor, orquídea** (`#b5179e`, roxo puxado para o rosa), com o botão em 5,9:1 e o destaque de texto
+    em 10,4:1 no escuro e 6,7:1 no claro;
+  - **detalhes delicados:** cantos um pouco mais arredondados (os raios da referência sobem cerca de 4 a 6 px), estrelinhas
+    de quatro pontas piscando devagar perto do nome e um sublinhado em curva sob os títulos de seção, desenhado quando o
+    título entra. Com movimento reduzido, tudo fica parado.
 
-### 3. Três conceitos de cena 3D de backend
+### 3. Cena 3D do Hero: a Evelym programando (escolhida em 2026-11-19)
+A dona achou que uma arquitetura logo no Hero confunde quem não é da área e pediu uma personagem dela programando. A
+cena D do protótipo é a escolhida:
+- **Personagem:** geometria procedural com materiais físicos (pele e tecido com sheen, cabelo com brilho e textura de
+  fios em bump map, notebook de alumínio, caneca de cerâmica, mesa de madeira), traços tirados das fotos dela. Estilizada,
+  sem modelo externo.
+- **História:** em ciclo de 24 s, sozinha: digita o código (cerca de 11 s), os testes rodam e passam, o selo acende "Em
+  produção". Os painéis são texturas de canvas redesenhadas só quando o texto muda; a tela do notebook mostra o mesmo
+  código e ilumina o rosto.
+- **Sombras:** uma luz direcional com mapa de sombra de 1024 px (PCF suave). Medido no protótipo: 61 quadros por segundo
+  com densidade de pixels 2 na Iris Xe, e 60 com a CPU 4x mais lenta. A regra "sem mapa de sombra em tempo real" abaixo
+  vale para os conceitos A a C, que ficam só como histórico.
+
+Os três conceitos da rodada 1, abaixo, ficam registrados como alternativas descartadas.
 Todos seguem as mesmas regras:
 - geometria procedural, sem GLTF, sem logotipo e sem texto no canvas;
 - os rótulos ficam em HTML;
@@ -177,6 +201,10 @@ diagramas.
     `stroke-dashoffset`.
 - **O texto de cada etapa** fica em HTML, numa coluna própria, ligado a competências do currículo. Por exemplo: "APIs
   REST com FastAPI e Django", "PostgreSQL e Redis", "TDD e Pytest", "Docker, Kubernetes e GitHub Actions".
+- **Cuidado com o invólucro da referência:** o `div.overflow-x-hidden` que envolve a página na referência cria uma área
+  de rolagem própria e quebra o `position: sticky` (sequência e pilha). Aqui ele usa `overflow-x: clip`, que corta o que
+  vaza para o lado sem criar essa área (achado no protótipo da rodada 2, em 2026-11-19). O teste de navegador confere a
+  posição da área presa no meio da rolagem, e não só o progresso.
 - **Movimento reduzido:** não há área presa, e as etapas viram uma lista com o diagrama completo.
 - **Celular:** o diagrama fica em cima e o texto embaixo, e a altura não passa de duas telas por etapa. Usa unidades `svh`
   para o Safari do iOS não pular quando a barra de endereço some.
