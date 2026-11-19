@@ -58,7 +58,7 @@ const TimelineLine = () => {
         className="w-full"
         style={{
           background:
-            "linear-gradient(to bottom, transparent 0%, rgba(104, 82, 214, 0.7) 15%, rgba(104, 82, 214, 0.9) 50%, rgba(104, 82, 214, 0.7) 85%, transparent 100%)",
+            "linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--accent) 70%, transparent) 15%, color-mix(in oklab, var(--accent) 90%, transparent) 50%, color-mix(in oklab, var(--accent) 70%, transparent) 85%, transparent 100%)",
         }}
         initial={{ height: "0%" }}
         animate={isInView ? { height: "100%" } : { height: "0%" }}
@@ -81,7 +81,7 @@ export const Experience = () => {
   const educations = messages.education.items;
 
   return (
-    <section id="experience" aria-label={t("label")} className="relative py-28">
+    <section id="experience" aria-label={t("label")} className="relative isolate py-28">
       <SectionDivider />
 
       <div className="container-content section-padding">
@@ -89,8 +89,8 @@ export const Experience = () => {
         {/* ── Experience ── */}
         <FadeInView className="mb-16 flex flex-col items-center text-center gap-2">
           <Badge variant="section">{t("label")}</Badge>
-          <h2 className="font-display text-h1 font-bold text-text-primary">{t("title")}</h2>
-          <p className="max-w-md text-body text-text-secondary">{t("subtitle")}</p>
+          <h2 className="font-display text-h1 font-bold text-text">{t("title")}</h2>
+          <p className="max-w-md text-body text-text-2">{t("subtitle")}</p>
         </FadeInView>
 
         {/* Timeline */}
@@ -113,13 +113,13 @@ export const Experience = () => {
                 >
                   {/* Card */}
                   <div className={cn("w-full lg:w-[46%]", isLeft ? "lg:pr-8" : "lg:pl-8")}>
-                    <div className="card-samsung rounded-md p-5 transition-all duration-200 hover:border-accent-primary/30">
+                    <div className="card-soft rounded-md p-5 transition-all duration-200 hover:border-accent/30">
 
                       {/* Header */}
                       <div className="mb-3 flex items-start justify-between gap-3">
                         <div>
-                          <h3 className="font-semibold text-text-primary">{item.role}</h3>
-                          <p className="text-body font-medium text-accent-primary">{item.company}</p>
+                          <h3 className="font-semibold text-text">{item.role}</h3>
+                          <p className="text-body font-medium text-accent-text">{item.company}</p>
                         </div>
                         <Badge
                           variant={item.end === null ? "success" : "default"}
@@ -131,7 +131,7 @@ export const Experience = () => {
                       </div>
 
                       {/* Meta */}
-                      <div className="mb-3 flex flex-wrap items-center gap-3 text-caption text-text-muted">
+                      <div className="mb-3 flex flex-wrap items-center gap-3 text-caption text-text-3">
                         <span className="flex items-center gap-1">
                           <MapPin className="h-3 w-3" aria-hidden />
                           {item.location}
@@ -142,15 +142,15 @@ export const Experience = () => {
                       </div>
 
                       {/* Description */}
-                      <p className="mb-3 text-caption leading-relaxed text-text-secondary">
+                      <p className="mb-3 text-caption leading-relaxed text-text-2">
                         {item.description}
                       </p>
 
                       {/* Highlights */}
                       <ul className="flex flex-col gap-1.5" aria-label="Destaques">
                         {item.highlights.map((highlight) => (
-                          <li key={highlight} className="flex items-start gap-2 text-caption text-text-muted">
-                            <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent-success" aria-hidden />
+                          <li key={highlight} className="flex items-start gap-2 text-caption text-text-3">
+                            <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ok" aria-hidden />
                             {highlight}
                           </li>
                         ))}
@@ -161,7 +161,7 @@ export const Experience = () => {
                   {/* Timeline dot — desktop only */}
                   <div
                     aria-hidden
-                    className="absolute left-1/2 top-5 hidden h-3 w-3 -translate-x-1/2 rounded-full border-2 border-accent-primary bg-background lg:block"
+                    className="absolute left-1/2 top-5 hidden h-3 w-3 -translate-x-1/2 rounded-full border-2 border-accent bg-bg lg:block"
                   />
                 </FadeInView>
               );
@@ -172,21 +172,21 @@ export const Experience = () => {
         {/* ── Education ── */}
         <FadeInView className="mb-12 flex flex-col items-center text-center gap-2">
           <Badge variant="section">{tEdu("label")}</Badge>
-          <h2 className="font-display text-h2 font-bold text-text-primary">{tEdu("title")}</h2>
+          <h2 className="font-display text-h2 font-bold text-text">{tEdu("title")}</h2>
         </FadeInView>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {educations.map((edu, index) => (
             <FadeInView key={edu.id} delay={index * 0.08}>
-              <div className="card-samsung flex h-full flex-col gap-3 rounded-md p-5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent-primary/10">
-                  <GraduationCap className="h-4 w-4 text-accent-primary" aria-hidden />
+              <div className="card-soft flex h-full flex-col gap-3 rounded-md p-5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent/10">
+                  <GraduationCap className="h-4 w-4 text-accent-text" aria-hidden />
                 </div>
                 <div>
-                  <p className="font-semibold text-text-primary">{edu.degree}</p>
-                  <p className="text-caption text-accent-primary">{edu.institution}</p>
+                  <p className="font-semibold text-text">{edu.degree}</p>
+                  <p className="text-caption text-accent-text">{edu.institution}</p>
                 </div>
-                <div className="mt-auto flex flex-wrap items-center gap-2 text-caption text-text-muted">
+                <div className="mt-auto flex flex-wrap items-center gap-2 text-caption text-text-3">
                   <span className="flex items-center gap-1">
                     <MapPin className="h-3 w-3" aria-hidden />
                     {edu.location}
@@ -194,7 +194,7 @@ export const Experience = () => {
                   <span>{formatPeriod(edu.start, edu.end, "", locale)}</span>
                 </div>
                 {edu.description && (
-                  <p className="text-caption text-text-muted">{edu.description}</p>
+                  <p className="text-caption text-text-3">{edu.description}</p>
                 )}
               </div>
             </FadeInView>

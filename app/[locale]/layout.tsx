@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto, Roboto_Slab } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
@@ -7,22 +7,27 @@ import { Providers } from "@/components/providers";
 import { ThemeScript } from "@/components/layout/ThemeScript";
 import "@/app/globals.css";
 
-// ─── Samsung Design System Fonts ─────────────────────────────────────────────
-// SamsungOne is proprietary. Roboto (body) + Roboto Slab (display) are the
-// closest open-source equivalents to Samsung's type system.
-
-const roboto = Roboto({
+// Fontes da referência servidas pelo próprio site (next/font), só o subconjunto latin, que cobre pt, en e es.
+// Títulos, texto e rótulos; a mono não é pré-carregada (aparece abaixo da dobra). Orçamento: 140 KB no início.
+const heading = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "900"],
-  variable: "--font-roboto",
+  axes: ["opsz"],
+  variable: "--font-heading",
   display: "swap",
 });
 
-const robotoSlab = Roboto_Slab({
+const body = Instrument_Sans({
   subsets: ["latin"],
-  weight: ["600", "700", "800", "900"],
-  variable: "--font-roboto-slab",
+  variable: "--font-body",
   display: "swap",
+});
+
+const code = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-code",
+  display: "swap",
+  preload: false,
 });
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
@@ -95,11 +100,11 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         {/* Tema antes da primeira pintura, sem piscar (components/layout/ThemeScript.tsx). */}
         <ThemeScript />
       </head>
-      <body className={`${roboto.variable} ${robotoSlab.variable} font-sans antialiased`}>
+      <body className={`${heading.variable} ${body.variable} ${code.variable} font-sans antialiased`}>
         {/* Skip to main content — Accessibility */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-accent-primary focus:px-4 focus:py-2 focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
         >
           Pular para o conteúdo principal
         </a>

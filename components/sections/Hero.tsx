@@ -12,9 +12,9 @@ import { FadeInView } from "@/components/animations/FadeInView";
 import { CountUp } from "@/components/animations/CountUp";
 import { CV_URL } from "@/lib/cv";
 
-// Lilac brand RGB channels — reused across all background shapes
-const L  = "104,82,214";   // --accent-primary light
-const LL = "155,122,232";  // --accent-secondary
+// Cores das formas do fundo a partir dos tokens: violeta (--accent) e orquídea de apoio (--accent-2).
+const tint = (token: "accent" | "accent-2", alpha: number) =>
+  `color-mix(in oklab, var(--${token}) ${Math.round(alpha * 1000) / 10}%, transparent)`;
 
 export function Hero() {
   const t = useTranslations("hero");
@@ -59,7 +59,7 @@ export function Hero() {
     <section
       id="hero"
       aria-label="Hero"
-      className="relative flex min-h-screen items-center overflow-hidden"
+      className="relative isolate flex min-h-screen items-center overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       {/* ── Animated background ── */}
@@ -69,12 +69,12 @@ export function Hero() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `radial-gradient(circle, rgba(${L},${0.07 * m}) 1px, transparent 1px)`,
+            backgroundImage: `radial-gradient(circle, ${tint("accent", 0.07 * m)} 1px, transparent 1px)`,
             backgroundSize: "28px 28px",
           }}
         />
-        <div className="absolute inset-x-0 top-0 h-0.5 bg-accent-primary opacity-80" />
-        <div className="absolute right-0 top-0 h-full w-1/3 bg-linear-to-l from-accent-primary/4 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-0.5 bg-accent opacity-80" />
+        <div className="absolute right-0 top-0 h-full w-1/3 bg-linear-to-l from-accent/4 to-transparent" />
 
         {/* ── FAR layer — big shapes, least movement ── */}
         <motion.div style={{ x: farX, y: farY }} className="absolute inset-0">
@@ -84,7 +84,7 @@ export function Hero() {
             style={{
               width: 680, height: 680,
               top: "-18%", right: "-10%",
-              border: `1px solid rgba(${L},${0.13 * m})`,
+              border: `1px solid ${tint("accent", 0.13 * m)}`,
             }}
             animate={{ rotate: 360 }}
             transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
@@ -95,7 +95,7 @@ export function Hero() {
             style={{
               width: 380, height: 380,
               top: "-8%", left: "-6%",
-              border: `1px solid rgba(${LL},${0.09 * m})`,
+              border: `1px solid ${tint("accent-2", 0.09 * m)}`,
             }}
             animate={{ rotate: -360 }}
             transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
@@ -106,7 +106,7 @@ export function Hero() {
             style={{
               width: 240, height: 240,
               bottom: "6%", left: "1%",
-              border: `1px solid rgba(${L},${0.10 * m})`,
+              border: `1px solid ${tint("accent", 0.10 * m)}`,
             }}
             animate={{ rotate: [0, 6, 0], y: [0, -18, 0] }}
             transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
@@ -121,7 +121,7 @@ export function Hero() {
             style={{
               width: 64, height: 64,
               top: "38%", right: "14%",
-              background: `rgba(${L},${0.09 * m})`,
+              background: `${tint("accent", 0.09 * m)}`,
             }}
             animate={{ rotate: [0, 18, 0], y: [0, -22, 0] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
@@ -132,7 +132,7 @@ export function Hero() {
             style={{
               width: 40, height: 40,
               top: "10%", left: "18%",
-              background: `rgba(${LL},${0.10 * m})`,
+              background: `${tint("accent-2", 0.10 * m)}`,
             }}
             animate={{ rotate: [0, -14, 0], y: [0, 14, 0] }}
             transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 2 }}
@@ -143,7 +143,7 @@ export function Hero() {
             style={{
               width: 160, height: 160,
               top: "54%", left: "5%",
-              border: `1px solid rgba(${LL},${0.14 * m})`,
+              border: `1px solid ${tint("accent-2", 0.14 * m)}`,
             }}
             animate={{ scale: [1, 1.08, 1], opacity: [0.6, 1, 0.6] }}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
@@ -151,13 +151,13 @@ export function Hero() {
           {/* Pulsing dots — upper left cluster */}
           <motion.div
             className="absolute rounded-full"
-            style={{ width: 10, height: 10, top: "22%", left: "9%", background: `rgba(${LL},${0.28 * m})` }}
+            style={{ width: 10, height: 10, top: "22%", left: "9%", background: `${tint("accent-2", 0.28 * m)}` }}
             animate={{ scale: [1, 1.5, 1], opacity: [0.28, 0.55, 0.28] }}
             transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
             className="absolute rounded-full"
-            style={{ width: 6, height: 6, top: "26%", left: "13%", background: `rgba(${L},${0.22 * m})` }}
+            style={{ width: 6, height: 6, top: "26%", left: "13%", background: `${tint("accent", 0.22 * m)}` }}
             animate={{ scale: [1, 1.8, 1], opacity: [0.22, 0.48, 0.22] }}
             transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           />
@@ -171,7 +171,7 @@ export function Hero() {
             style={{
               fontSize: "10rem",
               bottom: "10%", right: "2%",
-              color: `rgba(${L},${0.07 * m})`,
+              color: `${tint("accent", 0.07 * m)}`,
             }}
             animate={{ y: [0, -14, 0], opacity: [0.07 * m, 0.13 * m, 0.07 * m] }}
             transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 2 }}
@@ -184,7 +184,7 @@ export function Hero() {
             style={{
               width: 110, height: 70,
               top: "60%", right: "30%",
-              border: `1px solid rgba(${L},${0.11 * m})`,
+              border: `1px solid ${tint("accent", 0.11 * m)}`,
             }}
             animate={{ rotate: [0, -6, 0], y: [0, 12, 0] }}
             transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
@@ -195,7 +195,7 @@ export function Hero() {
             style={{
               width: 80, height: 50,
               top: "8%", left: "42%",
-              border: `1px solid rgba(${LL},${0.10 * m})`,
+              border: `1px solid ${tint("accent-2", 0.10 * m)}`,
             }}
             animate={{ rotate: [0, 5, 0], y: [0, -8, 0] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
@@ -206,7 +206,7 @@ export function Hero() {
             style={{
               width: 90, height: 1,
               top: "30%", right: "7%",
-              background: `rgba(${L},${0.22 * m})`,
+              background: `${tint("accent", 0.22 * m)}`,
             }}
             animate={{ scaleX: [1, 1.5, 1], opacity: [0.22 * m, 0.40 * m, 0.22 * m] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 3 }}
@@ -223,22 +223,22 @@ export function Hero() {
             <FadeInView delay={0.05}>
               <Badge variant="success" className="w-fit gap-2">
                 <span className="relative flex h-2 w-2" aria-hidden>
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-success opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-success" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ok opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-ok" />
                 </span>
                 {t("available")}
               </Badge>
             </FadeInView>
 
             <FadeInView delay={0.1}>
-              <p className="text-body sm:text-body-lg text-text-secondary">
+              <p className="text-body sm:text-body-lg text-text-2">
                 {t("greeting")} 👋
               </p>
             </FadeInView>
 
             <FadeInView delay={0.2}>
               <h1
-                className="font-display font-black leading-none tracking-tight text-text-primary"
+                className="font-display font-black leading-none tracking-tight text-text"
                 style={{ fontSize: "clamp(1.75rem, 8vw, 5.5rem)" }}
               >
                 {t("name")}
@@ -263,7 +263,7 @@ export function Hero() {
             </FadeInView>
 
             <FadeInView delay={0.3}>
-              <p className="max-w-md text-sm leading-relaxed text-text-secondary sm:text-body">
+              <p className="max-w-md text-sm leading-relaxed text-text-2 sm:text-body">
                 {t("tagline")}
               </p>
             </FadeInView>
@@ -289,7 +289,7 @@ export function Hero() {
             <motion.div
               whileHover={{ y: -6 }}
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
-              className="card-samsung w-full max-w-sm rounded-md p-6"
+              className="card-soft w-full max-w-sm rounded-md p-6"
             >
               <div className="mb-6 flex items-center gap-4">
                 <div className="relative h-16 w-16 shrink-0">
@@ -303,12 +303,12 @@ export function Hero() {
                   />
                   <span
                     aria-hidden
-                    className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-surface-elevated bg-accent-success"
+                    className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-surface bg-ok"
                   />
                 </div>
                 <div>
-                  <p className="font-semibold text-text-primary">Evelym Marinho</p>
-                  <p className="flex items-center gap-1 text-caption text-text-secondary">
+                  <p className="font-semibold text-text">Evelym Marinho</p>
+                  <p className="flex items-center gap-1 text-caption text-text-2">
                     <MapPin className="h-3 w-3" aria-hidden />
                     Manaus, Brasil
                   </p>
@@ -323,12 +323,12 @@ export function Hero() {
                 ].map(({ target, suffix, labelKey }) => (
                   <div
                     key={labelKey}
-                    className="flex flex-col items-center rounded-md bg-surface p-3 text-center"
+                    className="flex flex-col items-center rounded-md bg-surface-2 p-3 text-center"
                   >
-                    <span className="text-h3 font-bold text-accent-primary">
+                    <span className="text-h3 font-bold text-accent-text">
                       <CountUp target={target} suffix={suffix} />
                     </span>
-                    <span className="text-[0.6rem] uppercase tracking-widest text-text-muted">
+                    <span className="text-[0.6rem] uppercase tracking-widest text-text-3">
                       {t(labelKey)}
                     </span>
                   </div>
@@ -348,13 +348,13 @@ export function Hero() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1.5">
-        <span className="text-caption text-text-muted">{t("scroll_hint")}</span>
+        <span className="text-caption text-text-3">{t("scroll_hint")}</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           aria-hidden
         >
-          <ArrowDown className="h-4 w-4 text-text-muted" />
+          <ArrowDown className="h-4 w-4 text-text-3" />
         </motion.div>
       </div>
     </section>

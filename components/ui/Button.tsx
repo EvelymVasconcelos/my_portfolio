@@ -16,35 +16,35 @@ import type { ButtonHTMLAttributes } from "react";
 
 export const buttonVariants = cva(
   // Base: sem glow, sem scale, sem rounded generoso
-  "inline-flex items-center justify-center gap-2 rounded-xs font-medium transition-colors duration-150 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-40 select-none",
+  "inline-flex items-center justify-center gap-2 rounded-xs font-medium transition-colors duration-150 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-40 select-none",
   {
     variants: {
       variant: {
-        // Lilac sólido — texto SEMPRE branco, nunca herdar cor do tema
+        // Violeta sólido: o texto usa --on-accent, nunca a cor do tema
         primary:
-          "bg-accent-primary text-white! hover:bg-(--accent-primary-hover)",
+          "bg-accent text-on-accent! hover:bg-accent-hover",
 
         // Samsung "Read More" / "Download CV" style:
         // Fundo branco, borda fina cinza, texto escuro.
         // Hover: fundo escurece levemente (Samsung pattern) — sem mudar para lilás
         secondary:
-          "bg-surface-elevated border border-text-muted text-text-primary hover:bg-[#EBEBEB] dark:hover:bg-surface",
+          "bg-surface border border-line-strong text-text hover:bg-surface-2",
 
         // Ghost: sem borda, sem fundo — texto muda de cor
         ghost:
-          "text-text-secondary hover:text-text-primary hover:bg-surface",
+          "text-text-2 hover:text-text hover:bg-surface-2",
 
         // Danger
         danger:
-          "bg-accent-danger text-white hover:opacity-90",
+          "bg-danger text-bg hover:opacity-90",
 
         // Outline: borda lilás, fill no hover — versão colorida do secondary
         outline:
-          "border border-accent-primary text-accent-primary bg-transparent hover:bg-accent-primary hover:text-white",
+          "border border-accent text-accent-text bg-transparent hover:bg-accent hover:text-on-accent",
 
         // Link: texto sublinhado
         link:
-          "text-accent-primary underline-offset-4 hover:underline p-0 h-auto",
+          "text-accent-text underline-offset-4 hover:underline p-0 h-auto",
       },
       size: {
         sm:        "h-8 px-4 text-caption",

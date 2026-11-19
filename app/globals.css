@@ -1,46 +1,62 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
 
-/*
-  `inline`: as classes recebem o valor direto (como no Tailwind 3), e não uma referência ao :root. Necessário porque
-  os tokens apontam para variáveis definidas em outros elementos: as fontes do next/font ficam no <body>.
-*/
+/* ─── Tokens expostos ao Tailwind ──────────────────────────────────────────────
+   Mesmos nomes e papéis dos tokens do portfólio de referência, com a paleta escolhida no protótipo
+   (design/prototipos/layout-referencia, roxo 1 violeta e orquídea de apoio; decisão 7 da design de
+   openspec/changes/estrutura-movimento-e-cena-3d). Valores em :root (claro) e .dark (escuro), mais abaixo.
+   Contrastes conferidos em tests/unit/contrast.test.ts.
+   `inline`: as classes recebem o valor direto, e não uma referência ao :root. Necessário porque os tokens
+   apontam para variáveis definidas em outros elementos (as fontes do next/font ficam no <body>, e a
+   `band-invert` troca a paleta dentro da página). */
 @theme inline {
-  --color-background: var(--background);
+  --color-bg: var(--bg);
   --color-surface: var(--surface);
-  --color-surface-elevated: var(--surface-elevated);
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
-  --color-accent-primary: var(--accent-primary);
-  --color-accent-secondary: var(--accent-secondary);
-  --color-accent-teal: var(--accent-teal);
-  --color-accent-success: var(--accent-success);
-  --color-accent-warning: var(--accent-warning);
-  --color-accent-danger: var(--accent-danger);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-accent: var(--accent);
+  --color-accent-text: var(--accent-text);
+  --color-accent-hover: color-mix(
+    in oklab,
+    var(--accent) 84%,
+    black
+  ); /* hover do preenchimento: mais escuro, mantém o branco legível */
+  --color-on-accent: var(--on-accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-2-text: var(--accent-2-text);
+  --color-ok: var(--ok);
+  --color-focus: var(--focus);
+  --color-danger: var(--danger);
 
-  --color-samsung-lilac: #6852d6;
-  --color-samsung-lilac-l: #9b7ae8;
-  --color-samsung-lilac-d: #5740c0;
-  --color-samsung-lilac-p: #a98aef;
-  --color-samsung-navy: #12172a;
-  --color-samsung-navy-d: #0a0e1a;
+  --font-sans: var(--font-body), system-ui, sans-serif;
+  --font-display: var(--font-heading), system-ui, sans-serif;
+  --font-mono: var(--font-code), ui-monospace, monospace;
 
-  --font-sans: var(--font-roboto), Roboto, system-ui, sans-serif;
-  --font-display: var(--font-roboto-slab), Roboto Slab, Georgia, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --breakpoint-nav: 56.25rem; /* 900 px: menu completo no cabeçalho a partir daqui */
 
+  /* Raios da referência com os "detalhes delicados" escolhidos no protótipo (4 a 6 px a mais).
+     `xs` só existe para os componentes atuais, que saem no bloco 3. */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+
+  /* ── Escala e sombras dos componentes atuais (saem no bloco 3 desta change) ── */
   --text-display: clamp(2.5rem, 5.5vw + 0.75rem, 4rem);
   --text-display--line-height: 1.05;
-  --text-display--font-weight: 900;
-  --text-display--letter-spacing: -0.01em;
+  --text-display--font-weight: 800;
+  --text-display--letter-spacing: -0.02em;
   --text-h1: clamp(1.875rem, 3.5vw + 0.5rem, 2.75rem);
   --text-h1--line-height: 1.1;
   --text-h1--font-weight: 800;
-  --text-h1--letter-spacing: -0.01em;
+  --text-h1--letter-spacing: -0.02em;
   --text-h2: clamp(1.375rem, 2vw + 0.5rem, 1.875rem);
   --text-h2--line-height: 1.2;
   --text-h2--font-weight: 700;
@@ -61,28 +77,12 @@
   --text-label--font-weight: 600;
   --text-label--letter-spacing: 0.08em;
 
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
-  --radius-2xl: 36px;
-
-  --shadow-samsung-sm: 0 1px 4px rgba(104, 82, 214, 0.08);
-  --shadow-samsung-md: 0 2px 12px rgba(104, 82, 214, 0.1);
-  --shadow-samsung-lg: 0 4px 24px rgba(104, 82, 214, 0.14);
-  --shadow-samsung-xl: 0 8px 40px rgba(104, 82, 214, 0.18);
-  --shadow-dark-md: 0 2px 12px rgba(0, 0, 0, 0.4);
-  --shadow-dark-lg: 0 4px 32px rgba(0, 0, 0, 0.5);
-  --shadow-glow-lilac: 0 0 28px rgba(104, 82, 214, 0.22);
-  --shadow-glass: 0 2px 12px rgba(104, 82, 214, 0.08);
-  --shadow-glass-light: 0 2px 12px rgba(104, 82, 214, 0.06);
-  --shadow-glow-primary: 0 0 28px rgba(104, 82, 214, 0.2);
-  --shadow-glow-secondary: 0 0 28px rgba(155, 122, 232, 0.22);
-  --shadow-card:
-    0 1px 4px rgba(104, 82, 214, 0.06), 0 4px 16px rgba(104, 82, 214, 0.08);
-
-  --backdrop-blur-xs: 4px;
+  --shadow-soft-sm: 0 1px 4px var(--shadow-tint);
+  --shadow-soft-md: 0 2px 12px var(--shadow-tint);
+  --shadow-soft-lg: 0 4px 24px var(--shadow-tint-strong);
+  --shadow-soft-xl: 0 8px 40px var(--shadow-tint-strong);
+  --shadow-glow: 0 0 28px color-mix(in oklab, var(--accent) 24%, transparent);
+  --shadow-glow-2: 0 0 28px color-mix(in oklab, var(--accent-2) 24%, transparent);
 
   --animate-fade-in: fade-in 0.4s ease-out forwards;
   --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
@@ -145,239 +145,335 @@
       transform: translateY(-6px);
     }
   }
-  @keyframes draw-line {
-    0% {
-      stroke-dashoffset: 1;
-    }
-    100% {
-      stroke-dashoffset: 0;
-    }
-  }
 }
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-}
-
-/* ─── Utility Classes ──────────────────────────────────────────────────────── */
-
-@utility glass {
-  /* Samsung Card */
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-@utility text-gradient {
-  /* Gradient Text — Samsung Blue */
-  @apply bg-clip-text text-transparent;
-  background-image: linear-gradient(
-    135deg,
-    var(--accent-primary),
-    var(--accent-secondary)
-  );
-}
-
-@utility border-gradient {
-  /* Samsung blue gradient border */
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      var(--accent-primary),
-      var(--accent-secondary)
-    );
-    mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    -webkit-mask-composite: xor;
-  }
-}
-
-@utility section-padding {
-  /* Section padding */
-  @apply px-4 sm:px-6 lg:px-8;
-}
-
-@utility container-content {
-  /* Container width */
-  @apply mx-auto w-full max-w-6xl;
-}
-
-@utility card-samsung {
-  /* Samsung card style — lilac-tinted shadow */
-  @apply bg-surface-elevated border border-border rounded-md;
-  box-shadow: 0 2px 12px rgba(104, 82, 214, 0.08);
-  transition:
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
-
-  &:hover {
-    border-color: rgba(104, 82, 214, 0.28);
-    box-shadow: 0 4px 24px rgba(104, 82, 214, 0.14);
-  }
-
-  .dark &:hover {
-    border-color: rgba(169, 138, 239, 0.35);
-    box-shadow: 0 4px 24px rgba(169, 138, 239, 0.12);
-  }
-}
-
-/* Fontes: Roboto e Roboto Slab vêm do next/font em app/[locale]/layout.tsx (o @import daqui era inválido e ignorado). */
-
-/* ─── Design System: Samsung Color Tokens ───────────────────────────────────── */
-/* Reference: https://developer.samsung.com/design-system                        */
+/* ─── Paleta ───────────────────────────────────────────────────────────────── */
 
 :root {
-  /* ─── Light Mode (padrão) ─── */
-  --background: #ffffff;
-  --surface: #f5f6fa;
-  --surface-elevated: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
-  --border-strong: rgba(0, 0, 0, 0.2);
+  /* Claro: branco lilás */
+  --bg: #f6f4f9;
+  --surface: #ece8f2;
+  --surface-2: #e1dce9;
+  --line: #d0c9db; /* só divisões decorativas */
+  --line-strong: #625b6e; /* borda de campo e controle: ≥ 3:1 */
+  --text: #16141b;
+  --text-2: #46404f;
+  --text-3: #625b6e; /* só sobre --bg e --surface */
+  --accent: #7c3aed; /* violeta: preenchimento */
+  --accent-text: #6d28d9; /* texto em cor de destaque */
+  --on-accent: #ffffff;
+  --accent-2: #b5179e; /* orquídea: só retoques (formas, sublinhados), nunca texto corrido */
+  --accent-2-text: #9d1488;
+  --ok: #145c31;
+  --danger: #b42318;
+  --focus: #6d28d9;
+  --band-dot: #c6bfd2; /* trama decorativa das faixas */
+  --header-h: 4.5rem;
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out-strong: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Samsung Text */
-  --text-primary: #12172a; /* Samsung dark navy */
-  --text-secondary: #4a4f66;
-  --text-muted: #9ea3b8;
-
-  /* Samsung Lilac — cor principal do portfólio */
-  --accent-primary: #6852d6; /* Lilac Samsung — contraste 5.46:1 no branco ✓ AA */
-  --accent-primary-hover: #5740c0; /* Lilac escuro no hover */
-  --accent-secondary: #9b7ae8; /* Lilac claro para highlights */
-  --accent-teal: #00b4d8; /* Teal para acentos secundários */
-
-  /* Status */
-  --accent-success: #00c853;
-  --accent-warning: #ffb300;
-  --accent-danger: #d32f2f;
-
-  /* Glass / Elevation */
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(104, 82, 214, 0.1);
-  --glass-shadow: 0 2px 12px rgba(104, 82, 214, 0.08);
+  color-scheme: light;
 }
 
 .dark {
-  /* ─── Dark Mode — Navy profundo com toque púrpura ─── */
-  --background: #0a0e1a;
-  --surface: #12172a;
-  --surface-elevated: #1c1830; /* purple-navy: combina com o lilás */
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
-
-  --text-primary: #f0f2ff;
-  --text-secondary: #9ea3c8;
-  --text-muted: #5a6080;
-
-  /* Lilac claro — mais legível no escuro */
-  --accent-primary: #a98aef; /* Lilac claro — contraste 4.6:1 no navy ✓ AA */
-  --accent-primary-hover: #bba4f5;
-  --accent-secondary: #c4aeff; /* Lilac pastel para highlights */
-  --accent-teal: #00b4d8;
-
-  --accent-success: #00e676;
-  --accent-warning: #ffd740;
-  --accent-danger: #ff5252;
-
-  /* Glass — Dark */
-  --glass-bg: rgba(28, 24, 50, 0.8);
-  --glass-border: rgba(169, 138, 239, 0.12);
-  --glass-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+  /* Escuro: preto com um fio de violeta, tema da primeira visita */
+  --bg: #121117;
+  --surface: #1a1920;
+  --surface-2: #24222b;
+  --line: #34313d;
+  --line-strong: #9b95a8;
+  --text: #f3f1f7;
+  --text-2: #bfbacb;
+  --text-3: #9b95a8;
+  --accent: #7c3aed;
+  --accent-text: #b39dff;
+  --on-accent: #ffffff;
+  --accent-2: #b5179e;
+  --accent-2-text: #f5a8e8;
+  --ok: #5bc48a;
+  --danger: #ff8a7a;
+  --focus: #b39dff;
+  --band-dot: #3b3846;
+  color-scheme: dark;
 }
 
-/* ─── Base Reset ────────────────────────────────────────────────────────────── */
+/* Faixa invertida (Contato e rodapé): a paleta do outro tema, com os mesmos valores de :root e .dark
+   (tests/unit/contrast.test.ts confere que as cópias não se desencontram). */
+html:not(.dark) .band-invert {
+  --bg: #121117;
+  --surface: #1a1920;
+  --surface-2: #24222b;
+  --line: #34313d;
+  --line-strong: #9b95a8;
+  --text: #f3f1f7;
+  --text-2: #bfbacb;
+  --text-3: #9b95a8;
+  --accent: #7c3aed;
+  --accent-text: #b39dff;
+  --on-accent: #ffffff;
+  --accent-2: #b5179e;
+  --accent-2-text: #f5a8e8;
+  --ok: #5bc48a;
+  --danger: #ff8a7a;
+  --focus: #b39dff;
+  --band-dot: #3b3846;
+  color-scheme: dark;
+}
+
+.dark .band-invert {
+  --bg: #f6f4f9;
+  --surface: #ece8f2;
+  --surface-2: #e1dce9;
+  --line: #d0c9db;
+  --line-strong: #625b6e;
+  --text: #16141b;
+  --text-2: #46404f;
+  --text-3: #625b6e;
+  --accent: #7c3aed;
+  --accent-text: #6d28d9;
+  --on-accent: #ffffff;
+  --accent-2: #b5179e;
+  --accent-2-text: #9d1488;
+  --ok: #145c31;
+  --danger: #b42318;
+  --focus: #6d28d9;
+  --band-dot: #c6bfd2;
+  color-scheme: light;
+}
+
+/* Valores derivados da paleta (sombras e vidro dos componentes atuais). */
+:root,
+.band-invert {
+  --shadow-tint: color-mix(in oklab, var(--accent) 9%, transparent);
+  --shadow-tint-strong: color-mix(in oklab, var(--accent) 15%, transparent);
+  --glass-bg: color-mix(in oklab, var(--surface) 86%, transparent);
+  --glass-border: color-mix(in oklab, var(--accent) 14%, var(--line));
+}
+
+.dark {
+  --shadow-tint: color-mix(in oklab, black 35%, transparent);
+  --shadow-tint-strong: color-mix(in oklab, black 45%, transparent);
+}
+
+/* ─── Base ─────────────────────────────────────────────────────────────────── */
 
 @layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: var(--line);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--bg);
+  }
+
+  body {
+    @apply bg-bg font-sans text-text;
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+
   /* O Preflight do Tailwind 4 tirou a mãozinha dos botões; mantém o comportamento do Tailwind 3. */
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
+  /* Seções com âncora param abaixo do cabeçalho fixo. */
+  [id] {
+    scroll-margin-top: calc(var(--header-h) + 1rem);
   }
 
-  html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  body {
-    @apply bg-background text-text-primary font-sans;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  /* Focus visible ring — Accessibility (Samsung Blue) */
+  /* Foco visível com contraste nos dois temas. */
   :focus-visible {
-    @apply outline-hidden ring-2 ring-accent-primary ring-offset-2 ring-offset-background;
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 6px;
   }
 
-  :focus:not(:focus-visible) {
-    @apply outline-hidden;
-  }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-surface;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--accent-primary);
-    border-radius: 9999px;
-    opacity: 0.4;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    opacity: 0.7;
-  }
-
-  /* Selection — Samsung Blue */
   ::selection {
-    background: rgba(20, 40, 160, 0.15);
-    color: var(--text-primary);
+    background: var(--accent);
+    color: var(--on-accent);
   }
 
-  .dark ::selection {
-    background: rgba(45, 107, 244, 0.30);
-    color: var(--text-primary);
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 }
 
-/* ─── Reduced Motion ────────────────────────────────────────────────────────── */
+/* Links internos rolam suavemente, exceto com movimento reduzido. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ─── Tipografia (referência) ──────────────────────────────────────────────── */
+
+@utility type-giant {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(3.4rem, 10vw, 9.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+}
+
+@utility type-display {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.3rem, 5.2vw, 4.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+@utility type-title {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+@utility type-lead {
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  line-height: 1.5;
+  color: var(--text-2);
+  max-width: 56ch;
+}
+
+@utility type-eyebrow {
+  font-family: var(--font-code), ui-monospace, monospace;
+  font-weight: 400;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* ─── Layout (referência) ──────────────────────────────────────────────────── */
+
+@utility container-site {
+  width: min(96rem, 100% - 2.5rem);
+  margin-inline: auto;
+
+  @media (min-width: 56.25rem) {
+    width: min(96rem, 100% - 8rem);
+  }
+}
+
+/* ─── Faixas das seções ──────────────────────────────────────────────────────
+   Cada seção é uma faixa de largura total: `band` (fundo da página) e `band-alt` (superfície vizinha) se
+   alternam, e o Contato fecha a página com a paleta do outro tema (`band-invert`). Uma trama de pontos fica
+   num canto da faixa (`--band-corner`) e desliza devagar; parada sem JavaScript e com movimento reduzido.
+   O pseudo-elemento é maior que a faixa em um passo da trama, e a faixa o recorta. */
+
+.band,
+.band-alt,
+.band-invert {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--bg);
+  color: var(--text);
+  --band-corner: 100% 0%;
+}
+
+.band-alt {
+  background: var(--surface);
+  --band-corner: 0% 100%;
+}
+
+.band::before,
+.band-alt::before,
+.band-invert::before {
+  content: "";
+  position: absolute;
+  inset: -28px 0 0 -28px;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(circle, var(--band-dot) 1.2px, transparent 1.6px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 70% 80% at var(--band-corner), #000 0%, transparent 72%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-motion="ready"] :is(.band, .band-alt, .band-invert)::before {
+    animation: band-drift 24s linear infinite;
+  }
+}
+
+/* Um passo da trama por ciclo: o fim coincide com o começo, sem salto. Só `transform`: não repinta. */
+@keyframes band-drift {
+  to {
+    transform: translate(28px, 28px);
+  }
+}
+
+/* ─── Utilidades dos componentes atuais ────────────────────────────────────────
+   Saem no bloco 3 desta change, quando as seções forem portadas do protótipo. Já usam só tokens. */
+
+@utility glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-soft-md);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@utility text-gradient {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, var(--accent-text), var(--accent-2-text));
+}
+
+@utility border-gradient {
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+  }
+}
+
+@utility section-padding {
+  @apply px-4 sm:px-6 lg:px-8;
+}
+
+@utility container-content {
+  @apply mx-auto w-full max-w-6xl;
+}
+
+@utility card-soft {
+  @apply rounded-md border border-line bg-surface;
+  box-shadow: var(--shadow-soft-md);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    border-color: color-mix(in oklab, var(--accent-text) 35%, var(--line));
+    box-shadow: var(--shadow-soft-lg);
+  }
+}
+
+/* ─── Movimento reduzido ──────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   *,

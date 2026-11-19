@@ -16,7 +16,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-caption font-medium text-text-primary"
+            className="text-caption font-medium text-text"
           >
             {label}
           </label>
@@ -26,11 +26,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            "w-full rounded-sm border bg-surface-elevated px-4 py-2.5 text-body text-text-primary placeholder:text-text-muted",
+            "w-full rounded-sm border bg-surface px-4 py-2.5 text-body text-text placeholder:text-text-3",
             "transition-all duration-200 outline-hidden",
-            "border-border hover:border-border-strong",
-            "focus:border-accent-primary focus:ring-2 focus:ring-accent-primary/20",
-            error && "border-accent-danger focus:border-accent-danger focus:ring-accent-danger/20",
+            "border-line hover:border-line-strong",
+            "focus:border-accent focus:ring-2 focus:ring-accent/20",
+            error && "border-danger focus:border-danger focus:ring-danger/20",
             "disabled:opacity-40 disabled:cursor-not-allowed",
             className
           )}
@@ -40,12 +40,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         />
 
         {error && (
-          <p id={`${inputId}-error`} className="text-caption text-accent-danger" role="alert">
+          <p id={`${inputId}-error`} className="text-caption text-danger" role="alert">
             {error}
           </p>
         )}
         {helper && !error && (
-          <p id={`${inputId}-helper`} className="text-caption text-text-muted">
+          <p id={`${inputId}-helper`} className="text-caption text-text-3">
             {helper}
           </p>
         )}

@@ -56,7 +56,7 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" aria-label={t("label")} className="relative py-28">
+    <section id="contact" aria-label={t("label")} className="relative isolate py-28">
       <SectionDivider bottomGlow />
 
       <div className="container-content section-padding">
@@ -64,15 +64,15 @@ export const Contact = () => {
         {/* Section header */}
         <FadeInView className="mb-16 flex flex-col items-center text-center gap-2">
           <Badge variant="section">{t("label")}</Badge>
-          <h2 className="font-display text-h1 font-bold text-text-primary">{t("title")}</h2>
-          <p className="max-w-md text-body text-text-secondary">{t("subtitle")}</p>
+          <h2 className="font-display text-h1 font-bold text-text">{t("title")}</h2>
+          <p className="max-w-md text-body text-text-2">{t("subtitle")}</p>
         </FadeInView>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start">
 
           {/* ── Left: social links ── */}
           <FadeInView direction="right" className="flex flex-col gap-6">
-            <p className="text-caption font-semibold uppercase tracking-widest text-text-muted">
+            <p className="text-caption font-semibold uppercase tracking-widest text-text-3">
               {t("social_title")}
             </p>
 
@@ -84,18 +84,18 @@ export const Contact = () => {
                   target={href.startsWith("mailto") ? undefined : "_blank"}
                   rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
                   className={cn(
-                    "card-samsung flex items-center gap-4 rounded-md px-5 py-4",
-                    "text-text-secondary hover:text-text-primary",
+                    "card-soft flex items-center gap-4 rounded-md px-5 py-4",
+                    "text-text-2 hover:text-text",
                     "transition-all duration-200",
-                    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary"
+                    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-focus"
                   )}
                 >
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent-primary/10">
-                    <Icon className="h-4 w-4 text-accent-primary" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent/10">
+                    <Icon className="h-4 w-4 text-accent-text" />
                   </div>
                   <div>
-                    <p className="text-body font-medium text-text-primary">{label}</p>
-                    <p className="text-caption text-text-muted truncate max-w-[220px]">
+                    <p className="text-body font-medium text-text">{label}</p>
+                    <p className="text-caption text-text-3 truncate max-w-[220px]">
                       {href.replace("mailto:", "").replace("https://", "").replace("http://", "")}
                     </p>
                   </div>
@@ -109,7 +109,7 @@ export const Contact = () => {
             <form
               onSubmit={handleSubmit(onSubmit)}
               noValidate
-              className="card-samsung flex flex-col gap-5 rounded-md p-6"
+              className="card-soft flex flex-col gap-5 rounded-md p-6"
               aria-label={t("form_aria_label")}
             >
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -149,12 +149,12 @@ export const Contact = () => {
               {status === "success" && (
                 <div
                   role="alert"
-                  className="flex items-start gap-3 rounded-md bg-accent-success/10 border border-accent-success/20 px-4 py-3 text-caption text-accent-success"
+                  className="flex items-start gap-3 rounded-md bg-ok/10 border border-ok/20 px-4 py-3 text-caption text-ok"
                 >
                   <CheckCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
                   <div>
                     <p className="font-medium">{t("form.success_title")}</p>
-                    <p className="text-accent-success/70">{t("form.success_body")}</p>
+                    <p className="text-ok/70">{t("form.success_body")}</p>
                   </div>
                 </div>
               )}
@@ -162,12 +162,12 @@ export const Contact = () => {
               {status === "error" && (
                 <div
                   role="alert"
-                  className="flex items-start gap-3 rounded-md bg-accent-danger/10 border border-accent-danger/20 px-4 py-3 text-caption text-accent-danger"
+                  className="flex items-start gap-3 rounded-md bg-danger/10 border border-danger/20 px-4 py-3 text-caption text-danger"
                 >
                   <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
                   <div>
                     <p className="font-medium">{t("form.error_title")}</p>
-                    <p className="text-accent-danger/70">{t("form.error_body")}</p>
+                    <p className="text-danger/70">{t("form.error_body")}</p>
                   </div>
                 </div>
               )}

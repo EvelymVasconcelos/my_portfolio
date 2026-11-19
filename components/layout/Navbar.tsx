@@ -45,7 +45,7 @@ export function Navbar() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-300",
           isScrolled
-            ? "bg-background shadow-samsung-sm"
+            ? "bg-bg shadow-soft-sm"
             : "bg-transparent"
         )}
       >
@@ -58,12 +58,12 @@ export function Navbar() {
           <a
             href="#main-content"
             aria-label="Evelym Marinho — Início"
-            className="flex items-center gap-2.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary rounded-xs"
+            className="flex items-center gap-2.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-focus rounded-xs"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-xs bg-accent-primary text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xs bg-accent text-on-accent">
               <Terminal className="h-4 w-4" aria-hidden />
             </div>
-            <span className="hidden text-body font-semibold text-text-primary sm:block">
+            <span className="hidden text-body font-semibold text-text sm:block">
               Evelym Marinho
             </span>
           </a>
@@ -74,7 +74,7 @@ export function Navbar() {
               <li key={label}>
                 <a
                   href={href}
-                  className="px-3 py-2 text-body text-text-secondary transition-colors duration-150 hover:text-accent-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary rounded-xs"
+                  className="px-3 py-2 text-body text-text-2 transition-colors duration-150 hover:text-accent-text focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-focus rounded-xs"
                 >
                   {t(label)}
                 </a>
@@ -147,7 +147,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="fixed inset-0 z-40 flex flex-col bg-background px-6 pt-24 pb-10 md:hidden"
+            className="fixed inset-0 z-40 flex flex-col bg-bg px-6 pt-24 pb-10 md:hidden"
           >
             <ul className="flex flex-col gap-2" role="list">
               {NAV_LINKS.map(({ label, href }, i) => (
@@ -160,7 +160,7 @@ export function Navbar() {
                   <a
                     href={href}
                     onClick={handleNavClick}
-                    className="block rounded-md px-4 py-3 text-h3 font-semibold text-text-primary hover:bg-surface-elevated transition-colors"
+                    className="block rounded-md px-4 py-3 text-h3 font-semibold text-text hover:bg-surface transition-colors"
                   >
                     {t(label)}
                   </a>
@@ -168,7 +168,7 @@ export function Navbar() {
               ))}
             </ul>
 
-            <div className="mt-8 flex items-center gap-3 border-t border-border pt-8">
+            <div className="mt-8 flex items-center gap-3 border-t border-line pt-8">
               <LanguageSwitcher />
               <a
                 href={cvUrl}

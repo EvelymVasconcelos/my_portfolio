@@ -57,7 +57,7 @@
       `inline` os títulos caíam na fonte do sistema), tokens fora de `@layer`, `variant="outline"` do `Card` restaurado
       (o codemod trocou por `outline-solid`), cursor de mãozinha nos botões e `tailwind-merge` 3. As cores com `/10`
       passaram a funcionar (no 3 elas não geravam nada com tokens em `var()`), o que dá fundo ao selo do Hero
-- [ ] 5.3 Capturas sem diferença perceptível em claro e escuro, 1440 e 390. A dona confere no navegador
+- [x] 5.3 Capturas sem diferença perceptível em claro e escuro, 1440 e 390. A dona confere no navegador
 
 ## 6. Formulário de contato seguro
 

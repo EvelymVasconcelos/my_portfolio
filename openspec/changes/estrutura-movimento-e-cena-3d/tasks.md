@@ -40,17 +40,19 @@ layout.
 
 ## 2. Identidade visual no código
 
-- [ ] 2.1 Tokens da paleta escolhida em `@theme` de `app/globals.css`, com os nomes da referência, nos dois temas e na
+- [x] 2.1 Tokens da paleta escolhida em `@theme` de `app/globals.css`, com os nomes da referência, nos dois temas e na
       `band-invert`, e as utilidades de layout da referência (`container-site`, faixas, escala tipográfica), sem cor literal
       nos componentes
-- [ ] 2.2 `tests/contrast.test.ts` com os pares de texto/fundo e de borda/fundo declarados num arquivo só, falhando abaixo
-      de 4,5:1 e 3:1
-- [ ] 2.3 Bricolage Grotesque, Instrument Sans e JetBrains Mono por `next/font`, como na referência (subconjunto latino,
-      `display: swap`), e medição do peso no build (até 140 KB)
-- [ ] 2.4 Tema escuro como inicial no script de tema da fundação, aplicado antes da primeira pintura e mantido na troca
+- [x] 2.2 `tests/unit/contrast.test.ts` (pasta que o Vitest lê) com os pares de texto/fundo e de borda/fundo
+      declarados num arquivo só, falhando abaixo de 4,5:1 e 3:1. A orquídea (`--accent-2`) dá 2,97:1 sobre `--surface` no escuro: lá ela só entra como
+      decoração; o teste cobra 3:1 sobre `--bg`. O mesmo teste reprova hex ou rgb literal em componentes
+- [x] 2.3 Bricolage Grotesque, Instrument Sans e JetBrains Mono por `next/font`, como na referência (subconjunto latino,
+      `display: swap`), e medição do peso no build (até 140 KB). Medido em 2026-11-19: 104,3 KB pré-carregados e
+      134,9 KB baixados ao abrir `/pt` (a mono entra logo depois), em 3 arquivos
+- [x] 2.4 Tema escuro como inicial no script de tema da fundação, aplicado antes da primeira pintura e mantido na troca
       de idioma (lições da D7), com testes de hidratação nos dois temas, de primeira visita com o sistema em modo claro
-      (abre escuro) e de troca de idioma com o tema salvo
-- [ ] 2.5 Atualizar as capturas de referência de propósito (identidade nova) e registrar o motivo no commit
+      (abre escuro) e de troca de idioma com o tema salvo (`tests/e2e/tema.spec.ts`)
+- [x] 2.5 Atualizar as capturas de referência de propósito (identidade nova) e registrar o motivo no commit
 - [ ] 2.6 `npm run lint`, `npm run typecheck`, `npm test` e `npm run build` passando. A dona confere `/pt` nos dois
       temas no navegador
 

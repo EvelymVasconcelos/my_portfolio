@@ -49,7 +49,7 @@ export const Projects = () => {
       : projects.filter((p) => p.category === activeFilter);
 
   return (
-    <section id="projects" aria-label={t("label")} className="relative py-28">
+    <section id="projects" aria-label={t("label")} className="relative isolate py-28">
       <SectionDivider />
 
       <div className="container-content section-padding">
@@ -58,8 +58,8 @@ export const Projects = () => {
         <FadeInView className="mb-12 flex flex-col items-center text-center gap-2">
           {/* Samsung section label — uppercase, sem pílula */}
           <Badge variant="section">{t("label")}</Badge>
-          <h2 className="font-display text-h1 font-bold text-text-primary">{t("title")}</h2>
-          <p className="max-w-md text-body text-text-secondary">{t("subtitle")}</p>
+          <h2 className="font-display text-h1 font-bold text-text">{t("title")}</h2>
+          <p className="max-w-md text-body text-text-2">{t("subtitle")}</p>
         </FadeInView>
 
         {/* ── Filter tabs — Samsung segmented control ── */}
@@ -67,7 +67,7 @@ export const Projects = () => {
           <div
             role="tablist"
             aria-label={t("filter_aria_label")}
-            className="flex items-center gap-0.5 rounded-xs border border-border bg-surface p-0.5 shadow-samsung-sm"
+            className="flex items-center gap-0.5 rounded-xs border border-line bg-surface-2 p-0.5 shadow-soft-sm"
           >
             {filters.map(({ key, label }) => (
               <button
@@ -77,16 +77,16 @@ export const Projects = () => {
                 onClick={() => setActiveFilter(key)}
                 className={cn(
                   "relative rounded-xs px-4 py-1.5 text-caption font-medium transition-colors duration-150",
-                  "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary",
+                  "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-focus",
                   activeFilter === key
-                    ? "text-white"
-                    : "text-text-secondary hover:text-text-primary"
+                    ? "text-on-accent"
+                    : "text-text-2 hover:text-text"
                 )}
               >
                 {activeFilter === key && (
                   <motion.span
                     layoutId="filter-pill"
-                    className="absolute inset-0 rounded-xs bg-accent-primary"
+                    className="absolute inset-0 rounded-xs bg-accent"
                     transition={{ type: "spring", stiffness: 400, damping: 32 }}
                   />
                 )}
@@ -130,14 +130,14 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       <div
         className={cn(
           "group flex h-full flex-col overflow-hidden rounded-md",
-          "border border-border bg-surface-elevated",
-          "shadow-samsung-sm",
+          "border border-line bg-surface",
+          "shadow-soft-sm",
           "transition-all duration-200",
-          "hover:border-accent-primary/30 hover:shadow-samsung-lg"
+          "hover:border-accent/30 hover:shadow-soft-lg"
         )}
       >
         {/* ── Imagem — limpa, sem overlay (Samsung) ── */}
-        <div className="relative h-44 w-full overflow-hidden bg-surface">
+        <div className="relative h-44 w-full overflow-hidden bg-surface-2">
           <Image
             src={project.image}
             alt={`Imagem do projeto ${project.title}`}
@@ -151,17 +151,17 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
         <div className="flex flex-1 flex-col gap-3 p-5">
 
           {/* Categoria — texto pequeno Samsung, acima do título */}
-          <span className="text-label uppercase tracking-widest text-accent-primary font-semibold">
+          <span className="text-label uppercase tracking-widest text-accent-text font-semibold">
             {project.category}
           </span>
 
           {/* Título */}
-          <h3 className="font-display text-h3 font-bold text-text-primary leading-snug">
+          <h3 className="font-display text-h3 font-bold text-text leading-snug">
             {project.title}
           </h3>
 
           {/* Descrição */}
-          <p className="flex-1 text-caption leading-relaxed text-text-secondary">
+          <p className="flex-1 text-caption leading-relaxed text-text-2">
             {project.description}
           </p>
 
@@ -176,7 +176,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
           {/* Links */}
           {(project.github || project.live) && (
-            <div className="flex items-center gap-2 border-t border-border pt-3">
+            <div className="flex items-center gap-2 border-t border-line pt-3">
               {project.github && (
                 <a
                   href={project.github}
@@ -185,9 +185,9 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                   aria-label={`${t("github_label")} — ${project.title}`}
                   className={cn(
                     "flex items-center gap-1.5 rounded-xs px-3 py-1.5 text-caption font-medium",
-                    "text-text-secondary hover:text-text-primary hover:bg-surface",
+                    "text-text-2 hover:text-text hover:bg-surface-2",
                     "transition-colors duration-150",
-                    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary"
+                    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-focus"
                   )}
                 >
                   <GithubIcon className="h-3.5 w-3.5" />
@@ -202,9 +202,9 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                   aria-label={`${t("live_label")} — ${project.title}`}
                   className={cn(
                     "flex items-center gap-1.5 rounded-xs px-3 py-1.5 text-caption font-medium",
-                    "text-accent-primary hover:bg-accent-primary/10",
+                    "text-accent-text hover:bg-accent/10",
                     "transition-colors duration-150",
-                    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary"
+                    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-focus"
                   )}
                 >
                   <ExternalLink className="h-3.5 w-3.5" aria-hidden />

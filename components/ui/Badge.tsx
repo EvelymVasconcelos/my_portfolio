@@ -17,35 +17,35 @@ const badgeVariants = cva(
         // ── Samsung section label — sem pílula, sem borda ──
         // Uso: antes de <h2> para identificar a seção (COMPETÊNCIAS, PROJETOS…)
         section:
-          "text-accent-primary text-label uppercase tracking-widest",
+          "text-accent-text text-label uppercase tracking-widest",
 
         // ── Samsung chip neutro ──
         default:
-          "rounded-xs border border-border bg-surface text-text-secondary",
+          "rounded-xs border border-line bg-surface-2 text-text-2",
 
         // ── Chip lilás (skills, filtros ativos) ──
         primary:
-          "rounded-xs border border-accent-primary/20 bg-accent-primary/10 text-accent-primary",
+          "rounded-xs border border-accent/20 bg-accent/10 text-accent-text",
 
         // ── Chip lilás claro ──
         secondary:
-          "rounded-xs border border-accent-secondary/20 bg-accent-secondary/10 text-accent-secondary",
+          "rounded-xs border border-accent-2/20 bg-accent-2/10 text-accent-2-text",
 
         // ── Status: disponível ──
         success:
-          "rounded-full border border-accent-success/20 bg-accent-success/10 text-accent-success",
+          "rounded-full border border-ok/20 bg-ok/10 text-ok",
 
         // ── Atenção ──
         warning:
-          "rounded-xs border border-accent-warning/20 bg-accent-warning/10 text-accent-warning",
+          "rounded-xs border border-accent-2/20 bg-accent-2/10 text-accent-2-text",
 
         // ── Erro / Danger ──
         danger:
-          "rounded-xs border border-accent-danger/20 bg-accent-danger/10 text-accent-danger",
+          "rounded-xs border border-danger/20 bg-danger/10 text-danger",
 
         // ── Só borda ──
         outline:
-          "rounded-xs border border-border bg-transparent text-text-secondary",
+          "rounded-xs border border-line bg-transparent text-text-2",
       },
       size: {
         sm: "px-1.5 py-0.5 text-[0.65rem]",

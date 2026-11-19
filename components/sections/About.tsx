@@ -45,7 +45,7 @@ export function About() {
     <section
       id="about"
       aria-label={t("label")}
-      className="relative py-28 overflow-hidden"
+      className="relative isolate py-28 overflow-hidden"
     >
       <SectionDivider />
 
@@ -54,7 +54,7 @@ export function About() {
         {/* Section header */}
         <FadeInView className="mb-16 flex flex-col items-center text-center gap-2">
           <Badge variant="section">{t("label")}</Badge>
-          <h2 className="font-display text-h1 font-bold text-text-primary">
+          <h2 className="font-display text-h1 font-bold text-text">
             {t("title")}
           </h2>
         </FadeInView>
@@ -66,8 +66,8 @@ export function About() {
 
             {/* Photo + info card */}
             <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-              <div className="relative shrink-0">
-                <div className="h-36 w-36 overflow-hidden rounded-full border-2 border-accent-primary/20 ring-4 ring-accent-primary/10">
+              <div className="relative isolate shrink-0">
+                <div className="h-36 w-36 overflow-hidden rounded-full border-2 border-accent/20 ring-4 ring-accent/10">
                   {/* TODO: replace with real photo */}
                   <Image
                     src="/images/profile.jpeg"
@@ -80,16 +80,16 @@ export function About() {
                 </div>
                 <div
                   aria-hidden
-                  className="absolute inset-0 -z-10 rounded-full bg-accent-primary/20 blur-2xl"
+                  className="absolute inset-0 -z-10 rounded-full bg-accent/20 blur-2xl"
                 />
               </div>
 
               <div className="flex flex-col gap-3 text-center sm:text-left">
                 <div>
-                  <p className="font-display text-h3 font-bold text-text-primary">
+                  <p className="font-display text-h3 font-bold text-text">
                     Evelym Marinho
                   </p>
-                  <p className="text-body text-text-secondary">
+                  <p className="text-body text-text-2">
                     Backend Software Engineer Pleno
                   </p>
                 </div>
@@ -101,8 +101,8 @@ export function About() {
                   </Badge>
                   <Badge variant="success" size="sm" className="gap-1.5">
                     <span className="relative flex h-1.5 w-1.5" aria-hidden>
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-success opacity-75" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent-success" />
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ok opacity-75" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-ok" />
                     </span>
                     {t("available")}
                   </Badge>
@@ -118,10 +118,10 @@ export function About() {
 
             {/* Bio */}
             <div className="flex flex-col gap-4">
-              <p className="text-body-lg leading-relaxed text-text-secondary">
+              <p className="text-body-lg leading-relaxed text-text-2">
                 {t("bio_1")}
               </p>
-              <p className="text-body leading-relaxed text-text-muted">
+              <p className="text-body leading-relaxed text-text-3">
                 {t("bio_2")}
               </p>
             </div>
@@ -129,7 +129,7 @@ export function About() {
 
           {/* ── Right: skills ── */}
           <FadeInView direction="left" className="flex flex-col gap-5">
-            <p className="text-caption font-semibold uppercase tracking-widest text-text-muted">
+            <p className="text-caption font-semibold uppercase tracking-widest text-text-3">
               {t("skills_title")}
             </p>
 
@@ -140,15 +140,15 @@ export function About() {
                   <div
                     key={key}
                     className={cn(
-                      "card-samsung rounded-md p-4",
-                      "transition-all duration-200 hover:border-accent-primary/30"
+                      "card-soft rounded-md p-4",
+                      "transition-all duration-200 hover:border-accent/30"
                     )}
                   >
                     <div className="mb-3 flex items-center gap-2">
-                      <div className="flex h-6 w-6 items-center justify-center rounded-md bg-accent-primary/10">
-                        {Icon && <Icon className="h-3.5 w-3.5 text-accent-primary" aria-hidden />}
+                      <div className="flex h-6 w-6 items-center justify-center rounded-md bg-accent/10">
+                        {Icon && <Icon className="h-3.5 w-3.5 text-accent-text" aria-hidden />}
                       </div>
-                      <span className="text-caption font-semibold text-text-primary">
+                      <span className="text-caption font-semibold text-text">
                         {group.label}
                       </span>
                     </div>
@@ -158,7 +158,7 @@ export function About() {
                         <Badge key={item.name} variant="default" size="sm" className="gap-1">
                           {item.name}
                           {item.level && (
-                            <span className="ml-1 text-[0.6rem] font-semibold uppercase text-accent-primary">
+                            <span className="ml-1 text-[0.6rem] font-semibold uppercase text-accent-text">
                               {item.level}
                             </span>
                           )}

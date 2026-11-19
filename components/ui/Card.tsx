@@ -24,17 +24,17 @@ export function Card({
         "rounded-md overflow-hidden",
         // solid — white card with Samsung-style blue-tinted shadow
         variant === "solid" && [
-          "bg-surface-elevated border border-border",
-          "shadow-samsung-sm",
+          "bg-surface border border-line",
+          "shadow-soft-sm",
         ],
         // outline — just border, transparent background
-        variant === "outline" && "border border-border bg-transparent",
+        variant === "outline" && "border border-line bg-transparent",
         // flat — no border, no shadow, just background
-        variant === "flat" && "bg-surface",
+        variant === "flat" && "bg-surface-2",
         // hoverable — border + shadow deepen toward Samsung Blue
         hoverable && [
           "cursor-pointer transition-all duration-200",
-          "hover:border-accent-primary/30 hover:shadow-samsung-lg",
+          "hover:border-accent/30 hover:shadow-soft-lg",
         ],
         className
       )}

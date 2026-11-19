@@ -27,13 +27,13 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border bg-surface">
+    <footer className="border-t border-line bg-surface-2">
       <div className="container-content section-padding py-10">
         <div className="flex flex-col items-center gap-6 md:flex-row md:justify-between">
 
           {/* Left: brand + made with */}
           <div className="flex flex-col items-center gap-1 md:items-start">
-            <div className="flex items-center gap-2 text-caption text-text-muted">
+            <div className="flex items-center gap-2 text-caption text-text-3">
               <span>{t("made_with")}</span>
               <span aria-label="amor" role="img">♥</span>
               <span>{t("and")}</span>
@@ -41,14 +41,14 @@ export const Footer = () => {
                 {TECH_STACK.map((tech) => (
                   <span
                     key={tech}
-                    className="rounded-sm bg-surface-elevated border border-border px-1.5 py-0.5 text-[0.65rem] font-medium text-text-secondary"
+                    className="rounded-sm bg-surface border border-line px-1.5 py-0.5 text-[0.65rem] font-medium text-text-2"
                   >
                     {tech}
                   </span>
                 ))}
               </div>
             </div>
-            <p className="text-caption text-text-muted">
+            <p className="text-caption text-text-3">
               © {currentYear} Evelym Marinho. {t("rights")}
             </p>
           </div>
@@ -64,15 +64,15 @@ export const Footer = () => {
                 aria-label={`${label} — abre em nova aba`}
                 className={cn(
                   "flex h-8 w-8 items-center justify-center rounded-md",
-                  "text-text-muted hover:text-text-primary hover:bg-surface-elevated",
+                  "text-text-3 hover:text-text hover:bg-surface",
                   "transition-colors duration-200",
-                  "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary"
+                  "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-focus"
                 )}
               >
                 <Icon className="h-4 w-4" />
               </a>
             ))}
-            <div className="ml-2 border-l border-border pl-2">
+            <div className="ml-2 border-l border-line pl-2">
               <BackToTop />
             </div>
           </div>
