@@ -3,6 +3,17 @@
    cluster, onde eles acendem como serviços rodando. O ciclo de build e testes é contínuo; a viagem da balsa é a rolagem.
    Nada é alocado dentro do update. */
 window.CENAS = window.CENAS || {};
+window.CENAS_INFO = window.CENAS_INFO || {};
+window.CENAS_INFO.c = {
+  legenda: "Do código à produção: tudo passa por testes automáticos, e só o que é aprovado chega a quem usa o sistema.",
+  etapas: [[0, "O código vira container e passa pelos testes"], [0.1, "A versão aprovada está a caminho da produção"], [0.88, "Versão nova no ar, atendendo os usuários"]],
+  rotulos: [
+    { t: "Código vira container", s: "empacotado para rodar em qualquer lugar", lado: "esq" },
+    { t: "Testes automáticos", s: "o que falha fica vermelho e volta", lado: "dir" },
+    { t: "Versão aprovada", s: "a caminho da produção", lado: "dir" },
+    { t: "Produção", s: "onde o sistema atende os usuários", lado: "esq" }
+  ]
+};
 window.CENAS.c = function (lib, k) {
   var THREE = lib.THREE, K = window.CenaKit, RB = lib.RoundedBoxGeometry, root = new THREE.Group(); k.scene.add(root);
   var tingeLuz = K.luzes(THREE, k.scene);
@@ -48,19 +59,21 @@ window.CENAS.c = function (lib, k) {
   var cAprov = new THREE.Color(), cFalha = new THREE.Color(), cNovo = new THREE.Color(), tmp = new THREE.Object3D(), olha = new THREE.Vector3();
   var luzOn = new THREE.Color(), luzOff = new THREE.Color();
 
+  var rot = [new THREE.Vector3(-7.4, 1.1, 0), new THREE.Vector3(PX + 0.6, 2.3, 0), new THREE.Vector3(), new THREE.Vector3(7.0, 0.6, 0)];
   return {
+    rotulos: rot,
     colors: function (c) {
       tingeLuz(c);
       mAgua.color.set(c.escuro ? c.bg : c["surface-2"]); mCais.color.set(c.escuro ? c["surface-2"] : c.surface);
       mFerro.color.set(c.escuro ? c.muted : c.border); mPortal.color.set(c.surface); mPortal.emissive.set(c["accent-fill"]); mLaser.color.set(c.accent);
-      mBloco.color.set(c.accent); mBloco.emissive.set(c["accent-fill"]);
+      mBloco.color.set(c.accent2 || c.accent); mBloco.emissive.set(c.accent2 || c["accent-fill"]); mLaser.color.set(c.accent2 || c.accent);
       cNovo.set(c.escuro ? c.border : c["surface-2"]); cAprov.set(c["accent-fill"]); cFalha.set(c.fail);
       mCasco.color.set(c.escuro ? c.surface : c.text); mAprov.color.set(c["accent-fill"]); mAprov.emissive.set(c["accent-fill"]);
       mServ.color.set(c.escuro ? c["surface-2"] : c.surface); luzOn.set(c.ok); luzOff.set(c.escuro ? c.border : c["surface-2"]); mLuz.color.copy(luzOff);
     },
     update: function (dt, t, p, ptr) {
       // Ciclo de build e testes (7 s); a cada terceiro ciclo o container falha no portal e volta
-      var T = 7, ciclo = Math.floor(t / T), u = (t % T) / T, falha = ciclo % 3 === 2;
+      var T = 12, ciclo = Math.floor(t / T), u = (t % T) / T, falha = ciclo % 3 === 2;
       var monta = K.smooth(0, 0.28, u), leva = K.smooth(0.3, 0.62, u), volta = falha ? K.smooth(0.7, 0.92, u) : 0, some = K.smooth(0.92, 1, u);
       for (var i = 0; i < B; i++) {
         tmp.position.lerpVectors(bOrig[i], PAD, monta); tmp.position.y += Math.sin(monta * Math.PI) * 0.3;
@@ -79,6 +92,7 @@ window.CENAS.c = function (lib, k) {
       // Viagem da balsa: conduzida pela rolagem
       var viagem = K.smooth(0.08, 0.88, p);
       balsa.position.set(-1.9 + viagem * 5.4, -0.42 + Math.sin(t * 1.4) * 0.04, 2.6 - viagem * 0.6); balsa.rotation.z = Math.sin(t * 1.1) * 0.015;
+      rot[2].copy(balsa.position); rot[2].x += 1.9; rot[2].y += 0.5;
       var chegou = K.smooth(0.84, 0.98, p);
       for (i = 0; i < 3; i++) { carga[i].visible = chegou < 0.5; }
       mLuz.color.copy(luzOff).lerp(luzOn, chegou); mLuz.emissive.copy(luzOn); mLuz.emissiveIntensity = chegou * (1.4 + Math.sin(t * 3) * 0.2);

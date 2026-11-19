@@ -2,6 +2,19 @@
    história: deploy gradual (os pods trocam de v1 para v2, um por vez, com o anel de prontidão), falha do nó 3 (os pods
    dele são reagendados nos outros) e autoescala (pods novos para o pico). Nada é alocado dentro do update. */
 window.CENAS = window.CENAS || {};
+window.CENAS_INFO = window.CENAS_INFO || {};
+window.CENAS_INFO.b = {
+  legenda: "Cada ponto rosa é um acesso chegando; a entrada distribui os acessos entre as cópias do serviço (as cápsulas).",
+  etapas: [[0, "Sistema no ar: três servidores atendendo"], [0.05, "Atualização gradual: cada cópia vira a versão nova (roxa), uma de cada vez, sem parar o site"],
+           [0.37, "Um servidor caiu (vermelho): as cópias dele renascem nos outros, sozinhas"], [0.68, "Pico de acessos: o sistema cria mais cópias automaticamente"]],
+  rotulos: [
+    { t: "Entrada", s: "por onde chegam os acessos", lado: "dir" },
+    { t: "Servidor 1", s: "uma máquina do cluster", lado: "esq" },
+    { t: "Servidor 2", s: "", lado: "esq" },
+    { t: "Servidor 3", s: "", lado: "dir" },
+    { t: "Cópias do serviço", s: "chamadas de pods", lado: "esq" }
+  ]
+};
 window.CENAS.b = function (lib, k) {
   var THREE = lib.THREE, K = window.CenaKit, RB = lib.RoundedBoxGeometry, root = new THREE.Group(); k.scene.add(root);
   var tingeLuz = K.luzes(THREE, k.scene);
@@ -34,14 +47,16 @@ window.CENAS.b = function (lib, k) {
   for (i = 0; i < P; i++) pos.push(new THREE.Vector3());
   var c = null;
 
+  var rot = [new THREE.Vector3(1.1, -0.3, 4.1), new THREE.Vector3(-4.9, -0.3, 2.4), new THREE.Vector3(-1.5, -0.3, 2.4), new THREE.Vector3(4.9, -0.3, 2.4), new THREE.Vector3()];
   return {
+    rotulos: rot,
     colors: function (cl) {
       c = cl; tingeLuz(cl);
       mBase.color.set(cl.escuro ? cl.surface : cl["surface-2"]);
       mNoCor.set(cl.escuro ? cl["surface-2"] : cl.surface); mFalha.set(cl.fail);
       cV1.set(cl.escuro ? cl.muted : cl.border); cV2.set(cl["accent-fill"]);
       mAnel.color.set(cl.ok); mEntrada.color.set(cl.surface); mEntrada.emissive.set(cl["accent-fill"]);
-      trafego.material.color.set(cl.accent); trafego.material.emissive.set(cl["accent-fill"]);
+      trafego.material.color.set(cl.accent2 || cl.accent); trafego.material.emissive.set(cl.accent2 || cl["accent-fill"]);
     },
     update: function (dt, t, p, ptr) {
       var rolar = K.smooth(0.05, 0.36, p) * 9, falha = K.smooth(0.38, 0.62, p), escala = K.smooth(0.68, 0.95, p) * 3;
@@ -66,13 +81,14 @@ window.CENAS.b = function (lib, k) {
       pods.instanceMatrix.needsUpdate = true; pods.instanceColor.needsUpdate = true; aneis.instanceMatrix.needsUpdate = true;
       // tráfego: da entrada até um pod ativo (desvia do nó com falha; com a autoescala, usa os pods novos)
       for (i = 0; i < T; i++) {
-        tf[i] += dt * (0.55 + (i % 4) * 0.08);
+        tf[i] += dt * (0.24 + (i % 4) * 0.04);
         if (tf[i] >= 1) { tf[i] -= 1; var alvo = (i * 7 + Math.floor(t * 2)) % Math.max(1, ativos); if (falha > 0.5 && alvo >= 6 && alvo <= 8 && !RESGATE[alvo]) alvo = alvo % 6; tAlvo[i] = alvo; }
         alvoAtual.copy(pos[tAlvo[i]]); alvoAtual.y += 0.5;
         var f = tf[i]; tmp.position.lerpVectors(origem, alvoAtual, f); tmp.position.y += Math.sin(f * Math.PI) * 0.9;
         tmp.rotation.set(0, 0, 0); tmp.scale.setScalar(f > 0.96 ? 0.0001 : 1); tmp.updateMatrix(); trafego.setMatrixAt(i, tmp.matrix);
       }
       trafego.instanceMatrix.needsUpdate = true;
+      rot[4].copy(pos[0]); rot[4].x -= 0.4; rot[4].y += 0.7;
       var ang = -0.32 + p * 0.55 + ptr.x * 0.12;
       k.camera.position.set(Math.sin(ang) * 16.2, 9.2 - p * 1.6 - ptr.y * 0.8, Math.cos(ang) * 16.2);
       k.camera.lookAt(olha);

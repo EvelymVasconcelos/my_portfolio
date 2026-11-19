@@ -2,6 +2,19 @@
    dados. Requisições descem como luz e voltam com a resposta. Ao rolar, a câmera desce e um deploy azul-verde troca a
    camada de serviços (v1 sai para trás, v2 entra). Geometria procedural; nada é alocado dentro do update. */
 window.CENAS = window.CENAS || {};
+window.CENAS_INFO = window.CENAS_INFO || {};
+window.CENAS_INFO.a = {
+  legenda: "Cada ponto rosa é um pedido de alguém usando o sistema: ele desce até os dados e volta verde, com a resposta.",
+  etapas: [[0, "Sistema no ar, atendendo pedidos"], [0.4, "Deploy azul-verde: a versão nova (roxa) entra ao lado da antiga, sem tirar o site do ar"], [0.86, "Versão nova no ar, e a antiga sai"]],
+  rotulos: [
+    { t: "Interface", s: "o que a pessoa vê no site ou app", lado: "esq" },
+    { t: "Gateway", s: "porta de entrada: recebe e confere cada pedido", lado: "esq" },
+    { t: "Serviços", s: "partes do sistema, cada uma com uma tarefa", lado: "esq" },
+    { t: "Fila", s: "tarefas guardadas para fazer em seguida", lado: "esq" },
+    { t: "Banco de dados", s: "onde as informações ficam guardadas", lado: "esq" },
+    { t: "Cache", s: "memória rápida para respostas frequentes", lado: "dir" }
+  ]
+};
 window.CenaKit = {
   smooth: function (a, b, x) { var t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); },
   luzes: function (THREE, scene) {
@@ -77,7 +90,10 @@ window.CENAS.a = function (lib, k) {
   }
   var camDe = new THREE.Vector3(9.4, 6.4, 11.8), camAte = new THREE.Vector3(8.4, -0.9, 10.4), olhaDe = new THREE.Vector3(0, 0.7, 0), olhaAte = new THREE.Vector3(0, -1.3, 0), olha = new THREE.Vector3();
 
+  var rot = [new THREE.Vector3(-3.9, Y.ui, -0.4), new THREE.Vector3(-3.1, Y.gw, 0), new THREE.Vector3(-2.95, Y.sv, 0), new THREE.Vector3(-2.8, Y.fila, -0.7),
+             new THREE.Vector3(-2.3, Y.dados, 0), new THREE.Vector3(2.55, Y.dados, 0)];
   return {
+    rotulos: rot,
     colors: function (c) {
       tingeLuz(c); mAnel.color.set(c.accent);
       mSup.color.set(c.accent); mBorda.color.set(c.accent); mTela.color.set(c["surface-2"]); mTela.emissive.set(c["accent-fill"]);
@@ -86,7 +102,7 @@ window.CENAS.a = function (lib, k) {
       mTubo.color.set(c.accent); mMsg.color.set(c.accent); mMsg.emissive.set(c["accent-fill"]);
       mBanco.color.set(c.escuro ? c["surface-2"] : c.surface); mCache.color.set(c.escuro ? c.border : c["surface-2"]); mCache.emissive.set(c.ok);
       mFio.color.set(c.accent); reqs.material.color.set(c.accent); reqs.material.emissive.set(c["accent-fill"]);
-      cDesce.set(c.accent); cSobe.set(c.ok);
+      cDesce.set(c.accent2 || c.accent); cSobe.set(c.ok); reqs.material.color.set(c.accent2 || c.accent); reqs.material.emissive.set(c.accent2 || c["accent-fill"]);
     },
     update: function (dt, t, p, ptr) {
       deploy = K.smooth(0.45, 0.85, p);
@@ -95,10 +111,10 @@ window.CENAS.a = function (lib, k) {
         v2[i].position.z = 2.6 * (1 - K.smooth(0, 1, deploy * 1.25 - i * 0.08)); v2[i].visible = deploy > 0.01;
         v1[i].position.y = Y.sv + Math.sin(t * 1.3 + i) * 0.03; v2[i].position.y = v1[i].position.y;
       }
-      for (i = 0; i < MSG; i++) { tmp.position.set(-2.6 + ((t * 0.7 + i / MSG) % 1) * 5.2, Y.fila, -0.7); tmp.scale.setScalar(1); tmp.updateMatrix(); msgs.setMatrixAt(i, tmp.matrix); }
+      for (i = 0; i < MSG; i++) { tmp.position.set(-2.6 + ((t * 0.25 + i / MSG) % 1) * 5.2, Y.fila, -0.7); tmp.scale.setScalar(1); tmp.updateMatrix(); msgs.setMatrixAt(i, tmp.matrix); }
       msgs.instanceMatrix.needsUpdate = true;
       for (i = 0; i < N; i++) {
-        f[i] = (f[i] + dt * 0.11 * (1 + (i % 3) * 0.2)) % 1;
+        f[i] = (f[i] + dt * 0.045 * (1 + (i % 3) * 0.2)) % 1;
         var desce = posReq(i, tmp.position);
         if (tmp.position.y < Y.gw && tmp.position.y > Y.fila) tmp.position.z = (deploy > 0.5 ? v2[0].position.z : v1[0].position.z);
         tmp.scale.setScalar(1); tmp.updateMatrix(); reqs.setMatrixAt(i, tmp.matrix); reqs.setColorAt(i, desce ? cDesce : cSobe);
@@ -107,7 +123,8 @@ window.CENAS.a = function (lib, k) {
       var s = K.smooth(0, 1, p);
       k.camera.position.lerpVectors(camDe, camAte, s); k.camera.position.x += ptr.x * 0.8; k.camera.position.y -= ptr.y * 0.5;
       olha.lerpVectors(olhaDe, olhaAte, s); k.camera.lookAt(olha);
-      root.rotation.y = -0.18 + Math.sin(t * 0.15) * 0.04;
+      root.rotation.y = -0.18 + Math.sin(t * 0.08) * 0.03;
+      rot[2].set(-2.95, Y.sv, deploy > 0.5 ? v2[0].position.z : v1[0].position.z);
     }
   };
 };
