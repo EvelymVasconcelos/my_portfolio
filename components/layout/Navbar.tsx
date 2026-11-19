@@ -58,7 +58,7 @@ export function Navbar() {
           <a
             href="#main-content"
             aria-label="Evelym Marinho — Início"
-            className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-xs"
+            className="flex items-center gap-2.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary rounded-xs"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-xs bg-accent-primary text-white">
               <Terminal className="h-4 w-4" aria-hidden />
@@ -74,7 +74,7 @@ export function Navbar() {
               <li key={label}>
                 <a
                   href={href}
-                  className="px-3 py-2 text-body text-text-secondary transition-colors duration-150 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-xs"
+                  className="px-3 py-2 text-body text-text-secondary transition-colors duration-150 hover:text-accent-primary focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary rounded-xs"
                 >
                   {t(label)}
                 </a>

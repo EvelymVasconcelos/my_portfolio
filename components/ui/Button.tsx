@@ -16,13 +16,13 @@ import type { ButtonHTMLAttributes } from "react";
 
 export const buttonVariants = cva(
   // Base: sem glow, sem scale, sem rounded generoso
-  "inline-flex items-center justify-center gap-2 rounded-xs font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-40 select-none",
+  "inline-flex items-center justify-center gap-2 rounded-xs font-medium transition-colors duration-150 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-40 select-none",
   {
     variants: {
       variant: {
         // Lilac sólido — texto SEMPRE branco, nunca herdar cor do tema
         primary:
-          "bg-accent-primary !text-white hover:bg-[var(--accent-primary-hover)]",
+          "bg-accent-primary text-white! hover:bg-(--accent-primary-hover)",
 
         // Samsung "Read More" / "Download CV" style:
         // Fundo branco, borda fina cinza, texto escuro.

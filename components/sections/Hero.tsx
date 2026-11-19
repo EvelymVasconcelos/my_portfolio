@@ -74,7 +74,7 @@ export function Hero() {
           }}
         />
         <div className="absolute inset-x-0 top-0 h-0.5 bg-accent-primary opacity-80" />
-        <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-accent-primary/[0.04] to-transparent" />
+        <div className="absolute right-0 top-0 h-full w-1/3 bg-linear-to-l from-accent-primary/4 to-transparent" />
 
         {/* ── FAR layer — big shapes, least movement ── */}
         <motion.div style={{ x: farX, y: farY }} className="absolute inset-0">
@@ -246,7 +246,7 @@ export function Hero() {
             </FadeInView>
 
             <FadeInView delay={0.25}>
-              <div className="min-h-[2rem] overflow-hidden sm:min-h-[2.5rem]">
+              <div className="min-h-8 overflow-hidden sm:min-h-10">
                 <AnimatePresence mode="wait">
                   <motion.p
                     key={roleIndex}

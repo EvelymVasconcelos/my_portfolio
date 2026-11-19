@@ -46,17 +46,24 @@
 - [x] 4.6 Demais dependências diretas (Zod 4, `@hookform/resolvers`, `lucide-react`, `resend`, Prettier). O lucide 1.x
       removeu os ícones de marca: GitHub e LinkedIn viram componentes próprios, como o `DiscordIcon` que já existe
 - [x] 4.7 Trocar o next-themes pelo script de tema no `<head>` (D4), com teste de hidratação nos dois temas
-- [ ] 4.8 Lint, tipos, testes, capturas e build passando. A dona confere no navegador
+- [x] 4.8 Lint, tipos, testes, capturas e build passando. A dona confere no navegador
 
 ## 5. Tailwind CSS 4
 
-- [ ] 5.1 `@tailwindcss/upgrade`, tokens de `tailwind.config.ts` para `@theme` em `app/globals.css` e PostCSS com
+- [x] 5.1 `@tailwindcss/upgrade`, tokens de `tailwind.config.ts` para `@theme` em `app/globals.css` e PostCSS com
       `@tailwindcss/postcss`
-- [ ] 5.2 Revisar as classes que mudaram de comportamento (borda padrão, sombras, opacidade com `/`) e o plugin do
-      Prettier
+- [x] 5.2 Revisar as classes que mudaram de comportamento (borda padrão, sombras, opacidade com `/`) e o plugin do
+      Prettier. Ajustes à mão depois do codemod: `@theme inline` (as fontes do next/font ficam no `<body>`, e sem
+      `inline` os títulos caíam na fonte do sistema), tokens fora de `@layer`, `variant="outline"` do `Card` restaurado
+      (o codemod trocou por `outline-solid`), cursor de mãozinha nos botões e `tailwind-merge` 3. As cores com `/10`
+      passaram a funcionar (no 3 elas não geravam nada com tokens em `var()`), o que dá fundo ao selo do Hero
 - [ ] 5.3 Capturas sem diferença perceptível em claro e escuro, 1440 e 390. A dona confere no navegador
 
 ## 6. Formulário de contato seguro
+
+> Ordem revisada em 2026-11-19 (decisão da dona): depois do bloco 5, o trabalho segue na change
+> `estrutura-movimento-e-cena-3d` a partir do bloco 2, para o visual novo aparecer antes. Os blocos 6 a 8 desta change
+> não mexem na aparência e voltam antes de publicar.
 
 - [ ] 6.1 `lib/contact/schema.ts` com Zod 4 e códigos de erro, usado pelo cliente e pelo servidor (D6), com testes
 - [ ] 6.2 `escapeHtml`, limpeza do assunto e testes (incluindo `<script>` e quebra de linha com `Bcc:`)

@@ -66,7 +66,7 @@ export const Footer = () => {
                   "flex h-8 w-8 items-center justify-center rounded-md",
                   "text-text-muted hover:text-text-primary hover:bg-surface-elevated",
                   "transition-colors duration-200",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
+                  "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary"
                 )}
               >
                 <Icon className="h-4 w-4" />

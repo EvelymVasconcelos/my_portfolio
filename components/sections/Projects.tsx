@@ -77,7 +77,7 @@ export const Projects = () => {
                 onClick={() => setActiveFilter(key)}
                 className={cn(
                   "relative rounded-xs px-4 py-1.5 text-caption font-medium transition-colors duration-150",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary",
+                  "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary",
                   activeFilter === key
                     ? "text-white"
                     : "text-text-secondary hover:text-text-primary"
@@ -187,7 +187,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                     "flex items-center gap-1.5 rounded-xs px-3 py-1.5 text-caption font-medium",
                     "text-text-secondary hover:text-text-primary hover:bg-surface",
                     "transition-colors duration-150",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
+                    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary"
                   )}
                 >
                   <GithubIcon className="h-3.5 w-3.5" />
@@ -204,7 +204,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                     "flex items-center gap-1.5 rounded-xs px-3 py-1.5 text-caption font-medium",
                     "text-accent-primary hover:bg-accent-primary/10",
                     "transition-colors duration-150",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
+                    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary"
                   )}
                 >
                   <ExternalLink className="h-3.5 w-3.5" aria-hidden />

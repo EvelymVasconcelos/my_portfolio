@@ -63,7 +63,7 @@ export function LanguageSwitcher() {
         className={cn(
           "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-caption font-medium",
           "text-text-secondary hover:text-text-primary hover:bg-surface-elevated",
-          "transition-colors duration-200 outline-none",
+          "transition-colors duration-200 outline-hidden",
           "focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         )}
       >

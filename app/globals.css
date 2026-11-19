@@ -1,6 +1,252 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  `inline`: as classes recebem o valor direto (como no Tailwind 3), e não uma referência ao :root. Necessário porque
+  os tokens apontam para variáveis definidas em outros elementos: as fontes do next/font ficam no <body>.
+*/
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-teal: var(--accent-teal);
+  --color-accent-success: var(--accent-success);
+  --color-accent-warning: var(--accent-warning);
+  --color-accent-danger: var(--accent-danger);
+
+  --color-samsung-lilac: #6852d6;
+  --color-samsung-lilac-l: #9b7ae8;
+  --color-samsung-lilac-d: #5740c0;
+  --color-samsung-lilac-p: #a98aef;
+  --color-samsung-navy: #12172a;
+  --color-samsung-navy-d: #0a0e1a;
+
+  --font-sans: var(--font-roboto), Roboto, system-ui, sans-serif;
+  --font-display: var(--font-roboto-slab), Roboto Slab, Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-display: clamp(2.5rem, 5.5vw + 0.75rem, 4rem);
+  --text-display--line-height: 1.05;
+  --text-display--font-weight: 900;
+  --text-display--letter-spacing: -0.01em;
+  --text-h1: clamp(1.875rem, 3.5vw + 0.5rem, 2.75rem);
+  --text-h1--line-height: 1.1;
+  --text-h1--font-weight: 800;
+  --text-h1--letter-spacing: -0.01em;
+  --text-h2: clamp(1.375rem, 2vw + 0.5rem, 1.875rem);
+  --text-h2--line-height: 1.2;
+  --text-h2--font-weight: 700;
+  --text-h3: clamp(1.125rem, 1.5vw + 0.25rem, 1.3125rem);
+  --text-h3--line-height: 1.3;
+  --text-h3--font-weight: 700;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.75;
+  --text-body-lg--font-weight: 400;
+  --text-body: 1rem;
+  --text-body--line-height: 1.7;
+  --text-body--font-weight: 400;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.55;
+  --text-caption--font-weight: 400;
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1.4;
+  --text-label--font-weight: 600;
+  --text-label--letter-spacing: 0.08em;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+
+  --shadow-samsung-sm: 0 1px 4px rgba(104, 82, 214, 0.08);
+  --shadow-samsung-md: 0 2px 12px rgba(104, 82, 214, 0.1);
+  --shadow-samsung-lg: 0 4px 24px rgba(104, 82, 214, 0.14);
+  --shadow-samsung-xl: 0 8px 40px rgba(104, 82, 214, 0.18);
+  --shadow-dark-md: 0 2px 12px rgba(0, 0, 0, 0.4);
+  --shadow-dark-lg: 0 4px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow-lilac: 0 0 28px rgba(104, 82, 214, 0.22);
+  --shadow-glass: 0 2px 12px rgba(104, 82, 214, 0.08);
+  --shadow-glass-light: 0 2px 12px rgba(104, 82, 214, 0.06);
+  --shadow-glow-primary: 0 0 28px rgba(104, 82, 214, 0.2);
+  --shadow-glow-secondary: 0 0 28px rgba(155, 122, 232, 0.22);
+  --shadow-card:
+    0 1px 4px rgba(104, 82, 214, 0.06), 0 4px 16px rgba(104, 82, 214, 0.08);
+
+  --backdrop-blur-xs: 4px;
+
+  --animate-fade-in: fade-in 0.4s ease-out forwards;
+  --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
+  --animate-slide-in-right: slide-in-right 0.4s ease-out forwards;
+  --animate-slide-in-left: slide-in-left 0.4s ease-out forwards;
+  --animate-shimmer: shimmer 1.5s infinite;
+  --animate-bounce-slow: bounce-y 2s ease-in-out infinite;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes slide-in-right {
+    0% {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes slide-in-left {
+    0% {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes bounce-y {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+  @keyframes draw-line {
+    0% {
+      stroke-dashoffset: 1;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+/* ─── Utility Classes ──────────────────────────────────────────────────────── */
+
+@utility glass {
+  /* Samsung Card */
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@utility text-gradient {
+  /* Gradient Text — Samsung Blue */
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-secondary)
+  );
+}
+
+@utility border-gradient {
+  /* Samsung blue gradient border */
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      var(--accent-primary),
+      var(--accent-secondary)
+    );
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+  }
+}
+
+@utility section-padding {
+  /* Section padding */
+  @apply px-4 sm:px-6 lg:px-8;
+}
+
+@utility container-content {
+  /* Container width */
+  @apply mx-auto w-full max-w-6xl;
+}
+
+@utility card-samsung {
+  /* Samsung card style — lilac-tinted shadow */
+  @apply bg-surface-elevated border border-border rounded-md;
+  box-shadow: 0 2px 12px rgba(104, 82, 214, 0.08);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(104, 82, 214, 0.28);
+    box-shadow: 0 4px 24px rgba(104, 82, 214, 0.14);
+  }
+
+  .dark &:hover {
+    border-color: rgba(169, 138, 239, 0.35);
+    box-shadow: 0 4px 24px rgba(169, 138, 239, 0.12);
+  }
+}
 
 /* Fontes: Roboto e Roboto Slab vêm do next/font em app/[locale]/layout.tsx (o @import daqui era inválido e ignorado). */
 
@@ -9,65 +255,71 @@
 
 :root {
   /* ─── Light Mode (padrão) ─── */
-  --background:        #FFFFFF;
-  --surface:           #F5F6FA;
-  --surface-elevated:  #FFFFFF;
-  --border:            rgba(0, 0, 0, 0.10);
-  --border-strong:     rgba(0, 0, 0, 0.20);
+  --background: #ffffff;
+  --surface: #f5f6fa;
+  --surface-elevated: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(0, 0, 0, 0.2);
 
   /* Samsung Text */
-  --text-primary:      #12172A;   /* Samsung dark navy */
-  --text-secondary:    #4A4F66;
-  --text-muted:        #9EA3B8;
+  --text-primary: #12172a; /* Samsung dark navy */
+  --text-secondary: #4a4f66;
+  --text-muted: #9ea3b8;
 
   /* Samsung Lilac — cor principal do portfólio */
-  --accent-primary:       #6852D6;   /* Lilac Samsung — contraste 5.46:1 no branco ✓ AA */
-  --accent-primary-hover: #5740C0;   /* Lilac escuro no hover */
-  --accent-secondary:     #9B7AE8;   /* Lilac claro para highlights */
-  --accent-teal:          #00B4D8;   /* Teal para acentos secundários */
+  --accent-primary: #6852d6; /* Lilac Samsung — contraste 5.46:1 no branco ✓ AA */
+  --accent-primary-hover: #5740c0; /* Lilac escuro no hover */
+  --accent-secondary: #9b7ae8; /* Lilac claro para highlights */
+  --accent-teal: #00b4d8; /* Teal para acentos secundários */
 
   /* Status */
-  --accent-success: #00C853;
-  --accent-warning: #FFB300;
-  --accent-danger:  #D32F2F;
+  --accent-success: #00c853;
+  --accent-warning: #ffb300;
+  --accent-danger: #d32f2f;
 
   /* Glass / Elevation */
-  --glass-bg:     rgba(255, 255, 255, 0.80);
-  --glass-border: rgba(104, 82, 214, 0.10);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(104, 82, 214, 0.1);
   --glass-shadow: 0 2px 12px rgba(104, 82, 214, 0.08);
 }
 
 .dark {
   /* ─── Dark Mode — Navy profundo com toque púrpura ─── */
-  --background:        #0A0E1A;
-  --surface:           #12172A;
-  --surface-elevated:  #1C1830;   /* purple-navy: combina com o lilás */
-  --border:            rgba(255, 255, 255, 0.08);
-  --border-strong:     rgba(255, 255, 255, 0.16);
+  --background: #0a0e1a;
+  --surface: #12172a;
+  --surface-elevated: #1c1830; /* purple-navy: combina com o lilás */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
 
-  --text-primary:      #F0F2FF;
-  --text-secondary:    #9EA3C8;
-  --text-muted:        #5A6080;
+  --text-primary: #f0f2ff;
+  --text-secondary: #9ea3c8;
+  --text-muted: #5a6080;
 
   /* Lilac claro — mais legível no escuro */
-  --accent-primary:       #A98AEF;   /* Lilac claro — contraste 4.6:1 no navy ✓ AA */
-  --accent-primary-hover: #BBA4F5;
-  --accent-secondary:     #C4AEFF;   /* Lilac pastel para highlights */
-  --accent-teal:          #00B4D8;
+  --accent-primary: #a98aef; /* Lilac claro — contraste 4.6:1 no navy ✓ AA */
+  --accent-primary-hover: #bba4f5;
+  --accent-secondary: #c4aeff; /* Lilac pastel para highlights */
+  --accent-teal: #00b4d8;
 
-  --accent-success: #00E676;
-  --accent-warning: #FFD740;
-  --accent-danger:  #FF5252;
+  --accent-success: #00e676;
+  --accent-warning: #ffd740;
+  --accent-danger: #ff5252;
 
   /* Glass — Dark */
-  --glass-bg:     rgba(28, 24, 50, 0.80);
+  --glass-bg: rgba(28, 24, 50, 0.8);
   --glass-border: rgba(169, 138, 239, 0.12);
-  --glass-shadow: 0 4px 32px rgba(0, 0, 0, 0.40);
+  --glass-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* ─── Base Reset ────────────────────────────────────────────────────────────── */
 
 @layer base {
+  /* O Preflight do Tailwind 4 tirou a mãozinha dos botões; mantém o comportamento do Tailwind 3. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
   *,
   *::before,
   *::after {
@@ -87,11 +339,11 @@
 
   /* Focus visible ring — Accessibility (Samsung Blue) */
   :focus-visible {
-    @apply outline-none ring-2 ring-accent-primary ring-offset-2 ring-offset-background;
+    @apply outline-hidden ring-2 ring-accent-primary ring-offset-2 ring-offset-background;
   }
 
   :focus:not(:focus-visible) {
-    @apply outline-none;
+    @apply outline-hidden;
   }
 
   /* Scrollbar */
@@ -122,71 +374,6 @@
   .dark ::selection {
     background: rgba(45, 107, 244, 0.30);
     color: var(--text-primary);
-  }
-}
-
-/* ─── Utility Classes ──────────────────────────────────────────────────────── */
-
-@layer utilities {
-  /* Samsung Card */
-  .glass {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  /* Gradient Text — Samsung Blue */
-  .text-gradient {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  }
-
-  /* Samsung blue gradient border */
-  .border-gradient {
-    border: 1px solid transparent;
-    background-clip: padding-box;
-    position: relative;
-  }
-
-  .border-gradient::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    -webkit-mask-composite: xor;
-  }
-
-  /* Section padding */
-  .section-padding {
-    @apply px-4 sm:px-6 lg:px-8;
-  }
-
-  /* Container width */
-  .container-content {
-    @apply mx-auto w-full max-w-6xl;
-  }
-
-  /* Samsung card style — lilac-tinted shadow */
-  .card-samsung {
-    @apply bg-surface-elevated border border-border rounded-md;
-    box-shadow: 0 2px 12px rgba(104, 82, 214, 0.08);
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
-  }
-
-  .card-samsung:hover {
-    border-color: rgba(104, 82, 214, 0.28);
-    box-shadow: 0 4px 24px rgba(104, 82, 214, 0.14);
-  }
-
-  .dark .card-samsung:hover {
-    border-color: rgba(169, 138, 239, 0.35);
-    box-shadow: 0 4px 24px rgba(169, 138, 239, 0.12);
   }
 }
 

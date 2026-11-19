@@ -87,7 +87,7 @@ export const Contact = () => {
                     "card-samsung flex items-center gap-4 rounded-md px-5 py-4",
                     "text-text-secondary hover:text-text-primary",
                     "transition-all duration-200",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
+                    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-accent-primary"
                   )}
                 >
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent-primary/10">
