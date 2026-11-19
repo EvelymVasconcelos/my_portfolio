@@ -28,6 +28,7 @@ export async function Projects() {
 
         <article
           aria-labelledby={`project-${featured.id}`}
+          data-reveal="self"
           className="mt-16 flex flex-col gap-5 lg:mt-24 lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-16"
         >
           {/* No celular, o bloco de texto se desfaz (contents) para a imagem entrar logo após o título. */}
@@ -57,7 +58,7 @@ export async function Projects() {
         </article>
 
         <h3 className="mt-20 type-eyebrow lg:mt-28">{t("others_label")}</h3>
-        <ol className="mt-6 border-t border-line">
+        <ol data-reveal="children" className="mt-6 border-t border-line">
           {others.map((project, index) => {
             const title = item(project, "title");
             return (

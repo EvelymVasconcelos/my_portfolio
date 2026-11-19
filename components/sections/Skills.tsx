@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { getMessages, getTranslations } from "next-intl/server";
+import { CardGlow } from "@/components/motion/CardGlow";
 import { SKILL_GROUPS, TECH_SPRITE, type SkillGroupId } from "@/lib/content/skills";
 import { TECH_ICON_COLORS } from "@/lib/content/tech-icon-colors";
 
@@ -36,7 +37,7 @@ export async function Skills() {
         </p>
       </div>
 
-      <div className="tech-grid mt-10">
+      <div id="tech-grid" data-reveal="children" className="tech-grid mt-10">
         {SKILL_GROUPS.map((group) => {
           const { label, items } = about.skills[group.id];
           return (
@@ -79,6 +80,7 @@ export async function Skills() {
         <span className="font-semibold text-text">{t("skills_extra_label")}:</span>{" "}
         {t("skills_extra")}
       </p>
+      <CardGlow targetId="tech-grid" />
     </div>
   );
 }

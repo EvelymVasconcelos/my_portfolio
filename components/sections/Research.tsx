@@ -5,7 +5,7 @@ import { doiUrl, PUBLICATIONS } from "@/lib/content/research";
 
 /**
  * Pesquisa, de servidor: as publicações com o mesmo peso da Trajetória, uma por cartão (`.paper`), com o título
- * original no idioma em que foi publicado. A pilha presa à rolagem entra no bloco de movimento.
+ * original no idioma em que foi publicado. Os cartões se empilham presos à rolagem; o focado fica por cima.
  */
 export async function Research() {
   const t = await getTranslations("research");
@@ -19,7 +19,8 @@ export async function Research() {
           <p className="type-lead">{t("subtitle")}</p>
         </div>
 
-        <div className="pilha">
+        {/* Pilha presa à rolagem (components/motion/ScrollConductor.tsx); sem movimento, cartões em sequência. */}
+        <div className="pilha" data-scrub="stack">
           {PUBLICATIONS.map((pub, i) => {
             const item = (key: string) => t(`items.${pub.id}.${key}`);
             const has = (key: string) => t.has(`items.${pub.id}.${key}`);

@@ -89,27 +89,30 @@ layout.
       A comparação visual foi feita contra o protótipo da rodada 2, que copia o CSS da referência: rodar a referência
       criaria arquivos na pasta dela, que é só leitura. JS inicial de `/pt` medido: 289 kB gzip (framer-motion sai na
       4.9; Zod e react-hook-form no cliente, no bloco 6 da fundação)
-- [ ] 3.10 Lint, tipos, testes, capturas e build passando. A dona confere as três línguas, celular e computador
+- [x] 3.10 Lint, tipos, testes, capturas e build passando. A dona confere as três línguas, celular e computador
 
 ## 4. Movimento e rolagem
 
-- [ ] 4.1 `SplitText` e `MotionReady` como no Francisco: palavras separadas no servidor, nome acessível inteiro e estado
+- [x] 4.1 `SplitText` e `MotionReady` como no Francisco: palavras separadas no servidor, nome acessível inteiro e estado
       final no HTML (D5)
-- [ ] 4.2 Condutor de rolagem próprio (progresso de 0 a 1 em variável CSS, ativo só com cena presa na tela) com teste
+- [x] 4.2 Condutor de rolagem próprio (progresso de 0 a 1 em variável CSS, ativo só com cena presa na tela) com teste
       determinístico de ida e volta (D5)
-- [ ] 4.3 Sequência presa da arquitetura no fim de Sobre, portada do protótipo, com `position: sticky`, unidades `svh`,
+- [x] 4.3 Sequência presa da arquitetura no fim de Sobre, portada do protótipo, com `position: sticky`, unidades `svh`,
       lista simples com movimento reduzido e foco do teclado sem ficar preso (D4)
-- [ ] 4.4 Pilha de cartões (na seção escolhida no protótipo) e parallax de até 15%, com o cartão focado sempre por cima
-- [ ] 4.5 Transição circular do tema pela View Transitions API, nascendo no botão também pelo teclado, instantânea com
+- [x] 4.4 Pilha de cartões (na seção escolhida no protótipo) e parallax de até 15%, com o cartão focado sempre por cima
+- [x] 4.5 Transição circular do tema pela View Transitions API, nascendo no botão também pelo teclado, instantânea com
       movimento reduzido ou sem suporte
-- [ ] 4.6 Nome do Hero letra a letra, com a onda sob o ponteiro: modo de letras no `SplitText` e ilha `NameWave`, com
+- [x] 4.6 Nome do Hero letra a letra, com a onda sob o ponteiro: modo de letras no `SplitText` e ilha `NameWave`, com
       folga na máscara para não cortar curvas e pingos (D11)
-- [ ] 4.7 Luz que segue o ponteiro no fundo do Hero, com as formas reagindo à posição dele: variáveis CSS gravadas só
+- [x] 4.7 Luz que segue o ponteiro no fundo do Hero, com as formas reagindo à posição dele: variáveis CSS gravadas só
       enquanto o ponteiro se move (D11)
-- [ ] 4.8 Foto do Sobre com inclinação 3D e reflexo, e números dos fatos contando ao aparecer, com o valor final no HTML
+- [x] 4.8 Foto do Sobre com inclinação 3D e reflexo, e números dos fatos contando ao aparecer, com o valor final no HTML
       (D11)
-- [ ] 4.9 Remover o framer-motion e medir o JavaScript inicial da rota (meta: abaixo de 206 kB)
-- [ ] 4.10 Testes: unitários da onda e da inclinação (mudam com ponteiro fino, nada com movimento reduzido ou toque);
+- [x] 4.9 Remover o framer-motion e medir o JavaScript inicial da rota (meta: abaixo de 206 kB)
+      Medido em 2026-11-19: 289 → 252 kB gzip. **Meta ainda não atingida.** Cerca de 155 kB são React 19 e Next 16; o
+      maior peso restante do site é o Zod do formulário, que sai no bloco 6 da fundação (`zod/mini` ou regras próprias,
+      como na referência)
+- [x] 4.10 Testes: unitários da onda e da inclinação (mudam com ponteiro fino, nada com movimento reduzido ou toque);
       de navegador com `reducedMotion: 'reduce'` (nada preso, nada se move, conteúdo final, números no valor final), com
       teclado na sequência e na pilha, e com o leitor de tela nos títulos animados e no nome do Hero
 - [ ] 4.11 Lint, tipos, testes e build passando. A dona confere o Hero com o mouse, com movimento reduzido ligado de

@@ -1,5 +1,6 @@
 import { ArrowUpRight, CalendarClock, Download, Plus } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
+import { SectionHeading } from "@/components/sections/SectionHeading";
 import { buttonVariants } from "@/components/ui/Button";
 import { ContactForm } from "./ContactForm";
 import { AGENDA_URL, CHANNELS } from "@/lib/contact";
@@ -21,18 +22,18 @@ export async function Contact() {
   return (
     <section id="contact" aria-labelledby="contact-title" className="band-invert py-24 lg:py-40">
       <div className="container-site">
-        <p className="mb-5 type-eyebrow text-accent-text">
-          <span aria-hidden="true">06 · </span>
-          {t("label")}
-        </p>
-        <h2 id="contact-title" tabIndex={-1} className="type-giant text-text">
-          {t("title")}
-        </h2>
+        <SectionHeading
+          number="06"
+          label={t("label")}
+          id="contact-title"
+          title={t("title")}
+          size="giant"
+        />
         <p className="mt-6 type-lead">{t("subtitle")}</p>
 
         <div className="mt-14 grid gap-12 lg:mt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-20">
           <div className="flex flex-col gap-8">
-            <ul className="border-t border-line">
+            <ul data-reveal="children" className="border-t border-line">
               {CHANNELS.map((channel) => {
                 const external = !channel.href.startsWith("mailto:");
                 return (

@@ -32,6 +32,6 @@ export async function openStable(page: Page, path: string, theme: (typeof THEMES
     window.scrollTo(0, 0);
   });
   await page.waitForLoadState("networkidle");
-  // As entradas do framer-motion (FadeInView) terminam em até ~1 s depois de entrar na tela.
+  // As entradas (data-reveal, MotionReady) terminam em até ~1 s depois de entrar na tela.
   await page.waitForTimeout(1200);
 }

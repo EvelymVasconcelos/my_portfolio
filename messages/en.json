@@ -44,7 +44,7 @@
       "now_label": "Today",
       "now": "Backend at Sidia, since 2022",
       "research_label": "Research",
-      "research": "2 international papers"
+      "research": "<n>2</n> international papers"
     },
     "skills_title": "Skills",
     "skills_heading": "From request to deploy",
@@ -114,7 +114,46 @@
       }
     },
     "skills_extra_label": "Also",
-    "skills_extra": "technical leadership in API development, secure integration between APIs and interfaces, SQL query optimization, ETL processes for large volumes of data, and agile cycles."
+    "skills_extra": "technical leadership in API development, secure integration between APIs and interfaces, SQL query optimization, ETL processes for large volumes of data, and agile cycles.",
+    "sequence": {
+      "eyebrow": "How I work",
+      "title": "How I take a system to production",
+      "intro": "Scroll to build the architecture, one step at a time.",
+      "steps": {
+        "request": {
+          "title": "Request",
+          "text": "Scalable, highly available RESTful APIs with FastAPI and Django."
+        },
+        "services": {
+          "title": "Services",
+          "text": "Microservices in Python and Java, each with its own responsibility."
+        },
+        "data": {
+          "title": "Data",
+          "text": "PostgreSQL and MySQL, Redis and MongoDB, and ETL for large volumes of data."
+        },
+        "tests": {
+          "title": "Tests",
+          "text": "TDD and Pytest from the first line, and End-to-End tests in the pipeline."
+        },
+        "deploy": {
+          "title": "Deploy",
+          "text": "Docker, Kubernetes, and CI/CD with GitHub Actions all the way to production."
+        }
+      },
+      "diagram": {
+        "title": "Diagram: client, REST API, three services, queue, PostgreSQL and Redis, tests on every part, and the whole thing packaged in a container and delivered to a Kubernetes cluster in production.",
+        "client": "Client",
+        "api": "REST API",
+        "service": "service",
+        "queue": "Queue",
+        "queue_sub": "events · ETL",
+        "tests": "Tests",
+        "container": "Docker container",
+        "replicas": "replicas",
+        "production": "production"
+      }
+    }
   },
   "projects": {
     "label": "Projects",

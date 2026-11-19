@@ -27,7 +27,9 @@ vi.stubGlobal("IntersectionObserver", ObserverStub);
 vi.stubGlobal("ResizeObserver", ObserverStub);
 
 // Canvas sem contexto: o componente de partículas sai cedo, como num navegador sem canvas.
-HTMLCanvasElement.prototype.getContext = vi.fn(() => null) as unknown as typeof HTMLCanvasElement.prototype.getContext;
+HTMLCanvasElement.prototype.getContext = vi.fn(
+  () => null
+) as unknown as typeof HTMLCanvasElement.prototype.getContext;
 
 // next/image vira <img> simples: o otimizador de imagens não existe fora do Next.
 vi.mock("next/image", () => ({
@@ -44,8 +46,16 @@ vi.mock("next/image", () => ({
 // Fora do Next não existe o roteador do App Router. O next-intl 3 carrega "next/navigation" por require (CommonJS),
 // que o vi.mock não intercepta; por isso a simulação fica na navegação do próprio projeto (i18n/navigation.ts).
 vi.mock("@/i18n/navigation", () => ({
-  Link: ({ href, children, ...rest }: { href: string; children?: unknown }) => createElement("a", { href, ...rest }, children as never),
+  Link: ({ href, children, ...rest }: { href: string; children?: unknown }) =>
+    createElement("a", { href, ...rest }, children as never),
   usePathname: () => "/",
-  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), prefetch: vi.fn(), back: vi.fn(), forward: vi.fn(), refresh: vi.fn() }),
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+  }),
   redirect: vi.fn(),
 }));

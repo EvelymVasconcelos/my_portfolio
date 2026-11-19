@@ -1,5 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { AnchorFocus } from "@/components/layout/AnchorFocus";
+import { MotionReady } from "@/components/motion/MotionReady";
+import { ScrollConductor } from "@/components/motion/ScrollConductor";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Signature } from "@/components/layout/Signature";
@@ -27,6 +29,8 @@ export default async function HomePage({ params }: HomePageProps) {
     <>
       <Navbar logo={<Signature />} />
       <AnchorFocus />
+      <MotionReady />
+      <ScrollConductor />
 
       {/* `overflow-x: clip` (globals.css), e não `hidden`: `hidden` criaria um contêiner de rolagem e quebraria
           o `position: sticky` das áreas presas (lição do protótipo, D4). */}

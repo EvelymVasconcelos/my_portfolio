@@ -44,7 +44,7 @@
       "now_label": "Hoje",
       "now": "Backend no Sidia, desde 2022",
       "research_label": "Pesquisa",
-      "research": "2 artigos internacionais"
+      "research": "<n>2</n> artigos internacionais"
     },
     "skills_title": "Competências",
     "skills_heading": "Da requisição ao deploy",
@@ -114,7 +114,46 @@
       }
     },
     "skills_extra_label": "Também",
-    "skills_extra": "liderança técnica na criação de APIs, integração segura entre APIs e interfaces, otimização de consultas SQL, processos de ETL para grandes volumes de dados e ciclos ágeis."
+    "skills_extra": "liderança técnica na criação de APIs, integração segura entre APIs e interfaces, otimização de consultas SQL, processos de ETL para grandes volumes de dados e ciclos ágeis.",
+    "sequence": {
+      "eyebrow": "Como eu trabalho",
+      "title": "Como levo um sistema à produção",
+      "intro": "Role para montar a arquitetura, etapa por etapa.",
+      "steps": {
+        "request": {
+          "title": "Requisição",
+          "text": "APIs RESTful escaláveis e de alta disponibilidade, com FastAPI e Django."
+        },
+        "services": {
+          "title": "Serviços",
+          "text": "Microsserviços em Python e Java, cada um com sua responsabilidade."
+        },
+        "data": {
+          "title": "Dados",
+          "text": "PostgreSQL e MySQL, Redis e MongoDB, e ETL para grandes volumes de dados."
+        },
+        "tests": {
+          "title": "Testes",
+          "text": "TDD e Pytest desde a primeira linha, e testes End-to-End no pipeline."
+        },
+        "deploy": {
+          "title": "Deploy",
+          "text": "Docker, Kubernetes e CI/CD com GitHub Actions até a produção."
+        }
+      },
+      "diagram": {
+        "title": "Diagrama: cliente, API REST, três serviços, fila, PostgreSQL e Redis, testes em cada parte e o conjunto empacotado em container e entregue num cluster Kubernetes em produção.",
+        "client": "Cliente",
+        "api": "API REST",
+        "service": "serviço",
+        "queue": "Fila",
+        "queue_sub": "eventos · ETL",
+        "tests": "Testes",
+        "container": "container Docker",
+        "replicas": "réplicas",
+        "production": "produção"
+      }
+    }
   },
   "projects": {
     "label": "Projetos",

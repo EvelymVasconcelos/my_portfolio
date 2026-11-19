@@ -64,6 +64,7 @@ export async function Experience() {
         {/* Régua: decorativa, porque a lista abaixo traz a mesma informação. Some abaixo de 900 px. */}
         <div
           aria-hidden="true"
+          data-reveal="ruler"
           className="ruler relative mt-16 hidden nav:block lg:mt-20"
           style={{ height: rows.length * ROW + 34 }}
         >
@@ -110,6 +111,7 @@ export async function Experience() {
             return (
               <li
                 key={job.id}
+                data-reveal="self"
                 className="grid gap-x-10 gap-y-2 border-b border-line py-6 lg:grid-cols-[14rem_minmax(0,1fr)_minmax(0,1.2fr)] lg:py-7"
               >
                 <p className={cn("pt-1 type-eyebrow", current && "text-accent-text")}>
@@ -131,7 +133,7 @@ export async function Experience() {
         <div className="mt-16 grid gap-x-8 gap-y-12 lg:mt-20 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <h3 className="type-eyebrow">{tEdu("label")}</h3>
-            <ul className="mt-6 grid gap-8 sm:grid-cols-2">
+            <ul data-reveal="children" className="mt-6 grid gap-8 sm:grid-cols-2">
               {EDUCATION.map((edu) => {
                 const item = (key: string) => tEdu(`items.${edu.id}.${key}`);
                 return (

@@ -87,3 +87,41 @@ test("o tema sobrevive à troca de idioma, sem piscar e sem erro no console", as
   expect(await firstPaintClass(page)).toMatch(/\blight\b/);
   expect(errors).toEqual([]);
 });
+
+test.describe("transição circular", () => {
+  /** Conta as chamadas à View Transitions API, para saber se a transição foi usada. */
+  async function countTransitions(page: Page) {
+    await page.addInitScript(() => {
+      const original = document.startViewTransition?.bind(document);
+      (window as unknown as { __vt: number }).__vt = 0;
+      if (original) {
+        document.startViewTransition = ((cb: () => void) => {
+          (window as unknown as { __vt: number }).__vt++;
+          return original(cb);
+        }) as typeof document.startViewTransition;
+      }
+    });
+  }
+  const transitions = (page: Page) =>
+    page.evaluate(() => (window as unknown as { __vt: number }).__vt);
+
+  test("com movimento reduzido, a troca é instantânea e não usa a transição", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await countTransitions(page);
+    await page.goto("/pt");
+    await page.getByRole("button", { name: "Mudar para o tema claro" }).click();
+    await expect(html(page)).toHaveClass(/\blight\b/);
+    expect(await transitions(page)).toBe(0);
+  });
+
+  test("com movimento, a troca usa a transição circular e lembra a escolha", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await countTransitions(page);
+    await page.goto("/pt");
+    await page.getByRole("button", { name: "Mudar para o tema claro" }).click();
+    await expect(html(page)).toHaveClass(/\blight\b/);
+    expect(await transitions(page)).toBe(1);
+    await page.reload();
+    await expect(html(page)).toHaveClass(/\blight\b/);
+  });
+});

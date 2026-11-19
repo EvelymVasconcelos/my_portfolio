@@ -547,6 +547,636 @@ a:hover > .signature .signature-letter {
   fill: var(--ok);
 }
 
+/* ─── Fundo do Hero (components/sections/HeroBackdrop.tsx) ──────────────────
+   Formas em traço fino e poeira de pontos, atrás do conteúdo; deslocam-se com o ponteiro pela profundidade de cada
+   uma (`--d` × `--px`/`--py`, components/motion/HeroPointer.tsx). A luz em violeta e orquídea segue o ponteiro e só
+   aparece com o ponteiro sobre o Hero. */
+
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-backdrop svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-backdrop .f {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.4;
+  opacity: 0.45;
+  transform: translate(calc(var(--px, 0) * var(--d) * 1px), calc(var(--py, 0) * var(--d) * 1px));
+  transition: transform 0.6s var(--ease-out-soft);
+}
+
+.hero-backdrop .f.a {
+  stroke: var(--accent-text);
+  opacity: 0.7;
+}
+
+.hero-backdrop .p {
+  fill: var(--line-strong);
+  opacity: 0.35;
+}
+
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s;
+  background:
+    radial-gradient(
+      30rem circle at var(--mx, 70%) var(--my, 35%),
+      color-mix(in oklab, var(--accent-2) 14%, transparent),
+      transparent 62%
+    ),
+    radial-gradient(
+      46rem circle at calc(var(--mx, 70%) + 8%) calc(var(--my, 35%) + 6%),
+      color-mix(in oklab, var(--accent) 10%, transparent),
+      transparent 70%
+    );
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  #hero:hover .hero-glow {
+    opacity: 1;
+  }
+}
+
+/* Estrelinhas perto do nome ("detalhes delicados"): piscam devagar; paradas sem movimento. */
+.sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sparkles svg {
+  position: absolute;
+  width: var(--t, 18px);
+  height: var(--t, 18px);
+  color: var(--accent-2-text);
+  opacity: 0.85;
+}
+
+/* ─── Foto do Sobre com inclinação 3D e reflexo (components/motion/TiltPhoto.tsx) ─── */
+
+.foto-3d {
+  perspective: 1000px;
+}
+
+.foto-3d > div {
+  position: relative;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 0.55s var(--ease-out-soft);
+}
+
+.foto-3d.is-tilting > div {
+  transition: transform 0.08s linear;
+}
+
+.foto-3d i {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--shine, 0);
+  transition: opacity 0.4s;
+  background: radial-gradient(
+    22rem circle at var(--gx, 50%) var(--gy, 30%),
+    color-mix(in oklab, white 22%, transparent),
+    transparent 60%
+  );
+}
+
+/* ─── Sequência presa da arquitetura (components/sections/Architecture.tsx) ───
+   Trilho alto com a área presa (`position: sticky`) dentro; `--p` (0 a 1) vem do condutor de rolagem. Cada parte do
+   diagrama acende a partir do seu `--from` (unidade = uma etapa). Sem `data-motion="ready"` (sem JavaScript) ou com
+   movimento reduzido, o trilho encolhe, nada fica preso e tudo aparece completo. */
+
+.seq {
+  position: relative;
+  margin-top: 5rem;
+}
+
+@media (min-width: 64rem) {
+  .seq {
+    margin-top: 7rem;
+  }
+}
+
+.seq-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 4rem;
+  align-items: center;
+}
+
+.seq-intro {
+  display: none;
+}
+
+.seq-steps {
+  display: grid;
+  gap: 0.25rem;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.seq-steps li {
+  padding: 0.85rem 1rem;
+  border-left: 2px solid var(--accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  color: var(--text);
+  transition:
+    color 0.3s,
+    border-color 0.3s,
+    background-color 0.3s;
+}
+
+.seq-steps li b {
+  display: block;
+  color: var(--text);
+  font:
+    700 1.1rem/1.3 var(--font-heading),
+    sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.seq-steps li b::before {
+  content: attr(data-n);
+  margin-right: 0.6rem;
+  color: var(--accent-text);
+  font:
+    400 0.78rem/1 var(--font-code),
+    monospace;
+  letter-spacing: 0.1em;
+}
+
+.seq-svg {
+  width: 100%;
+  height: auto;
+}
+
+.seq-svg .n rect,
+.seq-svg .n path.shape {
+  fill: var(--bg);
+  stroke: var(--line-strong);
+  stroke-width: 1.4;
+}
+
+.seq-svg text {
+  fill: var(--text);
+  font:
+    600 13px var(--font-code),
+    monospace;
+}
+
+.seq-svg text.sub {
+  fill: var(--text-3);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.seq-svg .lnk {
+  fill: none;
+  stroke: var(--accent-text);
+  stroke-width: 2;
+  stroke-dasharray: 1;
+}
+
+.seq-svg .pkt {
+  display: none;
+  fill: none;
+  stroke: var(--accent-2);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 0.03 2;
+}
+
+.seq-svg .chk circle {
+  fill: var(--ok);
+}
+
+.seq-svg .chk path {
+  fill: none;
+  stroke: var(--bg);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.seq-svg .box-out {
+  fill: none;
+  stroke: var(--accent-text);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+}
+
+.seq-svg .prod {
+  fill: color-mix(in oklab, var(--ok) 18%, transparent);
+  stroke: var(--ok);
+  stroke-width: 1.5;
+}
+
+.seq-svg text.lbl {
+  fill: var(--accent-text);
+  font-size: 12px;
+}
+
+.seq-svg text.lbl2 {
+  fill: var(--text-3);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.seq-svg text.okt {
+  fill: var(--ok);
+  font-weight: 700;
+}
+
+@media (max-width: 56.24rem) {
+  .seq-stage {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-motion="ready"] .seq {
+    height: 520svh;
+  }
+  [data-motion="ready"] .seq-stage {
+    position: sticky;
+    top: var(--header-h);
+    height: calc(100svh - var(--header-h));
+  }
+  [data-motion="ready"] .seq-intro {
+    display: block;
+  }
+  [data-motion="ready"] .seq-svg {
+    max-height: calc(100svh - var(--header-h) - 3rem);
+  }
+  [data-motion="ready"] .seq-steps li {
+    border-left-color: var(--line);
+    color: var(--text-2);
+  }
+  [data-motion="ready"] .seq-steps li.on {
+    border-left-color: var(--accent);
+    background: color-mix(in oklab, var(--accent) 10%, transparent);
+    color: var(--text);
+  }
+  [data-motion="ready"] .seq [style*="--from"] {
+    --k: clamp(0, calc((var(--p, 0) * 5 - var(--from)) * 4), 1);
+    opacity: var(--k);
+    transform: translateY(calc((1 - var(--k)) * 10px));
+    transform-box: fill-box;
+  }
+  [data-motion="ready"] .seq .lnk[style*="--from"] {
+    opacity: 1;
+    transform: none;
+    stroke-dashoffset: calc(1 - var(--k));
+  }
+  [data-motion="ready"] .seq .pkt {
+    display: inline;
+  }
+  [data-motion="ready"] .seq .pkt[style*="--from"] {
+    transform: none;
+    stroke-dashoffset: calc(var(--k) * -0.97);
+    opacity: calc(var(--k) * 4 * (1 - var(--k)) + 0.001);
+  }
+
+  /* Celular: o diagrama em cima, a etapa atual embaixo; até duas telas por etapa. */
+  @media (max-width: 56.24rem) {
+    [data-motion="ready"] .seq {
+      height: 600svh;
+    }
+    [data-motion="ready"] .seq-stage {
+      grid-template-rows: auto 1fr;
+      align-content: start;
+      gap: 0.5rem;
+      padding-top: 0.75rem;
+    }
+    [data-motion="ready"] .seq-stage > div:first-child {
+      order: 2;
+    }
+    [data-motion="ready"] .seq-intro {
+      display: none;
+    }
+    [data-motion="ready"] .seq-steps li:not(.on) {
+      display: none;
+    }
+    [data-motion="ready"] .seq-svg {
+      max-height: 52svh;
+    }
+  }
+}
+
+/* ─── Pesquisa: pilha de cartões presa à rolagem ─────────────────────────────
+   Cada cartão para um pouco abaixo do anterior; o de baixo encolhe e escurece conforme o próximo o cobre (`--cover`,
+   components/motion/ScrollConductor.tsx). O cartão com foco fica por cima e inteiro. Sem movimento, nada é preso. */
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-motion="ready"] .paper {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem + var(--i) * 1.4rem);
+    transform-origin: 50% 0;
+    transform: scale(calc(1 - var(--cover, 0) * 0.05));
+  }
+  [data-motion="ready"] .paper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--bg);
+    opacity: calc(var(--cover, 0) * 0.55);
+    pointer-events: none;
+  }
+  [data-motion="ready"] .paper:focus-within {
+    z-index: 5;
+    transform: none;
+  }
+  [data-motion="ready"] .paper:focus-within::after {
+    opacity: 0;
+  }
+}
+
+/* ─── Movimento (como na referência) ─────────────────────────────────────────
+   O HTML do servidor já é o estado final. O estado "antes da entrada" só existe depois que
+   components/motion/MotionReady.tsx marca <html data-motion="ready">, e só sem pedido de movimento reduzido. Se o
+   JavaScript falhar, nada fica escondido. */
+
+/* A máscara esconde a palavra antes da entrada. As folgas, compensadas por margens negativas (a linha não muda de
+   altura), evitam cortes: nas laterais, a curva das letras nas pontas, com o espaçamento negativo dos títulos; em
+   cima, o pingo do "i" quando a onda do nome (NameWave) sobe as letras. */
+.split-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.22em 0.08em 0.1em;
+  margin: -0.22em -0.08em -0.1em;
+}
+
+.split-word {
+  display: inline-block;
+}
+
+/* Letras do nome do Hero. `--wave` (0 a 1) vem de components/motion/NameWave.tsx: a letra sobe e puxa para a cor de
+   destaque de texto (AA em texto grande nos dois temas). Nada muda de largura, então a linha não se rearranja. */
+.split-char {
+  display: inline-block;
+  translate: 0 calc(var(--wave, 0) * -0.09em);
+  color: color-mix(in oklab, var(--text), var(--accent-text) calc(var(--wave, 0) * 100%));
+  transition:
+    translate 0.5s var(--ease-out-strong),
+    color 0.5s var(--ease-out-soft);
+}
+
+/* A frase oculta para leitor de tela não entra na seleção (evita texto duplicado ao copiar). */
+.split-sr {
+  user-select: none;
+}
+
+/* Sublinhado em curva, em orquídea, sob os títulos de seção ("detalhes delicados"); desenhado quando o título entra. */
+h2[data-split]::after {
+  content: "";
+  display: block;
+  width: 6.5rem;
+  height: 0.95rem;
+  margin-top: 0.4em;
+  background: var(--accent-2-text);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 18'%3E%3Cpath d='M3 12 C 28 3, 50 3, 66 9 S 102 16, 117 5' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat 0 0 / 100% 100%;
+}
+
+#contact-title::after {
+  width: 9rem;
+  height: 1.3rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Nome do Hero, letra por letra: cada uma sobe de dentro da máscara da palavra, girando de leve até assentar. */
+  [data-split="load"][data-split-letters] .split-char {
+    animation: char-rise 1s var(--ease-out-strong) both;
+    animation-delay: calc(80ms + var(--c, 0) * 38ms);
+  }
+
+  [data-motion="ready"] .sparkles svg {
+    animation: sparkle 3.6s ease-in-out infinite;
+    animation-delay: var(--a, 0s);
+  }
+
+  /* Blocos que sobem ao entrar na tela. */
+  [data-motion="ready"] [data-reveal="self"],
+  [data-motion="ready"] [data-reveal="children"] > * {
+    transition:
+      opacity 0.8s var(--ease-out-soft),
+      transform 0.8s var(--ease-out-soft);
+  }
+  [data-motion="ready"] [data-reveal="self"]:not([data-revealed]),
+  [data-motion="ready"] [data-reveal="children"]:not([data-revealed]) > * {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  [data-motion="ready"] [data-reveal="children"] > :nth-child(2) {
+    transition-delay: 60ms;
+  }
+  [data-motion="ready"] [data-reveal="children"] > :nth-child(3) {
+    transition-delay: 120ms;
+  }
+  [data-motion="ready"] [data-reveal="children"] > :nth-child(4) {
+    transition-delay: 180ms;
+  }
+  [data-motion="ready"] [data-reveal="children"] > :nth-child(5) {
+    transition-delay: 240ms;
+  }
+  [data-motion="ready"] [data-reveal="children"] > :nth-child(n + 6) {
+    transition-delay: 300ms;
+  }
+
+  /* Régua da Trajetória: as barras crescem da esquerda, uma após a outra. */
+  [data-motion="ready"] [data-reveal="ruler"] .ruler-bar {
+    transform-origin: left center;
+    transition: transform 0.9s var(--ease-out-strong);
+    transition-delay: calc(var(--i, 0) * 120ms);
+  }
+  [data-motion="ready"] [data-reveal="ruler"]:not([data-revealed]) .ruler-bar {
+    transform: scaleX(0);
+  }
+
+  /* Ponto de status: um pulso a cada 2,4 s; o anel cresce e some, o ponto em si fica parado. */
+  .status-dot::after {
+    animation: status-pulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  }
+
+  /* Assinatura do cabeçalho: cada letra é traçada e preenchida em sequência, o sublinhado vem por último, e depois
+     um brilho atravessa as letras a cada 7 s. Só CSS. */
+  .signature-letter {
+    animation: signature-letter 0.7s cubic-bezier(0.55, 0.1, 0.35, 1) both;
+    animation-delay: calc(0.2s + var(--i, 0) * 85ms);
+  }
+  .signature-swoosh {
+    animation: signature-swoosh 0.7s cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(0.35s + var(--n, 0) * 85ms);
+  }
+  .signature-shine {
+    opacity: 1;
+    animation: signature-shine 7s ease-in-out infinite;
+    animation-delay: calc(1.6s + var(--n, 0) * 85ms);
+  }
+
+  /* Competências: brilho que segue o ponteiro no cartão (components/motion/CardGlow.tsx), tecnologias que sobem uma
+     a uma e sobem de leve no hover. */
+  .tech-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out-soft);
+    background: radial-gradient(
+      28rem circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in oklab, var(--accent) 13%, transparent),
+      transparent 60%
+    );
+  }
+  .tech-card:hover::before {
+    opacity: 1;
+  }
+  .tech-chip:hover {
+    transform: translateY(-2px);
+  }
+  [data-motion="ready"] [data-reveal="children"] .tech-chip {
+    transition-property: opacity, translate, border-color, color, transform;
+    transition-duration: 0.6s, 0.7s, 0.25s, 0.25s, 0.35s;
+    transition-timing-function:
+      var(--ease-out-soft), var(--ease-out-strong), ease, ease, var(--ease-out-strong);
+    transition-delay:
+      calc(150ms + var(--i, 0) * 35ms), calc(150ms + var(--i, 0) * 35ms), 0s, 0s, 0s;
+  }
+  [data-motion="ready"] [data-reveal="children"]:not([data-revealed]) .tech-chip {
+    opacity: 0;
+    translate: 0 10px;
+  }
+
+  /* Títulos revelados palavra por palavra ao entrar na tela, e o sublinhado desenhado logo depois. */
+  [data-motion="ready"] [data-reveal="split"] .split-word {
+    transition: transform 0.9s var(--ease-out-strong);
+    transition-delay: calc(var(--i, 0) * 50ms);
+  }
+  [data-motion="ready"] [data-reveal="split"]:not([data-revealed]) .split-word {
+    transform: translateY(110%);
+  }
+  [data-motion="ready"] h2[data-split]::after {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.35s;
+  }
+  [data-motion="ready"] h2[data-split][data-revealed]::after {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* Revelado pelo foco do teclado: aparece na hora, sem esperar a animação. */
+  [data-motion="ready"] [data-reveal-instant] .tech-chip,
+  [data-motion="ready"] [data-reveal-instant],
+  [data-motion="ready"] [data-reveal-instant] > *,
+  [data-motion="ready"] [data-reveal-instant] .split-word,
+  [data-motion="ready"] [data-reveal-instant] .ruler-bar {
+    transition: none !important;
+  }
+}
+
+@keyframes char-rise {
+  from {
+    transform: translateY(115%) rotate(10deg);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.6) rotate(0deg);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1) rotate(25deg);
+  }
+}
+
+@keyframes status-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes signature-letter {
+  0% {
+    stroke-dashoffset: 1;
+    fill-opacity: 0;
+  }
+  65% {
+    stroke-dashoffset: 0;
+    fill-opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+  }
+}
+
+@keyframes signature-swoosh {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* O brilho cruza a assinatura em 28% do ciclo e espera do outro lado até a próxima passada. */
+@keyframes signature-shine {
+  0% {
+    transform: translateX(0);
+  }
+  28%,
+  100% {
+    transform: translateX(var(--sweep));
+  }
+}
+
+/* Transição circular do tema (components/layout/ThemeToggle.tsx): o navegador captura a tela antiga e a nova, e o
+   recorte circular é animado por JavaScript na tela nova. Sem fusão de cores e sem a animação padrão. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Durante a captura do tema novo, nenhuma transição de cor fica pela metade. */
+.theme-capturing,
+.theme-capturing *,
+.theme-capturing *::before,
+.theme-capturing *::after {
+  transition: none !important;
+}
+
 /* ─── Movimento reduzido ──────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

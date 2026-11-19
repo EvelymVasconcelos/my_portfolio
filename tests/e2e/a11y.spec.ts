@@ -25,7 +25,10 @@ for (const vp of VIEWPORTS) {
               `${v.id} (${v.impact}, ${v.nodes.length} elementos): ${v.help}\n` +
               v.nodes
                 .slice(0, 5)
-                .map((n) => `    ${n.target.join(" ")} → ${n.failureSummary?.split("\n").slice(1).join(" ").trim()}`)
+                .map(
+                  (n) =>
+                    `    ${n.target.join(" ")} → ${n.failureSummary?.split("\n").slice(1).join(" ").trim()}`
+                )
                 .join("\n")
           );
 

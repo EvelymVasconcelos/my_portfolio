@@ -44,7 +44,7 @@
       "now_label": "Hoy",
       "now": "Backend en Sidia, desde 2022",
       "research_label": "Investigación",
-      "research": "2 artículos internacionales"
+      "research": "<n>2</n> artículos internacionales"
     },
     "skills_title": "Competencias",
     "skills_heading": "De la solicitud al despliegue",
@@ -114,7 +114,46 @@
       }
     },
     "skills_extra_label": "También",
-    "skills_extra": "liderazgo técnico en el desarrollo de API, integración segura entre API e interfaces, optimización de consultas SQL, procesos ETL para grandes volúmenes de datos y ciclos ágiles."
+    "skills_extra": "liderazgo técnico en el desarrollo de API, integración segura entre API e interfaces, optimización de consultas SQL, procesos ETL para grandes volúmenes de datos y ciclos ágiles.",
+    "sequence": {
+      "eyebrow": "Cómo trabajo",
+      "title": "Cómo llevo un sistema a producción",
+      "intro": "Desplázate para montar la arquitectura, etapa por etapa.",
+      "steps": {
+        "request": {
+          "title": "Solicitud",
+          "text": "API RESTful escalables y de alta disponibilidad, con FastAPI y Django."
+        },
+        "services": {
+          "title": "Servicios",
+          "text": "Microservicios en Python y Java, cada uno con su responsabilidad."
+        },
+        "data": {
+          "title": "Datos",
+          "text": "PostgreSQL y MySQL, Redis y MongoDB, y ETL para grandes volúmenes de datos."
+        },
+        "tests": {
+          "title": "Pruebas",
+          "text": "TDD y Pytest desde la primera línea, y pruebas End-to-End en el pipeline."
+        },
+        "deploy": {
+          "title": "Deploy",
+          "text": "Docker, Kubernetes y CI/CD con GitHub Actions hasta producción."
+        }
+      },
+      "diagram": {
+        "title": "Diagrama: cliente, API REST, tres servicios, cola, PostgreSQL y Redis, pruebas en cada parte y el conjunto empaquetado en un contenedor y entregado en un clúster de Kubernetes en producción.",
+        "client": "Cliente",
+        "api": "API REST",
+        "service": "servicio",
+        "queue": "Cola",
+        "queue_sub": "eventos · ETL",
+        "tests": "Pruebas",
+        "container": "contenedor Docker",
+        "replicas": "réplicas",
+        "production": "producción"
+      }
+    }
   },
   "projects": {
     "label": "Proyectos",

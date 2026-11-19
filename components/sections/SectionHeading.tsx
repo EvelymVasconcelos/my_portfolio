@@ -1,8 +1,10 @@
+import { SplitText } from "@/components/motion/SplitText";
 import { cn } from "@/lib/utils";
 
 /**
- * Rótulo numerado e título de seção, como na referência. O título recebe o foco ao seguir uma âncora
- * (`tabindex=-1`), e a seção o usa em `aria-labelledby`. O movimento do título entra no bloco de movimento.
+ * Rótulo numerado e título de seção, como na referência. O título entra palavra por palavra ao rolar
+ * (components/motion/SplitText.tsx), ganha o sublinhado em curva e recebe o foco ao seguir uma âncora
+ * (`tabindex=-1`, components/layout/AnchorFocus.tsx); a seção o usa em `aria-labelledby`.
  */
 export function SectionHeading({
   number,
@@ -10,12 +12,14 @@ export function SectionHeading({
   id,
   title,
   className,
+  size = "display",
 }: {
   number: string;
   label: string;
   id: string;
   title: string;
   className?: string;
+  size?: "display" | "giant";
 }) {
   return (
     <div>
@@ -23,9 +27,12 @@ export function SectionHeading({
         <span aria-hidden="true">{number} · </span>
         {label}
       </p>
-      <h2 id={id} tabIndex={-1} className={cn("type-display text-text", className)}>
-        {title}
-      </h2>
+      <SplitText
+        id={id}
+        tabIndex={-1}
+        text={title}
+        className={cn(size === "giant" ? "type-giant" : "type-display", "text-text", className)}
+      />
     </div>
   );
 }
