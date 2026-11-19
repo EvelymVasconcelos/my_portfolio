@@ -6,10 +6,12 @@ garantia de que a página inteira é legível e navegável sem JavaScript, em pt
 ## ADDED Requirements
 
 ### Requirement: Seções e ordem da página
-A página de cada idioma SHALL ter, nesta ordem: barra do topo, Hero, Sobre (com as competências), Projetos, Experiência
+A página de cada idioma SHALL ter, nesta ordem: barra do topo, Hero, Sobre (com as competências), Projetos, Trajetória
 (com a formação), Pesquisa, Recomendações, Contato e rodapé. Cada seção SHALL ter um título visível (`h2`, ou `h1` no
-Hero) ligado a ela por `aria-labelledby` e uma âncora estável (`#sobre`, `#projetos`, `#experiencia`, `#pesquisa`,
-`#recomendacoes`, `#contato`, com os nomes traduzidos só no texto, não na âncora).
+Hero) ligado a ela por `aria-labelledby` e uma âncora estável (`#sobre`, `#projetos`, `#trajetoria`, `#pesquisa`,
+`#recomendacoes`, `#contato`, com os nomes traduzidos só no texto, não na âncora). A barra do topo SHALL ter, como na
+referência, a marca, os links Sobre, Projetos, Trajetória, Pesquisa e Contato, a troca de idioma, o botão de tema e os
+botões "Agendar call" (só com link configurado) e "Baixar CV".
 
 #### Scenario: Ordem das seções
 - **WHEN** alguém abre `/pt`, `/en` ou `/es`
@@ -26,12 +28,11 @@ Hero) ligado a ela por `aria-labelledby` e uma âncora estável (`#sobre`, `#pro
 
 ### Requirement: Recomendações só com texto real
 A seção de Recomendações SHALL aparecer só quando houver ao menos uma recomendação real cadastrada, com o texto exato, o
-nome e o cargo de quem escreveu e o idioma original. Sem nenhuma recomendação, a seção e o link dela na barra SHALL ficar
-fora da página.
+nome e o cargo de quem escreveu e o idioma original. Sem nenhuma recomendação, a seção SHALL ficar fora da página.
 
 #### Scenario: Sem recomendações cadastradas
 - **WHEN** a lista de recomendações está vazia
-- **THEN** a página não mostra a seção nem o link "Recomendações", e nenhuma âncora fica quebrada
+- **THEN** a página não mostra a seção, e nenhum link aponta para `#recomendacoes`
 
 #### Scenario: Recomendação em outro idioma
 - **WHEN** uma recomendação foi escrita em português e a pessoa está em `/en`
@@ -92,3 +93,63 @@ visível, legível e navegável, e nenhum elemento fica escondido à espera de a
 #### Scenario: Sem WebGL
 - **WHEN** o navegador não tem WebGL
 - **THEN** todo o conteúdo continua igual, e só a cena 3D dá lugar à imagem estática
+
+### Requirement: Layout igual ao da referência
+O layout SHALL ser o do portfólio de referência (`~/Documentos/Gabriel Projetos/my-portfolio`), mudando só a paleta e o
+conteúdo: a mesma largura de container (`min(96rem, 100% - 8rem)` a partir de 900 px e `100% - 2.5rem` abaixo), o mesmo
+espaçamento vertical das seções, as mesmas faixas (normal, alternada e invertida, com a trama de pontos), a mesma escala
+tipográfica e os mesmos componentes em cada seção:
+- **Hero:** status com ponto, nome gigante, texto de apoio, botões "Ver projetos" e "Baixar CV", a cena 3D solta no
+  fundo da faixa (sem caixa) com formas geométricas espalhadas, e a faixa "Onde já construí" no rodapé do Hero;
+- **cabeçalho de seção:** rótulo "NN — Nome" na cor de destaque, frase-título grande e, nas seções que têm, um texto de
+  apoio alinhado à direita;
+- **Sobre:** frase-título, foto, texto e quatro fatos curtos em colunas, e as competências em seis cartões numerados (com
+  a contagem de itens) e logos das tecnologias, mais a linha "Também:";
+- **Projetos:** um em destaque (texto, "O que eu fiz", stack e imagem) e os outros numa lista de linhas com número, nome,
+  empresa, stack e seta;
+- **Trajetória:** barras por ano com os períodos reais, linhas com período, cargo e empresa e descrição, e a formação em
+  três colunas;
+- **Recomendações e Contato:** como nas specs `recomendacoes` e no requisito "Contato como na referência".
+A Pesquisa, que a referência não tem, SHALL usar os mesmos componentes e o mesmo cabeçalho de seção.
+
+#### Scenario: Largura do container
+- **WHEN** a página é aberta com 1440 px de largura
+- **THEN** o conteúdo ocupa 1312 px, centralizado, como na referência
+
+#### Scenario: Comparação lado a lado
+- **WHEN** cada seção é capturada em 1440 e 390 px, na referência e neste site, no mesmo tema
+- **THEN** as posições, tamanhos de texto e espaçamentos coincidem; mudam só as cores, os textos e as imagens
+
+#### Scenario: Competências com logos
+- **WHEN** a pessoa vê a área de competências do Sobre
+- **THEN** cada um dos seis grupos mostra o nome, a contagem de itens e as tecnologias com o logo, e todas as tecnologias
+  estão no currículo
+
+#### Scenario: Celular
+- **WHEN** a página é aberta com 390 px de largura
+- **THEN** as seções se empilham como na referência, sem rolagem lateral
+
+### Requirement: Contato como na referência
+O Contato SHALL ficar numa faixa invertida, com o rótulo "NN — Contato", o título gigante, um texto de apoio e duas
+colunas: à esquerda, linhas com rótulo e valor (e-mail, LinkedIn, GitHub e Lattes) com seta e o botão "Baixar CV"; à
+direita, o cartão "Agendar call", que abre o link de agendamento da Evelym em nova aba, e o bloco "Prefere escrever por
+aqui?", que abre e fecha o formulário de contato. O bloco do formulário SHALL usar um elemento nativo de abrir e fechar,
+para funcionar sem JavaScript. Sem link de agendamento configurado, o cartão e o botão "Agendar call" da barra SHALL
+ficar fora da página, e o formulário SHALL aparecer aberto.
+
+#### Scenario: Agendar call pelo teclado
+- **WHEN** a pessoa foca o cartão "Agendar call" com Tab e aperta Enter
+- **THEN** o agendamento abre em nova aba, e o leitor de tela já tinha anunciado que o link abre em nova aba
+
+#### Scenario: Formulário pelo teclado
+- **WHEN** a pessoa foca "Prefere escrever por aqui?" e aperta Enter
+- **THEN** o formulário abre, o foco segue para o primeiro campo com Tab, e o estado aberto é anunciado
+
+#### Scenario: Sem JavaScript
+- **WHEN** o JavaScript está desligado
+- **THEN** as linhas de contato funcionam como links, o cartão de agendamento abre o link, e o bloco do formulário abre e
+  fecha
+
+#### Scenario: Sem link de agendamento
+- **WHEN** não há link de agendamento configurado
+- **THEN** o Contato mostra o formulário aberto no lugar do cartão, e a barra do topo não mostra "Agendar call"

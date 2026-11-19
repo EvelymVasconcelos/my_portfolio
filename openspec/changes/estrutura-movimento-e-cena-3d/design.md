@@ -18,6 +18,13 @@
 - **Já explorado:** o protótipo de identidade em `design/prototipos/identidade-visual/` tem 3 direções com contraste AA
   conferido, o peso das fontes medido (77, 181 e 68 KB) e cenas 3D simples. A dona pediu cenas mais criativas, que
   mostrem senioridade em arquitetura e deploy.
+- **Rodada 1 de protótipos (2026-11-18), em `design/prototipos/estrutura-e-cenas/`:** a dona aprovou as animações, as
+  três cenas 3D, a sequência da arquitetura e a pilha da Pesquisa, e reprovou o layout em 2026-11-19. O protótipo tinha
+  container de 1200 px, tipografia de cada direção e componentes próprios. Ela pediu o layout idêntico ao da referência,
+  mudando só as cores (decisões 1, 2, 7, 11 e 12 desta revisão).
+- **Medidas da referência** (site rodando, em 1440 px, 2026-11-19): container de 1312 px; 160 px de espaço em cima e
+  embaixo de cada seção; nome do Hero em 144 px e títulos de seção em cerca de 74 px; competências numa grade de 3
+  colunas com 6 cartões.
 - **Skills da Mangue:** o roteiro vem de `montar-site-mangue` (fases 4 a 7) e das skills de apoio
   (`build-awwwards-quality-sites`, `cinematic-scroll-storytelling`, `scroll-scrubbed-visual-sequence`,
   `build-threejs-scroll-worlds`, `copywriting`, `stop-slop`, `accessibility`, `core-web-vitals`). Quando elas conflitam
@@ -30,8 +37,8 @@
 ## Goals / Non-Goals
 
 **Goals:**
-- A estrutura do Francisco, com a Pesquisa a mais, e o conteúdo vindo do currículo, cumprindo a spec
-  `estrutura-e-conteudo`.
+- O layout idêntico ao do portfólio de referência, só com a paleta e o conteúdo dela, com a Pesquisa a mais, cumprindo
+  a spec `estrutura-e-conteudo`.
 - Uma rodada de protótipos que decida juntos a identidade, o movimento e a cena antes do código.
 - Uma cena 3D de backend que roda leve, com a mesma composição da imagem estática.
 - Movimento de nível alto, sem biblioteca de rolagem e com o menor JavaScript possível.
@@ -44,7 +51,33 @@
 
 ## Decisions
 
-### 1. Estrutura e modelo de conteúdo como no Francisco
+### 1. Layout, estrutura e modelo de conteúdo iguais aos da referência
+O layout é copiado da referência, seção por seção: as mesmas classes utilitárias (`container-site`, `band`, `band-alt`,
+`band-invert`, `type-giant`, `type-display`, `type-title`, `type-lead`, `type-eyebrow`), os mesmos componentes e as
+mesmas medidas. Muda só a paleta (decisão 7) e o conteúdo.
+
+| Parte | Como fica (igual à referência) |
+|---|---|
+| Container | `min(96rem, 100% - 8rem)` a partir de 900 px; `100% - 2.5rem` abaixo |
+| Seções | `py-24 lg:py-40` (96 e 160 px); faixas normal, alternada e invertida com a trama de pontos (`--band-dot`) |
+| Cabeçalho de seção | rótulo "NN — Nome" em `type-eyebrow` na cor de destaque, frase-título em `type-display` e texto de apoio à direita |
+| Barra do topo | marca, links (Sobre, Projetos, Trajetória, Pesquisa, Contato), PT/EN/ES com sublinhado no ativo, tema, "Agendar call" e "Baixar CV" |
+| Hero | status com ponto, nome em `type-giant`, texto, botões, cena solta no fundo com formas espalhadas, faixa "Onde já construí" |
+| Sobre | frase-título, foto (com a inclinação da decisão 11), texto, 4 fatos em colunas; competências em 6 cartões numerados com logos e a linha "Também:" |
+| Projetos | destaque (texto, "O que eu fiz", stack, imagem) e lista de linhas com número, nome, empresa, stack e seta |
+| Trajetória | barras por ano com os períodos reais, linhas com período, cargo, empresa e descrição, e a formação em 3 colunas |
+| Pesquisa (nova) | mesmo cabeçalho; a pilha de cartões da rodada 1, com o visual dos cartões da referência |
+| Recomendações | destaque grande com aspas na cor de destaque, carrossel de cartões com iniciais, "Ler completa" e contador "01 / 08" |
+| Contato | faixa invertida, título gigante, linhas rótulo/valor, "Baixar CV", cartão "Agendar call" e "Prefere escrever por aqui?" (decisão 12) |
+| Rodapé | o da referência, na faixa invertida |
+
+- **Numeração das seções:** como na referência, o Hero conta como 01; Sobre é 02, Projetos 03, Trajetória 04, Pesquisa
+  05, Recomendações 06 e Contato 07.
+- **Fatos do Sobre:** os quatro da referência viram os dela, todos do currículo: local (Manaus), formação (Sistemas de
+  Informação, UFAM), hoje (backend na Sidia) e pesquisa (2 artigos internacionais).
+- **Competências:** seis grupos a partir do currículo (por exemplo, linguagens e frameworks, APIs e arquitetura, dados,
+  infraestrutura e cloud, qualidade e testes, e pesquisa e métodos), cada um com a contagem e os logos.
+- **Trajetória:** as barras vão de 2014 (UFAM) a hoje, com Bemol Digital (2019 a 2022) e Sidia (2022 a hoje).
 - **Seções de servidor:**
   - `Hero`, `About` (com `Skills` e a sequência da arquitetura), `Projects`, `Experience`, `Research` (nova),
     `Recommendations` e `Contact`;
@@ -54,8 +87,8 @@
   - `career.ts`, `projects.ts`, `research.ts`, `recommendations.ts` e `skills.ts`, com ids, datas, links e tecnologias;
   - os textos ficam em `messages/<idioma>.json`, por seção.
   - É o mesmo desenho do Francisco: o texto traduz, e o dado é um só.
-- **Pesquisa:** segue o modelo de `Experience` do Francisco, com o mesmo espaçamento e o mesmo peso de título. Cada
-  publicação vira um cartão com evento, ano, local, título original, papel e DOI.
+- **Pesquisa:** usa o cabeçalho de seção e o visual de cartão da referência, na pilha presa da rodada 1. Cada publicação
+  vira um cartão com evento, ano, local, título original, papel e DOI.
 - **Recomendações:**
   - `Recommendations.tsx` e `CarouselControls.tsx` do Francisco, adaptados;
   - a lista vazia tira a seção e o link da barra (spec `recomendacoes`);
@@ -66,26 +99,30 @@
   - Nos dois casos, com movimento reduzido ela aparece já desenhada.
 - **Logos de tecnologia:** a folha SVG única e o script `scripts/tech-icons/build.mjs` vêm do Francisco. Os logos vêm do
   Simple Icons, com licença CC0. São só tecnologias que estão no currículo.
+- *Alternativa descartada (rodada 1):* estrutura igual com layout próprio. A dona reprovou em 2026-11-19.
 - *Alternativa descartada:* manter as seções atuais e só trocar o visual. Não resolve a falta da Pesquisa nem a do
   modelo de dados, e mistura client e server como hoje.
 
-### 2. Rodada de protótipos antes do código
+### 2. Rodadas de protótipos antes do código
 É o roteiro da fase 4 da `montar-site-mangue`, sem a geração de imagem: as regras do projeto proíbem imagem gerada como
 prova, e protótipo navegável decide melhor.
 
-- **Onde:** um protótipo HTML por conceito de cena, em `design/prototipos/estrutura-e-cenas/`.
-- **O que cada um tem:**
-  - a página inteira com a estrutura final e o texto real;
-  - a sequência presa da arquitetura;
-  - a cena 3D do conceito;
-  - os temas claro e escuro.
-- **Barra de controles** (a mesma do protótipo de identidade): direção de cor e tipografia (as 3 já exploradas, com a
-  tipografia da direção 2 cortada para caber em 120 KB), tema, "sem WebGL" e "movimento reduzido".
-- **A escolha:** a dona escolhe cena, paleta e tipografia de forma independente ("cena B com a cor da direção 3"). A
-  escolha fica registrada no fim desta seção, com a data, e só então começa o código da identidade.
+- **Rodada 1 (2026-11-18):** `design/prototipos/estrutura-e-cenas/`, com a estrutura certa e o layout próprio. Fica como
+  histórico e como fonte das animações e das cenas aprovadas.
+- **Rodada 2 (a fazer):** `design/prototipos/layout-referencia/`, uma página só com o layout da referência copiado em
+  HTML e CSS estático (decisão 1), o texto real dela e as animações, a sequência, a pilha e as três cenas da rodada 1
+  portadas sem mudança de comportamento.
+- **Barra de controles da rodada 2:** cena (A, B, C), variação de roxo (2 ou 3 opções sobre os mesmos tokens), marca,
+  tema, "sem WebGL" e "movimento reduzido". Não há escolha de tipografia nem de layout.
+- **Prova de fidelidade:** capturas de cada seção em 1440 e 390 px, lado a lado com a referência rodando, fora do
+  repositório (as capturas da referência têm o nome e a foto do dono dela).
+- **A escolha:** a dona escolhe cena, variação de roxo e marca. A escolha fica registrada no fim desta seção, com a data,
+  e só então começa o código da identidade.
 - **Avaliação de cada protótipo:** as 10 heurísticas de Nielsen, o contraste AA (pelo script de tokens) e o desempenho
   da cena (quadros por segundo no computador e com CPU 4x mais lenta).
 - **Escolha registrada:** _(preencher depois da rodada)_
+- **Já decidido antes da rodada:** o tema inicial é o **escuro** (2026-11-18); o layout, as fontes e o Contato são os
+  da referência, e o cartão 3D vira a foto do Sobre (2026-11-19).
 
 ### 3. Três conceitos de cena 3D de backend
 Todos seguem as mesmas regras:
@@ -197,12 +234,25 @@ diagramas.
   - só é baixado quando a cena vai rodar, então não entra no carregamento inicial.
 
 ### 7. Identidade em tokens `@theme`
-- Os tokens da direção escolhida vão para `app/globals.css`, como variáveis do `@theme` e valores por tema.
+- Os tokens têm os mesmos nomes e papéis dos da referência (`bg`, `surface`, `surface-2`, `line`, `line-strong`, `text`,
+  `text-2`, `text-3`, `accent`, `accent-text`, `on-accent`, `ok`, `danger`, `focus`, `band-dot`), com os valores da
+  paleta escolhida (roxo, preto e branco) nos dois temas e a cópia invertida para a `band-invert`, em `app/globals.css`.
+  Copiar os nomes deixa o CSS dos componentes igual ao da referência.
 - O script de contraste do protótipo vira o teste do Vitest: `tests/contrast.test.ts`, com os pares declarados num
   arquivo só.
-- As fontes vêm por `next/font`, servidas do domínio, com `display: swap` e métrica de reserva ajustada. São no máximo 3
-  famílias e 120 KB.
-- O tema inicial é o da direção escolhida. A troca usa o script de tema da fundação (tarefa 4.7 de lá).
+- As fontes são as da referência, por `next/font` como lá: Bricolage Grotesque (eixo `opsz`), Instrument Sans e
+  JetBrains Mono (400 e 700, sem pré-carregamento), só o subconjunto latino, com `display: swap`. Na referência, as duas
+  pré-carregadas somam cerca de 107 KB; o orçamento é de 140 KB no carregamento inicial (spec `identidade-visual`).
+- O tema inicial é o **escuro** (decisão da dona em 2026-11-18), para toda primeira visita, mesmo com o sistema em claro;
+  não usa `prefers-color-scheme`. A troca usa o script de tema da fundação (tarefa 4.7 de lá).
+- **Lições do portfólio do Francisco para esse script** (`lib/theme-script.ts` e `components/layout/ThemeScript.tsx`
+  de lá):
+  - o script vai no `<head>`, renderizado pelo servidor, e roda antes da primeira pintura; `next/script` com
+    `beforeInteractive` roda tarde demais no App Router e faz a página piscar;
+  - na troca de idioma, o Next redesenha o layout sem recarregar: o React recriava o `<script>` (aviso "Encountered a
+    script tag" no React 19) e apagava a classe do tema do `<html>`. A solução de lá: o script só é executável no HTML do
+    servidor (`type="text/plain"` no navegador) e um `useLayoutEffect` reaplica o tema salvo antes da pintura;
+  - um teste de navegador troca de idioma com o tema salvo e confere a classe e o console.
 
 ### 8. Textos com o roteiro da Mangue
 - **Escrita:** os textos novos (Hero, frases da sequência, títulos de seção, descrições de projeto) passam pelas skills
@@ -240,12 +290,45 @@ Medido no Lighthouse, no perfil de celular, mediana de 3 execuções:
 | CLS | abaixo de 0,1 |
 | TBT | abaixo de 200 ms (substituto de laboratório do INP) |
 | JavaScript inicial da rota | abaixo de 206 kB (o valor de hoje) |
-| Fontes | até 120 KB |
+| Fontes | até 140 KB |
 | Cena | até 200 KB gzip, fora do carregamento inicial |
 
 Os números de antes e depois ficam registrados em `docs/otimizacao-de-desempenho.md`, como no Francisco.
 
+### 11. Apresentação interativa no Hero e no Sobre
+Pedido da dona em 2026-11-18. Em 2026-11-19, o cartão de perfil saiu do Hero, para o Hero ficar igual ao da referência, e
+virou a foto do Sobre. Os três efeitos usam o mesmo padrão: uma escuta de ponteiro por efeito, que grava a
+posição em variáveis CSS num `requestAnimationFrame` só enquanto o ponteiro se move, e o CSS faz o resto. Nada roda com o
+ponteiro parado, e o texto nunca muda de lugar.
+
+- **Nome animado:** o `SplitText` ganha o modo de letras (a frase inteira fica para o leitor de tela; as letras, com
+  `aria-hidden`). A entrada é só CSS, com atraso por letra. A onda é uma ilha mínima (`NameWave`, como no Francisco):
+  distância de cada letra ao ponteiro numa curva gaussiana, gravada em `--wave`; o CSS sobe a letra com `translate` e
+  mistura a cor com o destaque de texto. Mudar o peso da fonte foi descartado no Francisco, porque muda a largura e a
+  linha se rearranja. **Lição de lá:** a máscara de cada palavra precisa de folga nas laterais e em cima, compensada por
+  margem negativa, ou o espaçamento negativo do título corta as letras redondas e o pingo do "i".
+- **Luz que segue o ponteiro:** um gradiente radial na cor de destaque, num pseudo-elemento do Hero, posicionado por
+  `--mx`/`--my`. As formas do fundo ganham um deslocamento proporcional à posição do ponteiro (parallax de até alguns
+  pixels por camada), com transição para não tremer. O brilho fica atrás do texto e com opacidade baixa, então o contraste
+  medido não muda.
+- **Foto de perfil em 3D, no Sobre:** `transform: perspective() rotateX() rotateY()` a partir da posição do ponteiro
+  sobre a foto (no máximo uns 8°), um reflexo em gradiente que acompanha e volta ao plano com transição quando o ponteiro
+  sai. Os números dos fatos contam com um contador curto ao entrar na tela; o valor final está no HTML, então sem
+  JavaScript e com movimento reduzido aparece o número certo.
+- **Custo:** cerca de 1,5 KB de JavaScript para as três ilhas, dentro do orçamento da decisão 5. Sem biblioteca nova.
+
+### 12. Contato e "Agendar call" como na referência
+- `Contact.tsx` e `ContactForm.tsx` da referência, adaptados: linhas rótulo/valor, "Baixar CV", o cartão "Agendar call" e
+  o formulário dentro de um `<details>` nativo ("Prefere escrever por aqui?"), que abre sem JavaScript.
+- O formulário mantém o comportamento da spec `formulario-de-contato` da fundação; muda só onde ele aparece.
+- O link de agendamento fica numa constante de `lib/contact.ts`, como na referência. Vazia, ela tira o cartão e o botão
+  da barra e deixa o formulário aberto. No protótipo, um link provisório marcado `validar`.
+- *Alternativa descartada:* formulário sempre aberto, como na rodada 1. Diferente da referência, que a dona pediu.
+
 ## Risks / Trade-offs
+
+- [O layout copiado ficar "parecido" e não igual] → a comparação lado a lado em 1440 e 390 px, seção por seção, no
+  protótipo e no site, com a referência rodando.
 
 - [Escopo grande numa change só] → blocos independentes com commit cada, e a dona confere no navegador ao fim de cada
   um. Se um bloco travar, os anteriores já estão no ar.
@@ -277,4 +360,5 @@ Os números de antes e depois ficam registrados em `docs/otimizacao-de-desempenh
   currículo: a dona confirma antes do bloco de conteúdo.
 - **Textos das recomendações:** a dona envia o texto exato, o nome e o cargo.
 - **Marca animada:** assinatura própria (precisa da foto) ou fonte manuscrita.
+- **Link de agendamento:** a dona envia o link da agenda (Google Agenda ou outro). Até lá, provisório marcado `validar`.
 - **Hospedagem e domínio:** não mudam esta change, mas entram na de SEO.

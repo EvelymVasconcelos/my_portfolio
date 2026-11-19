@@ -155,3 +155,32 @@ no celular.
 
 - **WHEN** o navegador não tem WebGL
 - **THEN** o custo dos efeitos de página continua dentro do mesmo orçamento
+
+### Requirement: Apresentação interativa no Hero e no Sobre
+O Hero SHALL ter dois efeitos que respondem ao ponteiro: o nome com as letras entrando uma a uma e uma onda sob o
+ponteiro; e um brilho de destaque no fundo que acompanha o ponteiro, com as formas do fundo reagindo à posição dele. O
+Sobre SHALL ter a foto de perfil inclinando em 3D conforme o ponteiro, com um reflexo de luz, e os números dos fatos
+contando até o valor ao aparecer. Os efeitos SHALL existir só com ponteiro fino (`hover: hover` e `pointer: fine`) e sem movimento reduzido. Eles
+MUST NOT mudar a largura nem a posição do texto (nada de reflow), MUST NOT reduzir o contraste abaixo do AA e MUST NOT
+rodar código a cada quadro quando o ponteiro está parado. Os números SHALL ser os do currículo.
+
+#### Scenario: Nome sob o ponteiro
+- **WHEN** a pessoa passa o mouse sobre o nome no computador
+- **THEN** as letras perto do ponteiro sobem e ganham a cor de destaque, e voltam quando ele sai, sem nenhuma letra
+  cortada (curvas e pingos inteiros)
+
+#### Scenario: Nome lido inteiro
+- **WHEN** o leitor de tela chega ao título do Hero
+- **THEN** ele lê o nome como uma frase, não letra por letra
+
+#### Scenario: Luz que segue o ponteiro
+- **WHEN** a pessoa move o mouse pelo Hero
+- **THEN** o brilho do fundo acompanha o ponteiro e as formas do fundo se deslocam de leve, sem tapar nem esmaecer o texto
+
+#### Scenario: Foto de perfil no Sobre
+- **WHEN** a pessoa passa o mouse sobre a foto do Sobre
+- **THEN** a foto inclina na direção do ponteiro, com um reflexo que acompanha, e volta ao plano quando o ponteiro sai
+
+#### Scenario: Toque, movimento reduzido ou sem JavaScript
+- **WHEN** a página é aberta num celular, com `prefers-reduced-motion: reduce` ou com o JavaScript desligado
+- **THEN** o nome, o fundo e a foto aparecem no estado final, parados, e os números mostram o valor final

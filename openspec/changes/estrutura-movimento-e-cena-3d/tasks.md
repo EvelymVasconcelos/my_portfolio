@@ -1,27 +1,55 @@
 ## 1. Protótipos: identidade, movimento e cena (só HTML, pode começar antes do fim da fundação)
 
-- [ ] 1.1 Montar a base comum em `design/prototipos/estrutura-e-cenas/`: página inteira com a estrutura final (Hero,
+Rodada 1 (1.1 a 1.7) feita em 2026-11-18 em `design/prototipos/estrutura-e-cenas/`. Em 2026-11-19 a dona aprovou as
+animações, as cenas, a sequência e a pilha, e pediu o layout idêntico ao da referência: a rodada 2 (1.8 a 1.13) refaz o
+layout.
+
+- [x] 1.1 Montar a base comum em `design/prototipos/estrutura-e-cenas/`: página inteira com a estrutura final (Hero,
       Sobre com competências e sequência da arquitetura, Projetos, Experiência, Pesquisa, Recomendações com exemplo
       marcado como `validar`, Contato), texto real do currículo, barra de controles (cor e tipografia das 3 direções,
-      tema, sem WebGL, movimento reduzido) e o condutor de rolagem próprio (D2, D5)
-- [ ] 1.2 Protótipo da sequência presa da arquitetura em SVG (requisição, serviços, dados, testes e deploy), com ida e
+      tema, sem WebGL, movimento reduzido) e o condutor de rolagem próprio (D2, D5). O Hero já sai com o tema escuro
+      como inicial e com a apresentação interativa: nome animado, luz que segue o ponteiro e cartão de perfil em 3D
+      (D7, D11)
+- [x] 1.2 Protótipo da sequência presa da arquitetura em SVG (requisição, serviços, dados, testes e deploy), com ida e
       volta pela rolagem, lista simples com movimento reduzido e versão de celular (D4)
-- [ ] 1.3 Protótipo da cena A (abaixo da superfície), com imagem estática nos dois temas (D3)
-- [ ] 1.4 Protótipo da cena B (cluster que se cura), com imagem estática nos dois temas (D3)
-- [ ] 1.5 Protótipo da cena C (porto de deploy), com imagem estática nos dois temas (D3)
-- [ ] 1.6 Duas opções de marca animada (assinatura própria, se a dona enviar a foto, e fonte manuscrita OFL) (D1)
-- [ ] 1.7 Conferir cada protótipo: sem erro no console e sem rolagem lateral em 1440 e 390 px, contraste dos tokens,
+- [x] 1.3 Protótipo da cena A (abaixo da superfície), com imagem estática nos dois temas (D3)
+- [x] 1.4 Protótipo da cena B (cluster que se cura), com imagem estática nos dois temas (D3)
+- [x] 1.5 Protótipo da cena C (porto de deploy), com imagem estática nos dois temas (D3)
+- [x] 1.6 Duas opções de marca animada (assinatura própria, se a dona enviar a foto, e fonte manuscrita OFL) (D1)
+- [x] 1.7 Conferir cada protótipo: sem erro no console e sem rolagem lateral em 1440 e 390 px, contraste dos tokens,
       quadros por segundo da cena no computador e com CPU 4x mais lenta, e as 10 heurísticas de Nielsen
-- [ ] 1.8 A dona escolhe cena, cor, tipografia, tema inicial e marca. Registrar a escolha, com a data, na D2 da
-      design.md e commitar os protótipos
+- [ ] 1.8 Medir a referência rodando (cópia do build fora do repositório dela): container, espaçamentos, escala
+      tipográfica e os componentes de cada seção, com capturas em 1440 e 390 px fora do repositório (D1, D2)
+- [ ] 1.9 Refazer a base em `design/prototipos/layout-referencia/` com o layout idêntico ao da referência: container,
+      faixas com trama de pontos, fontes e tamanhos, barra do topo (marca, links, PT/EN/ES, tema, "Agendar call", "Baixar
+      CV"), Hero (cena solta, formas, "Onde já construí"), Sobre (frase-título, foto, 4 fatos, 6 cartões de competência
+      numerados com logos, "Também:"), Projetos (destaque e lista), Trajetória (barras por ano, linhas, formação), Pesquisa,
+      Recomendações (destaque e carrossel), Contato (faixa invertida, linhas rótulo/valor, "Agendar call" com link
+      provisório marcado `validar`, formulário em "Prefere escrever por aqui?") e rodapé, com o texto do currículo (D1, D12)
+- [ ] 1.10 Paleta roxo, preto e branco nos tokens com os nomes da referência, nos dois temas e na faixa invertida, com 2
+      ou 3 variações de roxo na barra de controles, e contraste AA conferido em todas (D7)
+- [ ] 1.11 Portar da rodada 1, sem mudar o comportamento: nome em onda, luz do ponteiro, transição de tema, títulos e
+      blocos, sequência da arquitetura no fim do Sobre, pilha da Pesquisa, as 3 cenas e o carregador; a foto do Sobre
+      ganha a inclinação 3D e os fatos contam; imagens estáticas das cenas geradas de novo para a paleta e o fundo novos
+      (D3, D4, D11)
+- [ ] 1.12 Comparar lado a lado com a referência, seção por seção, em 1440 e 390 px, e repetir a conferência da 1.7
+      (console, rolagem lateral, quadros por segundo, contraste, fontes até 140 KB, movimento reduzido, sem WebGL, sem
+      JavaScript, teclado)
+- [ ] 1.13 A dona escolhe cena, variação de roxo e marca (tema inicial escuro, layout, fontes e foto 3D no Sobre já
+      decididos). Registrar a escolha, com a data, na D2 da design.md e commitar os protótipos
 
 ## 2. Identidade visual no código
 
-- [ ] 2.1 Tokens da direção escolhida em `@theme` de `app/globals.css`, nos dois temas, sem cor literal nos componentes
+- [ ] 2.1 Tokens da paleta escolhida em `@theme` de `app/globals.css`, com os nomes da referência, nos dois temas e na
+      `band-invert`, e as utilidades de layout da referência (`container-site`, faixas, escala tipográfica), sem cor literal
+      nos componentes
 - [ ] 2.2 `tests/contrast.test.ts` com os pares de texto/fundo e de borda/fundo declarados num arquivo só, falhando abaixo
       de 4,5:1 e 3:1
-- [ ] 2.3 Fontes por `next/font` (até 3 famílias e 120 KB, métrica de reserva ajustada) e medição do peso no build
-- [ ] 2.4 Tema inicial da direção escolhida no script de tema da fundação, com teste de hidratação nos dois temas
+- [ ] 2.3 Bricolage Grotesque, Instrument Sans e JetBrains Mono por `next/font`, como na referência (subconjunto latino,
+      `display: swap`), e medição do peso no build (até 140 KB)
+- [ ] 2.4 Tema escuro como inicial no script de tema da fundação, aplicado antes da primeira pintura e mantido na troca
+      de idioma (lições da D7), com testes de hidratação nos dois temas, de primeira visita com o sistema em modo claro
+      (abre escuro) e de troca de idioma com o tema salvo
 - [ ] 2.5 Atualizar as capturas de referência de propósito (identidade nova) e registrar o motivo no commit
 - [ ] 2.6 `npm run lint`, `npm run typecheck`, `npm test` e `npm run build` passando. A dona confere `/pt` nos dois
       temas no navegador
@@ -34,17 +62,22 @@
       `aria-label`, `alt`), passando a copy nova por `copywriting` e `stop-slop`; resolver antes a voz, a situação do
       ICSCA 2026 e os nomes de projeto com a dona (D8)
 - [ ] 3.3 Gerar e revisar `en.json` e `es.json`, e teste de paridade de chaves entre os três idiomas
-- [ ] 3.4 Seções de servidor `Hero`, `About` (com `Skills`), `Projects`, `Experience` e `Contact` na estrutura do
-      Francisco, com âncoras estáveis e títulos ligados por `aria-labelledby`
+- [ ] 3.4 Seções de servidor `Hero`, `About` (com `Skills`), `Projects` e `Experience` (Trajetória, com as barras por
+      ano) portadas do protótipo da rodada 2 com o layout da referência, âncoras estáveis e títulos ligados por
+      `aria-labelledby`
+- [ ] 3.4b `Contact` e `ContactForm` como na referência: linhas rótulo/valor, "Baixar CV", cartão "Agendar call" (link em
+      `lib/contact.ts`; vazio tira o cartão e o botão da barra e abre o formulário) e o formulário em `<details>` nativo,
+      mantendo a spec `formulario-de-contato` (D12)
 - [ ] 3.5 Seção `Research` nova, com o peso da Experiência, DOI como link e a situação de cada publicação como no
       currículo
-- [ ] 3.6 `Navbar` com os links das seções (o de Recomendações só com recomendações cadastradas), foco no título ao seguir
-      uma âncora, e `Footer`
+- [ ] 3.6 `Navbar` como na referência (Sobre, Projetos, Trajetória, Pesquisa, Contato, PT/EN/ES, tema, "Agendar call" e
+      "Baixar CV"), foco no título ao seguir uma âncora, e `Footer` da referência
 - [ ] 3.7 Folha de logos de tecnologia com `scripts/tech-icons/build.mjs` (Simple Icons, CC0), só com tecnologias do
       currículo
 - [ ] 3.8 Remover `components/animations/` (inclusive `Particles.tsx`) e a identidade "Samsung Lilac" que sobrar
-- [ ] 3.9 Testes de navegador: ordem e âncoras das seções em pt/en/es, página com JavaScript desligado e navegação da
-      barra só com teclado
+- [ ] 3.9 Testes de navegador: ordem e âncoras das seções em pt/en/es, largura do container (1312 px em 1440), página com
+      JavaScript desligado, navegação da barra só com teclado, "Agendar call" e "Prefere escrever por aqui?" pelo teclado
+      e sem JavaScript, e comparação lado a lado com a referência em 1440 e 390 px
 - [ ] 3.10 Lint, tipos, testes, capturas e build passando. A dona confere as três línguas, celular e computador
 
 ## 4. Movimento e rolagem
@@ -58,11 +91,18 @@
 - [ ] 4.4 Pilha de cartões (na seção escolhida no protótipo) e parallax de até 15%, com o cartão focado sempre por cima
 - [ ] 4.5 Transição circular do tema pela View Transitions API, nascendo no botão também pelo teclado, instantânea com
       movimento reduzido ou sem suporte
-- [ ] 4.6 Remover o framer-motion e medir o JavaScript inicial da rota (meta: abaixo de 206 kB)
-- [ ] 4.7 Testes de navegador com `reducedMotion: 'reduce'` (nada preso, nada se move, conteúdo final), com teclado na
-      sequência e na pilha, e com o leitor de tela nos títulos animados
-- [ ] 4.8 Lint, tipos, testes e build passando. A dona confere com movimento reduzido ligado de verdade no sistema e no
-      celular
+- [ ] 4.6 Nome do Hero letra a letra, com a onda sob o ponteiro: modo de letras no `SplitText` e ilha `NameWave`, com
+      folga na máscara para não cortar curvas e pingos (D11)
+- [ ] 4.7 Luz que segue o ponteiro no fundo do Hero, com as formas reagindo à posição dele: variáveis CSS gravadas só
+      enquanto o ponteiro se move (D11)
+- [ ] 4.8 Foto do Sobre com inclinação 3D e reflexo, e números dos fatos contando ao aparecer, com o valor final no HTML
+      (D11)
+- [ ] 4.9 Remover o framer-motion e medir o JavaScript inicial da rota (meta: abaixo de 206 kB)
+- [ ] 4.10 Testes: unitários da onda e da inclinação (mudam com ponteiro fino, nada com movimento reduzido ou toque);
+      de navegador com `reducedMotion: 'reduce'` (nada preso, nada se move, conteúdo final, números no valor final), com
+      teclado na sequência e na pilha, e com o leitor de tela nos títulos animados e no nome do Hero
+- [ ] 4.11 Lint, tipos, testes e build passando. A dona confere o Hero com o mouse, com movimento reduzido ligado de
+      verdade no sistema e no celular
 
 ## 5. Cena 3D
 
@@ -85,9 +125,11 @@
 
 - [ ] 6.1 Cadastrar em `lib/content/recommendations.ts` e `messages/` as recomendações que a dona enviar (texto exato,
       nome, cargo, empresa, mês e ano, idioma original); sem nenhuma, conferir que a seção e o link somem
-- [ ] 6.2 `Recommendations` e `CarouselControls` como no Francisco: botões e posição traduzidos, `aria-roledescription`,
-      anúncio da recomendação atual, sem avanço automático, faixa com rolagem nativa sem JavaScript
-- [ ] 6.3 Testes de navegador: carrossel só com teclado, sem JavaScript e com movimento reduzido
+- [ ] 6.2 `Recommendations` e `CarouselControls` como na referência: recomendação em destaque, cartões com iniciais
+      (escondidas do leitor de tela), "Ler completa" em `<details>` nativo, contador "01 / 08" com barra, botões e posição
+      traduzidos, `aria-roledescription`, anúncio da recomendação atual, sem avanço automático, faixa com rolagem nativa sem
+      JavaScript
+- [ ] 6.3 Testes de navegador: carrossel e "Ler completa" só com teclado, sem JavaScript e com movimento reduzido
 - [ ] 6.4 A dona confere o texto de cada recomendação no site antes de ir ao ar
 
 ## 7. Fechamento
@@ -98,4 +140,5 @@
 - [ ] 7.3 Conferência final da dona: pt/en/es, claro/escuro, celular e computador, só com teclado, com leitor de tela,
       com movimento reduzido e com WebGL desligado, de verdade no navegador
 - [ ] 7.4 `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e` e `npm run build` passando
-- [ ] 7.5 Atualizar o `CLAUDE.md` (estado atual, seções e decisões) e rodar `graphify update .`
+- [ ] 7.5 Atualizar o `CLAUDE.md` (estado atual, seções e decisões, inclusive a regra do tema: o escuro é o padrão, no
+      lugar de "o modo claro é a experiência principal") e rodar `graphify update .`

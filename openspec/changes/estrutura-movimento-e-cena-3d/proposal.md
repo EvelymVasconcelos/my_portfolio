@@ -12,6 +12,11 @@ estrutura, com duas diferenças:
 É a hora certa: a fundação (`fundacao-ferramentas-e-stack`) deixa a stack nova, os testes e a CI prontos para receber
 esse trabalho com segurança.
 
+**Revisão de 2026-11-19:** a primeira rodada de protótipos (2026-11-18) trouxe a estrutura certa, mas um layout
+próprio, com container mais estreito, tipografia e componentes diferentes. A dona aprovou as animações, as cenas 3D, a
+sequência da arquitetura e a pilha da Pesquisa, e pediu o **layout idêntico ao do portfólio de referência**, mudando só
+as cores. Esta versão da change registra esse pedido.
+
 Esta change substitui as changes 2, 3 e 4 do plano original (`identidade-visual`, `cena-3d` e `conteudo-e-secoes`). A
 identidade, o movimento e a cena 3D são escolhidos juntos, no mesmo protótipo, porque um depende do outro: a cena usa as
 cores e o tema, e o movimento segue a história da cena. A entrega continua em partes, um bloco por vez, cada um testável
@@ -19,17 +24,25 @@ no navegador. SEO e compartilhamento seguem como change própria, depois desta.
 
 ## What Changes
 
-- **Estrutura e seções iguais às do portfólio do Francisco, com a seção de Pesquisa a mais.** A ordem é Hero, Sobre
-  (com as competências), Projetos (um em destaque e os outros em lista), Experiência (com a formação), Pesquisa,
-  Recomendações e Contato. Mais a barra do topo com a marca animada e o rodapé.
+- **Layout idêntico ao do portfólio de referência, só com a paleta trocada, mais a seção de Pesquisa.** Mesma
+  largura de container, mesmas faixas com trama de pontos, mesmas fontes (Bricolage Grotesque, Instrument Sans e
+  JetBrains Mono) e tamanhos, mesmos componentes em cada seção. A ordem é Hero, Sobre (com as competências), Projetos
+  (um em destaque e os outros em lista), Trajetória (barras por ano, linhas e formação), Pesquisa, Recomendações e
+  Contato, com a barra do topo e o rodapé da referência.
+  - **Hero:** status, nome gigante, texto, botões e a cena 3D solta no fundo da faixa, com formas geométricas
+    espalhadas e a faixa "Onde já construí" embaixo.
+  - **Sobre:** frase-título grande, foto, quatro fatos curtos e as competências em seis cartões numerados com logos.
+  - **Contato:** faixa invertida, título gigante, linhas com rótulo e valor (e-mail, LinkedIn, GitHub, Lattes), "Baixar
+    CV", o cartão **Agendar call** e o formulário dentro de "Prefere escrever por aqui?". O link de agendamento vem da
+    dona; até lá, o protótipo usa um provisório marcado como `validar`.
   - Todas as seções são renderizadas no servidor. O texto vem de `messages/` nos três idiomas e os dados, do currículo.
   - **Pesquisa**, que o Francisco não tem: seção própria com o mesmo peso da Experiência, com ICSCA 2026, IEEE SEAI 2024 e
     o TCC. O link "Pesquisa" da barra passa a funcionar.
   - **Recomendações:** só com os textos reais do LinkedIn que a dona enviar, com o nome e o cargo de quem escreveu. Sem
     os textos, a seção não vai ao ar.
-- **Identidade visual nova em roxo, preto e branco.** Ela sai de uma rodada de protótipos HTML que já combinam a
-  estrutura, o movimento e a cena. A rodada parte das 3 direções de `design/prototipos/identidade-visual/`. Saem a
-  identidade provisória "Samsung Lilac" e o framer-motion.
+- **Paleta nova em roxo, preto e branco** sobre o layout e a tipografia da referência. Ela sai de uma rodada de
+  protótipos HTML que já combinam o layout, o movimento e a cena, com variações de roxo para comparar. Saem a identidade
+  provisória "Samsung Lilac" e o framer-motion.
 - **Movimento ligado à rolagem, do repertório da Mangue:**
   - títulos revelados palavra por palavra;
   - blocos que entram ao aparecer na tela;
@@ -39,6 +52,19 @@ no navegador. SEO e compartilhamento seguem como change própria, depois desta.
   - parallax curto;
   - transição circular na troca de tema.
   - A rolagem continua nativa, sem nenhuma biblioteca de rolagem suave.
+- **Apresentação interativa no Hero e no Sobre** (pedido da dona em 2026-11-18; o cartão foi para o Sobre em
+  2026-11-19, para o Hero ficar igual ao da referência), com três efeitos que respondem ao ponteiro:
+  - **nome animado:** as letras do nome entram uma a uma e, com o ponteiro em cima, uma onda percorre as letras (sobem e
+    ganham a cor de destaque), sem mudar a largura da linha;
+  - **luz que segue o ponteiro:** um brilho roxo suave no fundo do Hero acompanha o ponteiro, e as formas do fundo reagem
+    à posição dele;
+  - **foto de perfil em 3D, no Sobre:** a foto inclina conforme o ponteiro, com um reflexo de luz, e os números dos
+    fatos contam até o valor ao aparecer. Os números saem do currículo.
+  - Os três só existem com ponteiro fino e sem movimento reduzido. No toque, com movimento reduzido ou sem JavaScript,
+    tudo aparece pronto e parado.
+- **Tema escuro como padrão** (decisão da dona em 2026-11-18): quem abre o site pela primeira vez vê o tema escuro, mesmo
+  com o sistema em modo claro. O claro fica como escolha da pessoa, lembrada entre visitas e entre idiomas. Isso resolve o
+  "tema inicial" que a rodada de protótipos deixaria em aberto.
 - **Cena 3D de backend em Three.js:** um conceito escolhido no protótipo entre três, todos ligados a arquitetura e
   deploy:
   - camadas abaixo da superfície;
@@ -50,8 +76,12 @@ no navegador. SEO e compartilhamento seguem como change própria, depois desta.
   reduzido e teclado são cobertos por testes.
 
 **O que quem visita percebe:**
-- Ao abrir o site, o título e a apresentação aparecem na hora, em roxo, preto e branco. Um instante depois, a cena 3D
-  ganha vida ao lado do texto.
+- Ao abrir o site pela primeira vez, ele está no tema escuro. O título e a apresentação aparecem na hora, em roxo, preto e
+  branco: as letras do nome entram uma a uma e, um instante depois, a cena 3D ganha vida ao lado do texto.
+- O site tem a mesma cara organizada do portfólio de referência (as mesmas larguras, faixas, títulos e componentes), em
+  roxo, preto e branco.
+- Movendo o mouse pelo Hero, uma luz roxa acompanha o ponteiro e o nome ondula sob ele; no Sobre, a foto inclina em 3D.
+- No Contato, a pessoa agenda uma conversa direto na agenda da Evelym ou abre o formulário.
 - Rolando, a pessoa vê a arquitetura de um sistema se montar, da requisição que chega até o deploy em produção, e as
   seções entram com movimento contido.
 - A pesquisa aparece com o mesmo destaque da experiência, e as recomendações reais dão prova social.
@@ -83,13 +113,14 @@ no navegador. SEO e compartilhamento seguem como change própria, depois desta.
 ### New Capabilities
 - `estrutura-e-conteudo`: as seções da página, a ordem delas, a navegação por âncoras, a origem dos textos (currículo e
   `messages/` em pt/en/es) e a leitura completa sem JavaScript.
-- `identidade-visual`: tokens de cor dos temas claro e escuro com contraste AA, tipografia com orçamento de peso, tema
-  inicial e troca de tema sem divergência de hidratação.
+- `identidade-visual`: tokens de cor dos temas claro e escuro com contraste AA, sobre o layout e a tipografia da
+  referência, com orçamento de peso das fontes, tema inicial e troca de tema sem divergência de hidratação.
 - `movimento-e-rolagem`: as animações ligadas à rolagem, a sequência presa da arquitetura, a transição de tema e o
   comportamento com movimento reduzido, teclado e sem JavaScript.
 - `cena-3d`: quando a cena 3D aparece, como substitui a imagem estática, como reage a ponteiro, rolagem e tema, e os
   limites de custo que ela não pode passar.
-- `recomendacoes`: o carrossel de recomendações reais, com controle por teclado e leitor de tela.
+- `recomendacoes`: a recomendação em destaque e o carrossel de recomendações reais, como na referência, com controle
+  por teclado e leitor de tela.
 
 ### Modified Capabilities
 (nenhuma: ainda não há specs em `openspec/specs/`, e as specs da fundação, `formulario-de-contato` e
@@ -119,4 +150,6 @@ no navegador. SEO e compartilhamento seguem como change própria, depois desta.
   - axe sem violações novas: a lista de exceções da fundação precisa ficar vazia no fim desta change.
 - **Ordem:** a implementação começa depois dos blocos 3 a 5 da fundação (testes, Next 16 e Tailwind 4). O bloco de
   protótipos desta change é só HTML em `design/prototipos/` e pode começar antes.
+- **Prova de fidelidade:** o protótipo e as capturas do site são comparados lado a lado com a referência, seção por
+  seção, em 1440 e 390 px.
 - **Plano:** a tarefa 9.4 da fundação ("abrir a change `identidade-visual`") passa a apontar para esta change.
