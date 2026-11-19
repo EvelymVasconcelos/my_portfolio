@@ -125,7 +125,8 @@ layout.
 - [x] 5.2 Módulo da cena escolhida, portado do protótipo: `three` com import seletivo, `setTheme`, `setProgress`,
       `dispose`, pausa fora da tela e com a aba oculta, perda de contexto e rebaixamento por quadros por segundo (D3, D6).
       A história começa no estado final (o quadro do pôster) e segue o ciclo de 24 s; os textos dos painéis vêm de
-      `messages/` (`hero.scene`), e o código do editor fica em inglês nos três idiomas
+      `messages/` (`hero.scene`), e o código do editor fica em inglês nos três idiomas. `three` fixo em 0.160.0, a versão
+      do protótipo: a 0.187 clareava a personagem (pele, notebook e sombras), apontado pela dona em 2026-11-19
 - [x] 5.3 `HeroSceneLoader`: import dinâmico depois do `load` e do navegador ocioso, troca da imagem pela cena sem salto.
       Começa com o Hero perto da tela, sem esperar interação (a referência espera; rever se o TBT do bloco 7 pedir)
 - [x] 5.4 Modo de captura e imagens estáticas `public/images/scene/<conceito>-{claro,escuro}.webp` geradas pela cena,
@@ -137,7 +138,7 @@ layout.
       com economia de dados; pausa fora da tela; acompanha a troca de tema
 - [x] 5.7 Medir o custo da cena (KB gzip, quadros por segundo no computador e com CPU 4x mais lenta) e registrar em
       `docs/otimizacao-de-desempenho.md`. Medido: 140,4 kB gzip fora do carregamento inicial; 60,1 quadros por segundo
-      na Iris Xe com densidade 2 e 59,9 com a CPU 4x mais lenta
+      na Iris Xe com densidade 2 e 59,9 com a CPU 4x mais lenta. Com o three 0.160: 125,1 kB e 60,2 nos dois casos
 - [ ] 5.8 Lint, tipos, testes e build passando. A dona confere com WebGL desligado de verdade no navegador
       (`chrome://flags` ou `--disable-webgl`) e num celular
 

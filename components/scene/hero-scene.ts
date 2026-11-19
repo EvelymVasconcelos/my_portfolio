@@ -6,6 +6,10 @@
  *
  * Carregada só por import dinâmico (components/scene/HeroSceneLoader.tsx), depois do carregamento; nada daqui entra
  * no JavaScript inicial. Fora o redesenho dos painéis quando o texto muda, nada é alocado por quadro.
+ *
+ * Versão do three fixa em 0.160.0, a mesma do protótipo aprovado: na 0.187, o ambiente de reflexo e a luz física
+ * clareiam a cena inteira (pele sem o dourado, notebook cinza, sombras fracas). Atualizar o three pede comparar a
+ * cena com o protótipo antes (2026-11-19).
  */
 import {
   ACESFilmicToneMapping,

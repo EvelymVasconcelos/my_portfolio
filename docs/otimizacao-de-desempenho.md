@@ -36,10 +36,10 @@ em 3 arquivos. Orçamento: 140 kB.
 
 | Medida | Valor | Meta |
 |---|---|---|
-| Código da cena (Three.js com import seletivo e o módulo) | 140,4 kB gzip, fora do carregamento inicial | até 200 kB |
-| Quadros por segundo, Iris Xe, densidade 2 | 60,1 | 60 |
-| Quadros por segundo com a CPU 4x mais lenta | 59,9 | acima de 30 |
-| Imagens estáticas (pôsteres, WebP com transparência) | 33 kB (claro) e 35 kB (escuro) | — |
+| Código da cena (Three.js 0.160 com import seletivo e o módulo) | 125,1 kB gzip, fora do carregamento inicial | até 200 kB |
+| Quadros por segundo, Iris Xe, densidade 2 | 60,2 | 60 |
+| Quadros por segundo com a CPU 4x mais lenta | 60,2 | acima de 30 |
+| Imagens estáticas (pôsteres, WebP com transparência) | 37 kB (claro) e 38 kB (escuro) | — |
 
 Como a cena se protege:
 
@@ -49,3 +49,7 @@ Como a cena se protege:
 - se a média ficar abaixo de 30 quadros por segundo por 3 s, cai para densidade 1; se continuar lenta, devolve a imagem;
 - o primeiro quadro é o mesmo da imagem estática, então a troca não tem salto (CLS zero);
 - os pôsteres são gerados pela própria cena (`npm run scene:posters`).
+
+O Three.js fica fixo na 0.160.0, a versão do protótipo aprovado. Com a 0.187 (a da referência), a mesma cena saía mais
+clara: pele (235, 202, 175) contra (219, 171, 141) do protótipo e notebook cinza em vez de preto, medidos no mesmo pixel
+das duas capturas. Com a 0.160, os pixels batem e o código da cena fica 15 kB menor (140,4 → 125,1 kB gzip).
