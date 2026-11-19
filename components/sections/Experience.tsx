@@ -1,207 +1,167 @@
-"use client";
-
-import { useTranslations, useMessages, useLocale } from "next-intl";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { GraduationCap, MapPin, CheckCircle2 } from "lucide-react";
-import { Badge } from "@/components/ui/Badge";
-import { SectionDivider } from "@/components/ui/SectionDivider";
-import { FadeInView } from "@/components/animations/FadeInView";
+import type { CSSProperties } from "react";
+import { getLocale, getTranslations } from "next-intl/server";
+import { SectionHeading } from "@/components/sections/SectionHeading";
+import {
+  currentYearMonth,
+  EDUCATION,
+  EXPERIENCE,
+  RULER_FIRST_YEAR,
+  rulerBar,
+  rulerYears,
+  type Period,
+  type YearMonth,
+} from "@/lib/content/career";
 import { cn } from "@/lib/utils";
 
-interface ExperienceItem {
-  id: string;
-  role: string;
-  company: string;
-  location: string;
-  type: string;
-  start: string;
-  end: string | null;
-  description: string;
-  highlights: string[];
+const INTL_LOCALE: Record<string, string> = { pt: "pt-BR", en: "en-US", es: "es-ES" };
+const ROW = 58; // px entre as barras da régua
+
+/** "jan 2022": mês curto sem ponto, no idioma da página. O CSS põe em caixa alta. */
+function formatMonth(ym: YearMonth, locale: string) {
+  const [year, month] = ym.split("-").map(Number);
+  const name = new Intl.DateTimeFormat(INTL_LOCALE[locale] ?? locale, {
+    month: "short",
+    timeZone: "UTC",
+  })
+    .format(Date.UTC(year, month - 1, 15))
+    .replace(".", "");
+  return `${name} ${year}`;
 }
 
-interface EducationItem {
+interface RulerRow extends Period {
   id: string;
-  degree: string;
-  institution: string;
-  location: string;
-  start: string;
-  end: string;
-  description: string;
+  name: string;
+  note: string | null;
 }
 
-const formatPeriod = (
-  start: string,
-  end: string | null,
-  present: string,
-  locale: string
-): string => {
-  const formatDate = (dateStr: string) => {
-    const [year, month] = dateStr.split("-");
-    return new Date(Number(year), Number(month) - 1)
-      .toLocaleDateString(locale, { month: "short", year: "numeric" });
-  };
-  return `${formatDate(start)} — ${end ? formatDate(end) : present}`;
-};
+/** Trajetória, de servidor, como na referência: régua decorativa (computador), vínculos, formação e idiomas. */
+export async function Experience() {
+  const t = await getTranslations("experience");
+  const tEdu = await getTranslations("education");
+  const locale = await getLocale();
+  // Página estática: a régua usa o mês do build.
+  const now = currentYearMonth();
+  const years = rulerYears(now);
+  const spanMonths = years.length * 12;
+  const yearLeft = (year: number) => `${((year - RULER_FIRST_YEAR) * 12 * 100) / spanMonths}%`;
+  const nowEnd = rulerBar({ start: now, end: now }, now);
 
-const TimelineLine = () => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.05 });
-
-  return (
-    <div
-      ref={ref}
-      className="absolute left-4 top-0 hidden h-full w-px overflow-hidden lg:left-1/2 lg:block lg:-translate-x-1/2"
-    >
-      <motion.div
-        className="w-full"
-        style={{
-          background:
-            "linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--accent) 70%, transparent) 15%, color-mix(in oklab, var(--accent) 90%, transparent) 50%, color-mix(in oklab, var(--accent) 70%, transparent) 85%, transparent 100%)",
-        }}
-        initial={{ height: "0%" }}
-        animate={isInView ? { height: "100%" } : { height: "0%" }}
-        transition={{ duration: 1.8, ease: "easeInOut" }}
-      />
-    </div>
-  );
-};
-
-export const Experience = () => {
-  const t = useTranslations("experience");
-  const tEdu = useTranslations("education");
-  const locale = useLocale();
-  const messages = useMessages() as unknown as {
-    experience: { items: ExperienceItem[] };
-    education: { items: EducationItem[] };
-  };
-
-  const experiences = messages.experience.items;
-  const educations = messages.education.items;
+  // Da mais antiga para a mais recente: a graduação e depois os vínculos.
+  const rows: RulerRow[] = [
+    ...EDUCATION.map((edu) => ({ ...edu, name: edu.short, note: t("study_note") })),
+    ...[...EXPERIENCE].reverse().map((job) => ({ ...job, name: job.company, note: null })),
+  ];
 
   return (
-    <section id="experience" aria-label={t("label")} className="relative isolate py-28">
-      <SectionDivider />
+    <section id="experience" aria-labelledby="experience-title" className="band-alt py-24 lg:py-40">
+      <div className="container-site">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:items-end">
+          <SectionHeading number="04" label={t("label")} id="experience-title" title={t("title")} />
+          {/* O subtítulo descreve a régua, então aparece só onde ela aparece. */}
+          <p className="hidden type-lead nav:block">{t("subtitle")}</p>
+        </div>
 
-      <div className="container-content section-padding">
+        {/* Régua: decorativa, porque a lista abaixo traz a mesma informação. Some abaixo de 900 px. */}
+        <div
+          aria-hidden="true"
+          className="ruler relative mt-16 hidden nav:block lg:mt-20"
+          style={{ height: rows.length * ROW + 34 }}
+        >
+          {years.map((year) => (
+            <div
+              key={year}
+              className="absolute top-0 bottom-0 w-px bg-line"
+              style={{ left: yearLeft(year) }}
+            >
+              <span className="absolute bottom-0 left-2 font-mono text-[0.72rem] text-text-3">
+                {year}
+              </span>
+            </div>
+          ))}
+          {rows.map((row, i) => {
+            const { left, width } = rulerBar(row, now);
+            const current = row.end === null;
+            return (
+              <div
+                key={row.id}
+                className={cn(
+                  "ruler-bar absolute flex h-11 items-center overflow-hidden rounded-lg px-3.5 text-[0.9rem] font-semibold whitespace-nowrap",
+                  current ? "bg-accent text-on-accent" : "bg-surface-2 text-text"
+                )}
+                style={
+                  { left: `${left}%`, width: `${width}%`, top: i * ROW, "--i": i } as CSSProperties
+                }
+              >
+                {row.name}
+                {row.note && <span className="ml-2 font-normal text-text-2">· {row.note}</span>}
+              </div>
+            );
+          })}
+          <div
+            className="absolute top-0 bottom-[22px] w-0.5 bg-accent"
+            style={{ left: `${nowEnd.left + nowEnd.width}%` }}
+          />
+        </div>
 
-        {/* ── Experience ── */}
-        <FadeInView className="mb-16 flex flex-col items-center text-center gap-2">
-          <Badge variant="section">{t("label")}</Badge>
-          <h2 className="font-display text-h1 font-bold text-text">{t("title")}</h2>
-          <p className="max-w-md text-body text-text-2">{t("subtitle")}</p>
-        </FadeInView>
+        <ol className="mt-14 border-t border-line lg:mt-16">
+          {EXPERIENCE.map((job) => {
+            const item = (key: string) => t(`items.${job.id}.${key}`);
+            const current = job.end === null;
+            return (
+              <li
+                key={job.id}
+                className="grid gap-x-10 gap-y-2 border-b border-line py-6 lg:grid-cols-[14rem_minmax(0,1fr)_minmax(0,1.2fr)] lg:py-7"
+              >
+                <p className={cn("pt-1 type-eyebrow", current && "text-accent-text")}>
+                  {formatMonth(job.start, locale)} ·{" "}
+                  {job.end ? formatMonth(job.end, locale) : t("present")}
+                </p>
+                <div>
+                  <h3 className="font-display text-xl font-bold text-text">{item("role")}</h3>
+                  <p className="mt-1 text-[0.95rem] text-text-2">
+                    {item("organization")} · {item("location")}
+                  </p>
+                </div>
+                <p className="leading-relaxed text-text-2">{item("description")}</p>
+              </li>
+            );
+          })}
+        </ol>
 
-        {/* Timeline */}
-        <div className="relative mb-24">
-          <TimelineLine />
-
-          <div className="flex flex-col gap-10">
-            {experiences.map((item, index) => {
-              const isLeft = index % 2 === 0;
-              return (
-                <FadeInView
-                  key={item.id}
-                  delay={index * 0.08}
-                  direction={isLeft ? "right" : "left"}
-                  className={cn(
-                    "relative flex flex-col",
-                    "lg:flex-row lg:items-start",
-                    isLeft ? "lg:justify-start" : "lg:flex-row-reverse"
-                  )}
-                >
-                  {/* Card */}
-                  <div className={cn("w-full lg:w-[46%]", isLeft ? "lg:pr-8" : "lg:pl-8")}>
-                    <div className="card-soft rounded-md p-5 transition-all duration-200 hover:border-accent/30">
-
-                      {/* Header */}
-                      <div className="mb-3 flex items-start justify-between gap-3">
-                        <div>
-                          <h3 className="font-semibold text-text">{item.role}</h3>
-                          <p className="text-body font-medium text-accent-text">{item.company}</p>
-                        </div>
-                        <Badge
-                          variant={item.end === null ? "success" : "default"}
-                          size="sm"
-                          className="shrink-0"
-                        >
-                          {item.end === null ? t("present") : item.type}
-                        </Badge>
-                      </div>
-
-                      {/* Meta */}
-                      <div className="mb-3 flex flex-wrap items-center gap-3 text-caption text-text-3">
-                        <span className="flex items-center gap-1">
-                          <MapPin className="h-3 w-3" aria-hidden />
-                          {item.location}
-                        </span>
-                        <span>
-                          {formatPeriod(item.start, item.end, t("present"), locale)}
-                        </span>
-                      </div>
-
-                      {/* Description */}
-                      <p className="mb-3 text-caption leading-relaxed text-text-2">
-                        {item.description}
-                      </p>
-
-                      {/* Highlights */}
-                      <ul className="flex flex-col gap-1.5" aria-label="Destaques">
-                        {item.highlights.map((highlight) => (
-                          <li key={highlight} className="flex items-start gap-2 text-caption text-text-3">
-                            <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ok" aria-hidden />
-                            {highlight}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Timeline dot — desktop only */}
-                  <div
-                    aria-hidden
-                    className="absolute left-1/2 top-5 hidden h-3 w-3 -translate-x-1/2 rounded-full border-2 border-accent bg-bg lg:block"
-                  />
-                </FadeInView>
-              );
-            })}
+        <div className="mt-16 grid gap-x-8 gap-y-12 lg:mt-20 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <h3 className="type-eyebrow">{tEdu("label")}</h3>
+            <ul className="mt-6 grid gap-8 sm:grid-cols-2">
+              {EDUCATION.map((edu) => {
+                const item = (key: string) => tEdu(`items.${edu.id}.${key}`);
+                return (
+                  <li key={edu.id} className="border-t border-line pt-5">
+                    <h4 className="font-display text-xl font-bold text-text">{item("degree")}</h4>
+                    <p className="mt-1 text-text-2">
+                      {item("institution")} · {item("location")}
+                    </p>
+                    <p className="mt-2 text-[0.9rem] text-text-3">
+                      {edu.start.slice(0, 4)} · {edu.end?.slice(0, 4)}
+                      {tEdu.has(`items.${edu.id}.description`) && <> · {item("description")}</>}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div>
+            <h3 className="type-eyebrow">{tEdu("languages_label")}</h3>
+            <dl className="mt-6 border-t border-line pt-5">
+              {(["pt", "en"] as const).map((lang) => (
+                <div key={lang} className="flex items-baseline justify-between gap-4 py-1.5">
+                  <dt className="font-semibold text-text">{tEdu(`languages.${lang}`)}</dt>
+                  <dd className="text-text-2">{tEdu(`languages.${lang}_level`)}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
-
-        {/* ── Education ── */}
-        <FadeInView className="mb-12 flex flex-col items-center text-center gap-2">
-          <Badge variant="section">{tEdu("label")}</Badge>
-          <h2 className="font-display text-h2 font-bold text-text">{tEdu("title")}</h2>
-        </FadeInView>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {educations.map((edu, index) => (
-            <FadeInView key={edu.id} delay={index * 0.08}>
-              <div className="card-soft flex h-full flex-col gap-3 rounded-md p-5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent/10">
-                  <GraduationCap className="h-4 w-4 text-accent-text" aria-hidden />
-                </div>
-                <div>
-                  <p className="font-semibold text-text">{edu.degree}</p>
-                  <p className="text-caption text-accent-text">{edu.institution}</p>
-                </div>
-                <div className="mt-auto flex flex-wrap items-center gap-2 text-caption text-text-3">
-                  <span className="flex items-center gap-1">
-                    <MapPin className="h-3 w-3" aria-hidden />
-                    {edu.location}
-                  </span>
-                  <span>{formatPeriod(edu.start, edu.end, "", locale)}</span>
-                </div>
-                {edu.description && (
-                  <p className="text-caption text-text-3">{edu.description}</p>
-                )}
-              </div>
-            </FadeInView>
-          ))}
-        </div>
-
       </div>
     </section>
   );
-};
+}

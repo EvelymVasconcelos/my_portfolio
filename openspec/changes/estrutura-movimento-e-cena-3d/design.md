@@ -383,10 +383,13 @@ ponteiro parado, e o texto nunca muda de lugar.
 
 ## Open Questions
 
-- **Voz do texto:** primeira pessoa ("construo") ou terceira ("Evelym constrói"). Muda só o texto em `messages/`.
-- **Situação do artigo do ICSCA 2026** (publicado ou com publicação prevista) e **nomes dos projetos** sem fonte no
-  currículo: a dona confirma antes do bloco de conteúdo.
+- ~~**Voz do texto**~~ → **primeira pessoa**, como no currículo (dona, 2026-11-19).
+- ~~**Situação do artigo do ICSCA 2026**~~ → **já publicado** na ACM Digital Library (dona, 2026-11-19; o currículo
+  ainda diz "prevista"). O DOI entra como link quando a dona enviar; até lá, sem link.
+- ~~**Nomes dos projetos**~~ → **título descritivo** do que foi feito, a partir do currículo, sem nome de produto
+  inventado (dona, 2026-11-19).
 - **Textos das recomendações:** a dona envia o texto exato, o nome e o cargo.
 - **Marca animada:** assinatura própria (precisa da foto) ou fonte manuscrita.
-- **Link de agendamento:** a dona envia o link da agenda (Google Agenda ou outro). Até lá, provisório marcado `validar`.
+- **Link de agendamento:** ainda não existe (dona, 2026-11-19). Sem link, o cartão e o botão "Agendar call" somem e o
+  Contato abre direto o formulário (tarefa 3.4b); entram quando a dona enviar o link.
 - **Hospedagem e domínio:** não mudam esta change, mas entram na de SEO.

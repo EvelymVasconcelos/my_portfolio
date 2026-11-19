@@ -53,33 +53,42 @@ layout.
       de idioma (lições da D7), com testes de hidratação nos dois temas, de primeira visita com o sistema em modo claro
       (abre escuro) e de troca de idioma com o tema salvo (`tests/e2e/tema.spec.ts`)
 - [x] 2.5 Atualizar as capturas de referência de propósito (identidade nova) e registrar o motivo no commit
-- [ ] 2.6 `npm run lint`, `npm run typecheck`, `npm test` e `npm run build` passando. A dona confere `/pt` nos dois
+- [x] 2.6 `npm run lint`, `npm run typecheck`, `npm test` e `npm run build` passando. A dona confere `/pt` nos dois
       temas no navegador
 
 ## 3. Estrutura e conteúdo
 
-- [ ] 3.1 `lib/content/` com `career.ts`, `projects.ts`, `research.ts`, `recommendations.ts` e `skills.ts` a partir do
-      currículo, só com dados (ids, datas, links, tecnologias) (D1)
-- [ ] 3.2 Reorganizar `messages/pt.json` por seção, com os textos de acessibilidade ("Pular para o conteúdo",
+- [x] 3.1 `lib/content/` com `career.ts`, `projects.ts`, `research.ts`, `recommendations.ts` e `skills.ts` a partir do
+      currículo, só com dados (ids, datas, links, tecnologias) (D1). `recommendations.ts` entra no bloco 6, com os
+      textos que a dona enviar
+- [x] 3.2 Reorganizar `messages/pt.json` por seção, com os textos de acessibilidade ("Pular para o conteúdo",
       `aria-label`, `alt`), passando a copy nova por `copywriting` e `stop-slop`; resolver antes a voz, a situação do
-      ICSCA 2026 e os nomes de projeto com a dona (D8)
-- [ ] 3.3 Gerar e revisar `en.json` e `es.json`, e teste de paridade de chaves entre os três idiomas
-- [ ] 3.4 Seções de servidor `Hero`, `About` (com `Skills`), `Projects` e `Experience` (Trajetória, com as barras por
+      ICSCA 2026 e os nomes de projeto com a dona (D8). Resolvido em 2026-11-19: primeira pessoa, ICSCA já publicado
+      (DOI pendente), títulos descritivos. A copy passou pela `stop-slop`; os títulos dos artigos ficam em
+      `lib/content/research.ts`, fora do tradutor
+- [x] 3.3 Gerar e revisar `en.json` e `es.json`, e teste de paridade de chaves entre os três idiomas
+      (`tests/unit/messages.test.ts`, que também reprova texto vazio e travessão). A revisão corrigiu nome de empresa,
+      gênero, termos técnicos traduzidos ("Dramaturgo", "confirmar") e travessões do DeepL
+- [x] 3.4 Seções de servidor `Hero`, `About` (com `Skills`), `Projects` e `Experience` (Trajetória, com as barras por
       ano) portadas do protótipo da rodada 2 com o layout da referência, âncoras estáveis e títulos ligados por
       `aria-labelledby`
-- [ ] 3.4b `Contact` e `ContactForm` como na referência: linhas rótulo/valor, "Baixar CV", cartão "Agendar call" (link em
+- [x] 3.4b `Contact` e `ContactForm` como na referência: linhas rótulo/valor, "Baixar CV", cartão "Agendar call" (link em
       `lib/contact.ts`; vazio tira o cartão e o botão da barra e abre o formulário) e o formulário em `<details>` nativo,
-      mantendo a spec `formulario-de-contato` (D12)
-- [ ] 3.5 Seção `Research` nova, com o peso da Experiência, DOI como link e a situação de cada publicação como no
+      mantendo a spec `formulario-de-contato` (D12). Sem link de agenda, o formulário já vem aberto. A lógica do
+      formulário continua a atual (react-hook-form e Zod); a versão segura é o bloco 6 da fundação
+- [x] 3.5 Seção `Research` nova, com o peso da Experiência, DOI como link e a situação de cada publicação como no
       currículo
-- [ ] 3.6 `Navbar` como na referência (Sobre, Projetos, Trajetória, Pesquisa, Contato, PT/EN/ES, tema, "Agendar call" e
+- [x] 3.6 `Navbar` como na referência (Sobre, Projetos, Trajetória, Pesquisa, Contato, PT/EN/ES, tema, "Agendar call" e
       "Baixar CV"), foco no título ao seguir uma âncora, e `Footer` da referência
-- [ ] 3.7 Folha de logos de tecnologia com `scripts/tech-icons/build.mjs` (Simple Icons, CC0), só com tecnologias do
+- [x] 3.7 Folha de logos de tecnologia com `scripts/tech-icons/build.mjs` (Simple Icons, CC0), só com tecnologias do
       currículo
-- [ ] 3.8 Remover `components/animations/` (inclusive `Particles.tsx`) e a identidade "Samsung Lilac" que sobrar
-- [ ] 3.9 Testes de navegador: ordem e âncoras das seções em pt/en/es, largura do container (1312 px em 1440), página com
+- [x] 3.8 Remover `components/animations/` (inclusive `Particles.tsx`) e a identidade "Samsung Lilac" que sobrar
+- [x] 3.9 Testes de navegador: ordem e âncoras das seções em pt/en/es, largura do container (1312 px em 1440), página com
       JavaScript desligado, navegação da barra só com teclado, "Agendar call" e "Prefere escrever por aqui?" pelo teclado
-      e sem JavaScript, e comparação lado a lado com a referência em 1440 e 390 px
+      e sem JavaScript, e comparação lado a lado com a referência em 1440 e 390 px (`tests/e2e/estrutura.spec.ts`).
+      A comparação visual foi feita contra o protótipo da rodada 2, que copia o CSS da referência: rodar a referência
+      criaria arquivos na pasta dela, que é só leitura. JS inicial de `/pt` medido: 289 kB gzip (framer-motion sai na
+      4.9; Zod e react-hook-form no cliente, no bloco 6 da fundação)
 - [ ] 3.10 Lint, tipos, testes, capturas e build passando. A dona confere as três línguas, celular e computador
 
 ## 4. Movimento e rolagem

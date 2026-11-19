@@ -1,6 +1,3 @@
-/* Aplicado só durante as capturas de referência, para esconder o que muda sozinho a cada execução. */
-
-/* Cargo do Hero: troca a cada 3 s mesmo com movimento reduzido (setInterval em Hero.tsx). */
-#hero .text-gradient {
-  visibility: hidden;
-}
+/* Estilo aplicado só nas capturas de referência (tests/e2e/visual.spec.ts), para esconder o que muda sozinho entre
+   duas rodadas. Hoje nada precisa ser escondido: o cargo que trocava a cada 3 s no Hero antigo saiu no bloco 3 da
+   change estrutura-movimento-e-cena-3d. */

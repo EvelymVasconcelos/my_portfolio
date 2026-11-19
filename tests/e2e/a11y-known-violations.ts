@@ -4,10 +4,7 @@
  * uma violação nova, fora daqui, reprova o CI. Medição em pt/en/es, claro/escuro, 1440 e 390 px.
  *
  * Saíram: `color-contrast` (26 a 30 elementos por página), com os tokens AA da identidade nova
- * (estrutura-movimento-e-cena-3d, bloco 2, 2026-11-19).
+ * (estrutura-movimento-e-cena-3d, bloco 2, 2026-11-19), e `label-content-name-mismatch`, com a troca de idioma em
+ * links que começam pelo texto visível (bloco 3, 2026-11-19).
  */
-export const KNOWN_VIOLATIONS: Record<string, string> = {
-  // O seletor de idioma tem aria-label "Idioma"/"Language", que não contém o texto visível (ex.: "PT"); o mesmo num link
-  // de destaque. Sai com a barra do topo da referência na change estrutura-movimento-e-cena-3d.
-  "label-content-name-mismatch": "estrutura-movimento-e-cena-3d (bloco 3: estrutura e conteúdo)",
-};
+export const KNOWN_VIOLATIONS: Record<string, string> = {};

@@ -21,11 +21,8 @@
   --color-text-3: var(--text-3);
   --color-accent: var(--accent);
   --color-accent-text: var(--accent-text);
-  --color-accent-hover: color-mix(
-    in oklab,
-    var(--accent) 84%,
-    black
-  ); /* hover do preenchimento: mais escuro, mantém o branco legível */
+  /* Hover do preenchimento: mais escuro, mantém o branco legível. */
+  --color-accent-hover: color-mix(in oklab, var(--accent) 84%, black);
   --color-on-accent: var(--on-accent);
   --color-accent-2: var(--accent-2);
   --color-accent-2-text: var(--accent-2-text);
@@ -39,112 +36,12 @@
 
   --breakpoint-nav: 56.25rem; /* 900 px: menu completo no cabeçalho a partir daqui */
 
-  /* Raios da referência com os "detalhes delicados" escolhidos no protótipo (4 a 6 px a mais).
-     `xs` só existe para os componentes atuais, que saem no bloco 3. */
-  --radius-xs: 4px;
+  /* Raios da referência com os "detalhes delicados" escolhidos no protótipo (4 a 6 px a mais). */
   --radius-sm: 6px;
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-xl: 28px;
   --radius-2xl: 36px;
-
-  /* ── Escala e sombras dos componentes atuais (saem no bloco 3 desta change) ── */
-  --text-display: clamp(2.5rem, 5.5vw + 0.75rem, 4rem);
-  --text-display--line-height: 1.05;
-  --text-display--font-weight: 800;
-  --text-display--letter-spacing: -0.02em;
-  --text-h1: clamp(1.875rem, 3.5vw + 0.5rem, 2.75rem);
-  --text-h1--line-height: 1.1;
-  --text-h1--font-weight: 800;
-  --text-h1--letter-spacing: -0.02em;
-  --text-h2: clamp(1.375rem, 2vw + 0.5rem, 1.875rem);
-  --text-h2--line-height: 1.2;
-  --text-h2--font-weight: 700;
-  --text-h3: clamp(1.125rem, 1.5vw + 0.25rem, 1.3125rem);
-  --text-h3--line-height: 1.3;
-  --text-h3--font-weight: 700;
-  --text-body-lg: 1.125rem;
-  --text-body-lg--line-height: 1.75;
-  --text-body-lg--font-weight: 400;
-  --text-body: 1rem;
-  --text-body--line-height: 1.7;
-  --text-body--font-weight: 400;
-  --text-caption: 0.875rem;
-  --text-caption--line-height: 1.55;
-  --text-caption--font-weight: 400;
-  --text-label: 0.6875rem;
-  --text-label--line-height: 1.4;
-  --text-label--font-weight: 600;
-  --text-label--letter-spacing: 0.08em;
-
-  --shadow-soft-sm: 0 1px 4px var(--shadow-tint);
-  --shadow-soft-md: 0 2px 12px var(--shadow-tint);
-  --shadow-soft-lg: 0 4px 24px var(--shadow-tint-strong);
-  --shadow-soft-xl: 0 8px 40px var(--shadow-tint-strong);
-  --shadow-glow: 0 0 28px color-mix(in oklab, var(--accent) 24%, transparent);
-  --shadow-glow-2: 0 0 28px color-mix(in oklab, var(--accent-2) 24%, transparent);
-
-  --animate-fade-in: fade-in 0.4s ease-out forwards;
-  --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
-  --animate-slide-in-right: slide-in-right 0.4s ease-out forwards;
-  --animate-slide-in-left: slide-in-left 0.4s ease-out forwards;
-  --animate-shimmer: shimmer 1.5s infinite;
-  --animate-bounce-slow: bounce-y 2s ease-in-out infinite;
-
-  @keyframes fade-in {
-    0% {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes fade-in-up {
-    0% {
-      opacity: 0;
-      transform: translateY(24px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes slide-in-right {
-    0% {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  @keyframes slide-in-left {
-    0% {
-      opacity: 0;
-      transform: translateX(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  @keyframes shimmer {
-    100% {
-      transform: translateX(100%);
-    }
-  }
-  @keyframes bounce-y {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-6px);
-    }
-  }
 }
 
 /* ─── Paleta ───────────────────────────────────────────────────────────────── */
@@ -239,20 +136,6 @@ html:not(.dark) .band-invert {
   --focus: #6d28d9;
   --band-dot: #c6bfd2;
   color-scheme: light;
-}
-
-/* Valores derivados da paleta (sombras e vidro dos componentes atuais). */
-:root,
-.band-invert {
-  --shadow-tint: color-mix(in oklab, var(--accent) 9%, transparent);
-  --shadow-tint-strong: color-mix(in oklab, var(--accent) 15%, transparent);
-  --glass-bg: color-mix(in oklab, var(--surface) 86%, transparent);
-  --glass-border: color-mix(in oklab, var(--accent) 14%, var(--line));
-}
-
-.dark {
-  --shadow-tint: color-mix(in oklab, black 35%, transparent);
-  --shadow-tint-strong: color-mix(in oklab, black 45%, transparent);
 }
 
 /* ─── Base ─────────────────────────────────────────────────────────────────── */
@@ -416,61 +299,252 @@ html:not(.dark) .band-invert {
   }
 }
 
-/* ─── Utilidades dos componentes atuais ────────────────────────────────────────
-   Saem no bloco 3 desta change, quando as seções forem portadas do protótipo. Já usam só tokens. */
+/* ─── Invólucro da página ────────────────────────────────────────────────────
+   Corta o que vaza para os lados com `clip`, e não `hidden`: `hidden` cria um contêiner de rolagem e quebra o
+   `position: sticky` das áreas presas (lição do protótipo, decisão 4 da design). */
 
-@utility glass {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-soft-md);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+.page-clip {
+  overflow-x: clip;
 }
 
-@utility text-gradient {
-  @apply bg-clip-text text-transparent;
-  background-image: linear-gradient(135deg, var(--accent-text), var(--accent-2-text));
+/* ─── Logomarca: assinatura (components/layout/Signature.tsx) ───────────────
+   Letras preenchidas com a cor do texto e sublinhado em orquídea; o hover leva as letras para a cor de destaque.
+   A escrita e o brilho entram no bloco de movimento. */
+
+.signature {
+  display: block;
+  height: 2.7rem;
+  width: auto;
+  overflow: visible;
 }
 
-@utility border-gradient {
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    -webkit-mask-composite: xor;
-  }
-}
-
-@utility section-padding {
-  @apply px-4 sm:px-6 lg:px-8;
-}
-
-@utility container-content {
-  @apply mx-auto w-full max-w-6xl;
-}
-
-@utility card-soft {
-  @apply rounded-md border border-line bg-surface;
-  box-shadow: var(--shadow-soft-md);
+.signature-letter {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1.1;
+  stroke-dasharray: 1;
   transition:
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    fill 0.3s var(--ease-out-soft),
+    stroke 0.3s var(--ease-out-soft);
+}
 
-  &:hover {
-    border-color: color-mix(in oklab, var(--accent-text) 35%, var(--line));
-    box-shadow: var(--shadow-soft-lg);
+.signature-swoosh {
+  fill: none;
+  stroke: var(--accent-2-text);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+}
+
+.signature-stop {
+  stop-color: var(--accent-text);
+  stop-opacity: 0;
+}
+
+.signature-stop-mid {
+  stop-opacity: 0.95;
+}
+
+.signature-shine {
+  opacity: 0;
+}
+
+a:hover > .signature .signature-letter {
+  fill: var(--accent-text);
+  stroke: var(--accent-text);
+}
+
+@media (max-width: 30rem) {
+  .signature {
+    height: 2.2rem;
   }
+}
+
+/* Alto contraste do sistema: a assinatura usa a cor de texto do sistema. */
+@media (forced-colors: active) {
+  .signature-letter {
+    fill: CanvasText;
+    stroke: CanvasText;
+  }
+  .signature-swoosh {
+    stroke: CanvasText;
+  }
+}
+
+/* ─── Status "Aberta a oportunidades" ───────────────────────────────────────
+   O ponto verde do Hero ganha um anel que se expande e some (no bloco de movimento). */
+
+.status-dot {
+  position: relative;
+}
+
+.status-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  color: var(--ok);
+  opacity: 0;
+}
+
+/* ─── Cena do Hero (imagem estática) ─────────────────────────────────────────
+   Imagem de fundo por tema: só a do tema ativo é baixada. A cena 3D entra por cima no bloco 5, e as imagens
+   definitivas (estado final da história) saem dela na tarefa 5.4. */
+
+.hero-scene {
+  position: relative;
+  aspect-ratio: 1000 / 917;
+  background: url("/images/scene/evelym-programando-claro.webp") center / contain no-repeat;
+}
+
+.dark .hero-scene {
+  background-image: url("/images/scene/evelym-programando-escuro.webp");
+}
+
+/* ─── Competências (components/sections/Skills.tsx) ──────────────────────────
+   Cartões por grupo e tecnologias com logotipo; o logotipo ganha a cor da marca no hover (`--cl`/`--cd`). */
+
+.tech-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+}
+
+.tech-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 1.75rem 1.75rem 1.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--bg);
+  transition: border-color 0.3s var(--ease-out-soft);
+}
+
+.tech-card:hover {
+  border-color: var(--line-strong);
+}
+
+.tech-chip {
+  --c: var(--cl);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.8rem 0.5rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 0.93rem;
+  line-height: 1.2;
+  transition:
+    border-color 0.25s,
+    color 0.25s;
+}
+
+.dark .tech-chip {
+  --c: var(--cd);
+}
+
+.tech-chip svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex-shrink: 0;
+  color: var(--text-3);
+  transition: color 0.3s;
+}
+
+.tech-chip:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.tech-chip:hover svg {
+  color: var(--c, var(--text));
+}
+
+/* Ponto do E2E-CIFlow, em orquídea (retoque decorativo; o sentido vem do texto para leitor de tela e da legenda). */
+.tech-cr {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent-2);
+}
+
+/* ─── Pesquisa (components/sections/Research.tsx) ─────────────────────────────
+   Uma publicação por cartão, com o mesmo peso da Trajetória. A pilha presa à rolagem entra no bloco de movimento. */
+
+.pilha {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+}
+
+@media (min-width: 64rem) {
+  .pilha {
+    margin-top: 5rem;
+  }
+}
+
+.paper {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 3rem;
+  padding: clamp(1.75rem, 3.5vw, 3rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  transition: border-color 0.3s;
+}
+
+.paper:hover {
+  border-color: var(--line-strong);
+}
+
+@media (max-width: 56.24rem) {
+  .paper {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ─── Diagrama do E2E-CIFlow (components/sections/PipelineDiagram.tsx) ─────── */
+
+.diagrama text {
+  fill: var(--text);
+  font:
+    600 13px var(--font-code),
+    monospace;
+}
+
+.diagrama .sub {
+  fill: var(--text-3);
+  font-weight: 400;
+}
+
+.diagrama .st {
+  fill: var(--bg);
+  stroke: var(--line-strong);
+  stroke-width: 1.4;
+}
+
+.diagrama .st.on {
+  stroke: var(--accent-text);
+  stroke-width: 2;
+}
+
+.diagrama .ar {
+  stroke: var(--text-3);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.diagrama .ok {
+  fill: var(--ok);
 }
 
 /* ─── Movimento reduzido ──────────────────────────────────────────────────── */

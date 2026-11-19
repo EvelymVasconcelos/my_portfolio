@@ -35,13 +35,13 @@ test("primeira visita com o sistema em modo claro abre no escuro", async ({ page
   await page.goto("/pt");
   expect(await firstPaintClass(page)).toMatch(/\bdark\b/);
   await expect(html(page)).toHaveClass(/\bdark\b/);
-  await expect(page.getByRole("button", { name: "Ativar modo claro" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Mudar para o tema claro" })).toBeVisible();
 });
 
 test("a escolha do claro é lembrada e pinta antes da hidratação", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/pt");
-  await page.getByRole("button", { name: "Ativar modo claro" }).click();
+  await page.getByRole("button", { name: "Mudar para o tema claro" }).click();
   await expect(html(page)).toHaveClass(/\blight\b/);
 
   await recordFirstPaintClass(page);
@@ -53,15 +53,15 @@ test("a escolha do claro é lembrada e pinta antes da hidratação", async ({ pa
 test("pelo teclado, o tema troca, o rótulo muda e o foco continua no botão", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/pt");
-  const button = page.getByRole("button", { name: "Ativar modo claro" });
+  const button = page.getByRole("button", { name: "Mudar para o tema claro" });
   await button.focus();
   await page.keyboard.press("Enter");
-  const after = page.getByRole("button", { name: "Ativar modo escuro" });
+  const after = page.getByRole("button", { name: "Mudar para o tema escuro" });
   await expect(after).toBeFocused();
   await expect(html(page)).toHaveClass(/\blight\b/);
 
   await page.keyboard.press("Space");
-  await expect(page.getByRole("button", { name: "Ativar modo claro" })).toBeFocused();
+  await expect(page.getByRole("button", { name: "Mudar para o tema claro" })).toBeFocused();
   await expect(html(page)).toHaveClass(/\bdark\b/);
 });
 
@@ -70,16 +70,12 @@ test("o tema sobrevive à troca de idioma, sem piscar e sem erro no console", as
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/pt");
-  await page.getByRole("button", { name: "Ativar modo claro" }).click();
+  await page.getByRole("button", { name: "Mudar para o tema claro" }).click();
   await expect(html(page)).toHaveClass(/\blight\b/);
 
   // Trocar de idioma redesenha o layout sem recarregar a página: o tema não pode se perder.
-  for (const [from, to, label] of [
-    ["Idioma", "en", "English"],
-    ["Language", "es", "Español"],
-  ] as const) {
-    await page.getByRole("button", { name: from }).first().click();
-    await page.getByRole("option", { name: label }).click();
+  for (const to of ["en", "es"]) {
+    await page.locator(`header a[hreflang="${to}"]`).first().click();
     await page.waitForURL(new RegExp(`/${to}$`));
     await expect(html(page)).toHaveAttribute("lang", to);
     await expect(html(page)).toHaveClass(/\blight\b/);

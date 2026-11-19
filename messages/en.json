@@ -1,423 +1,280 @@
 {
   "meta": {
-    "title": "Evelym Marinho - Backend Software Engineer",
-    "description": "Portfolio of Evelym Marinho, Senior Backend Software Engineer with 6+ years in Python, FastAPI, Django and microservices. Researcher with publications in IEEE and ACM."
+    "title": "Evelym Marinho · Backend Software Engineer",
+    "description": "Portfolio of Evelym Marinho, a backend software engineer with over 6 years of experience in Python, FastAPI, Django, and microservices, and author of research papers published in IEEE and ACM."
   },
   "nav": {
     "about": "About",
-    "skills": "Skills",
-    "experience": "Experience",
+    "projects": "Projects",
+    "experience": "Career",
     "research": "Research",
     "contact": "Contact",
     "download_cv": "Download CV",
-    "open_menu": "Open menu",
-    "close_menu": "Close menu"
+    "label": "Main",
+    "menu": "Menu",
+    "schedule": "Schedule a call"
   },
   "theme": {
-    "toggle_dark": "Activate dark mode",
-    "toggle_light": "Activate light mode"
+    "toggle_dark": "Switch to the dark theme",
+    "toggle_light": "Switch to the light theme"
   },
   "language": {
-    "label": "Language",
-    "pt": "Portuguese",
-    "en": "English",
-    "es": "Español"
+    "label": "Language"
   },
   "hero": {
-    "greeting": "Hello, I'm",
+    "status": "Open to opportunities · Manaus, Brazil",
     "name": "Evelym Marinho",
-    "roles": [
-      "Backend Software Engineer",
-      "Python & APIs Specialist",
-      "Microservices Architect",
-      "IEEE & ACM Researcher"
-    ],
-    "available": "Available for opportunities",
-    "tagline": "Backend engineer with 6+ years building scalable APIs, high availability systems and Python solutions. Author of international research on automation and software quality.",
-    "cta_projects": "See Experience",
+    "tagline": "Backend software engineer. For more than 6 years I've built scalable, highly available RESTful APIs in Python, from the first test to the deploy on Kubernetes, and I publish research on test automation and CI/CD.",
+    "cta_projects": "View projects",
     "cta_cv": "Download CV",
-    "scroll_hint": "Scroll down",
-    "stat_years": "Years",
-    "stat_companies": "Companies",
-    "stat_projects": "Publications"
+    "built_label": "Where I've built",
+    "scene_alt": "3D illustration: me, wearing a purple sweatshirt and headphones, coding on a laptop. Around me, three panels show the Python code for an API being written, the automated tests passing, and the \"deploy to production\" badge."
   },
   "about": {
     "label": "About",
-    "title": "Who I am",
-    "bio_1": "Backend Software Engineer with over 6 years of solid experience in the Python ecosystem, specializing in building scalable and highly available RESTful APIs. An expert in frameworks such as FastAPI and Django, I rigorously apply TDD, Pytest, Clean Code and SOLID on a daily basis.",
-    "bio_2": "Author of international research on test automation and CI/CD, with publications in ACM (ICSCA 2026) and IEEE (SEAI 2024). Robust experience in containerized environments with Docker and Kubernetes, integrating relational (PostgreSQL) and NoSQL databases. Total focus on performance, security and constant innovation.",
+    "title": "Backend software engineer, researcher, and Python developer for over 6 years.",
+    "lead": "I have a degree in Information Systems from UFAM, and I build backend systems in the Python ecosystem: RESTful APIs with FastAPI and Django, microservices with Docker and Kubernetes, integrating PostgreSQL and NoSQL databases.",
+    "bio_1": "Today, I’m a backend software engineer at Sidia, where I lead the development of high-performance REST APIs for global products. Previously, at Bemol Digital, I designed ETL processes and optimized SQL queries in high-availability systems for the retail industry.",
+    "bio_2": "I apply the same rigor to my research: I am the lead author of papers on test automation and CI/CD published in IEEE SEAI 2024 and ICSCA 2026.",
+    "facts": {
+      "location_label": "Location",
+      "location": "Manaus, Brazil",
+      "education_label": "Education",
+      "education": "Information Systems, UFAM",
+      "now_label": "Today",
+      "now": "Backend at Sidia, since 2022",
+      "research_label": "Research",
+      "research": "2 international papers"
+    },
     "skills_title": "Skills",
-    "location": "Manaus, Brazil",
-    "available": "Available for opportunities",
-    "languages_title": "Languages",
-    "lang_pt": "Portuguese",
-    "lang_pt_level": "Native speaker",
-    "lang_en": "English",
-    "lang_en_level": "Very good control"
-  },
-  "skills": {
-    "label": "Skills",
-    "title": "Technical stack",
-    "subtitle": "Technologies and practices that I apply on a daily basis to build robust and scalable systems.",
-    "categories": {
+    "skills_heading": "From request to deploy",
+    "skills_legend": "Used in E2E-CIFlow",
+    "skills_e2e_sr": "used in E2E-CIFlow",
+    "skills": {
       "languages": {
-        "label": "Languages & Frameworks",
-        "items": [
-          {
-            "name": "Python",
-            "level": "Senior"
-          },
-          {
-            "name": "FastAPI",
-            "level": null
-          },
-          {
-            "name": "Django",
-            "level": null
-          },
-          {
-            "name": "Flask",
-            "level": null
-          },
-          {
-            "name": "Java",
-            "level": null
-          },
-          {
-            "name": "JavaScript",
-            "level": null
-          }
-        ]
+        "label": "Languages and frameworks",
+        "items": {
+          "python": "Python",
+          "fastapi": "FastAPI",
+          "django": "Django",
+          "flask": "Flask",
+          "java": "Java",
+          "javascript": "JavaScript"
+        }
       },
-      "quality": {
-        "label": "Quality & Engineering",
-        "items": [
-          {
-            "name": "TDD",
-            "level": null
-          },
-          {
-            "name": "Pytest",
-            "level": null
-          },
-          {
-            "name": "Clean Code",
-            "level": null
-          },
-          {
-            "name": "SOLID",
-            "level": null
-          },
-          {
-            "name": "Design Patterns",
-            "level": null
-          },
-          {
-            "name": "Code Review",
-            "level": null
-          },
-          {
-            "name": "BDD",
-            "level": null
-          }
-        ]
-      },
-      "infra": {
-        "label": "Infra & Cloud",
-        "items": [
-          {
-            "name": "Docker",
-            "level": null
-          },
-          {
-            "name": "Kubernetes",
-            "level": null
-          },
-          {
-            "name": "CI/CD",
-            "level": null
-          },
-          {
-            "name": "GitHub Actions",
-            "level": null
-          },
-          {
-            "name": "AWS",
-            "level": null
-          },
-          {
-            "name": "Linux",
-            "level": null
-          },
-          {
-            "name": "Git / GitHub",
-            "level": null
-          }
-        ]
+      "architecture": {
+        "label": "APIs and architecture",
+        "items": {
+          "rest": "RESTful APIs",
+          "microservices": "Microservices",
+          "design_patterns": "Design Patterns",
+          "solid": "SOLID"
+        }
       },
       "data": {
-        "label": "Data & Integration",
-        "items": [
-          {
-            "name": "PostgreSQL",
-            "level": null
-          },
-          {
-            "name": "MySQL",
-            "level": null
-          },
-          {
-            "name": "Redis",
-            "level": null
-          },
-          {
-            "name": "MongoDB",
-            "level": null
-          },
-          {
-            "name": "ETL",
-            "level": null
-          },
-          {
-            "name": "Microservices",
-            "level": null
-          },
-          {
-            "name": "RESTful APIs",
-            "level": null
-          }
-        ]
+        "label": "Data and integration",
+        "items": {
+          "postgresql": "PostgreSQL",
+          "mysql": "MySQL",
+          "redis": "Redis",
+          "mongodb": "MongoDB",
+          "etl": "ETL"
+        }
+      },
+      "infra": {
+        "label": "Infrastructure and cloud",
+        "items": {
+          "docker": "Docker",
+          "kubernetes": "Kubernetes",
+          "aws": "AWS",
+          "linux": "Linux",
+          "git": "Git",
+          "github": "GitHub"
+        }
+      },
+      "quality": {
+        "label": "Quality and testing",
+        "items": {
+          "tdd": "TDD",
+          "pytest": "Pytest",
+          "bdd": "BDD",
+          "clean_code": "Clean Code",
+          "code_review": "Code Review",
+          "playwright": "Playwright"
+        }
+      },
+      "delivery": {
+        "label": "Delivery and research",
+        "items": {
+          "github_actions": "GitHub Actions",
+          "cicd": "CI/CD",
+          "e2e_tests": "End-to-End Testing",
+          "agile": "Agile methods"
+        }
       }
-    }
+    },
+    "skills_extra_label": "Also",
+    "skills_extra": "technical leadership in API development, secure integration between APIs and interfaces, SQL query optimization, ETL processes for large volumes of data, and agile cycles."
   },
   "projects": {
     "label": "Projects",
-    "title": "What I've already built",
-    "subtitle": "Backend systems and tools developed throughout career.",
-    "filters": {
-      "all": "All",
-      "frontend": "Frontend",
-      "backend": "Backend",
-      "fullstack": "Full Stack"
-    },
-    "github_label": "View on GitHub",
-    "live_label": "View online",
-    "filter_aria_label": "Filter projects",
-    "items": [
-      {
-        "id": "1",
+    "title": "What I've built",
+    "subtitle": "Backend for global products and for retail, and a testing process I took all the way to international research.",
+    "did_label": "What I did",
+    "others_label": "Other projects",
+    "items": {
+      "e2e-ciflow": {
         "title": "E2E-CIFlow",
-        "description": "Automated End-to-End testing process integrated into CI/CD pipelines using Playwright and GitHub Actions. Research published in the ACM Digital Library (ICSCA 2026), demonstrating how the approach speeds up deploys and reduces fault detection time.",
-        "stack": [
-          "Python",
-          "Playwright",
-          "GitHub Actions",
-          "CI/CD",
-          "Docker"
-        ],
-        "category": "backend",
-        "github": null,
-        "live": null,
-        "image": "https://picsum.photos/600/400?random=1"
+        "context": "Applied research · lead author",
+        "description": "An automated End-to-End testing process inside the CI/CD pipeline. With it, the team ships faster, deploys more often, and catches failures earlier.",
+        "did": "I proposed the process and integrated it into the pipeline using Playwright and GitHub Actions. I presented the work at ICSCA 2026 in Langkawi, and the paper was published in the ACM Digital Library."
       },
-      {
-        "id": "2",
-        "title": "Microservices API Gateway",
-        "description": "High-performance REST APIs for global products at Sidia, built in Python with microservices architecture. Deployment in Kubernetes with automated CI/CD pipelines and test coverage with TDD and Pytest.",
-        "stack": [
-          "Python",
-          "FastAPI",
-          "Docker",
-          "Kubernetes",
-          "PostgreSQL",
-          "CI/CD"
-        ],
-        "category": "backend",
-        "github": null,
-        "live": null,
-        "image": "https://picsum.photos/600/400?random=2"
+      "sidia-apis": {
+        "title": "High-performance REST APIs",
+        "context": "Sidia · global products"
       },
-      {
-        "id": "3",
-        "title": "ETL Pipeline for Retail",
-        "description": "High-availability system for processing large volumes of retail data at Bemol Digital. Robust ETL with optimization of SQL queries in PostgreSQL and caching with Redis, integrating APIs and interfaces in agile cycles.",
-        "stack": [
-          "Python",
-          "PostgreSQL",
-          "Redis",
-          "ETL",
-          "SQL",
-          "RESTful APIs"
-        ],
-        "category": "backend",
-        "github": null,
-        "live": null,
-        "image": "https://picsum.photos/600/400?random=3"
+      "bemol-etl": {
+        "title": "High availability for retail",
+        "context": "Bemol Digital · large volumes of data"
       },
-      {
-        "id": "4",
+      "agile-blueprint": {
         "title": "Agile Blueprint Model",
-        "description": "Agile modeling method for the software development process with version increment. Research published at the IEEE 4th International Conference on Software Engineering and Artificial Intelligence (SEAI 2024).",
-        "stack": [
-          "Software Engineering",
-          "Agile methodologies",
-          "Research"
-        ],
-        "category": "backend",
-        "github": null,
-        "live": "https://doi.org/10.1109/SEAI62072.2024.10674366",
-        "image": "https://picsum.photos/600/400?random=4"
+        "context": "IEEE SEAI 2024",
+        "stack": "Software engineering · Agile methods"
       }
-    ]
+    },
+    "diagram": {
+      "alt": "E2E-CIFlow pipeline: commit, build, End-to-End tests with Playwright, and deploy, each step approved.",
+      "commit": "commit",
+      "build": "build",
+      "tests": "E2E tests",
+      "deploy": "deploy",
+      "caption": "GitHub Actions runs everything with every push"
+    }
   },
   "experience": {
-    "label": "Experience",
-    "title": "Professional career",
-    "subtitle": "Companies and projects that have shaped my career.",
-    "present": "Present",
-    "items": [
-      {
-        "id": "1",
-        "role": "Software Engineer | Backend",
-        "company": "Sidia Institute of Science and Technology",
-        "location": "Manaus (in person)",
-        "type": "CLT",
-        "start": "2022-01",
-        "end": null,
-        "description": "Development of backend solutions in Python and Java for global products. Creation of high-performance REST APIs in microservices architectures, with deployment in Docker and Kubernetes.",
-        "highlights": [
-          "High-performance REST APIs with Python and Java",
-          "Microservices architecture with Docker and Kubernetes",
-          "Automated CI/CD pipelines",
-          "TDD, Pytest and code review with a focus on technical quality"
-        ]
+    "label": "Career",
+    "title": "Where I've built",
+    "subtitle": "Each bar is a real period, from 2014 to today.",
+    "present": "today",
+    "study_note": "Information Systems",
+    "items": {
+      "sidia": {
+        "role": "Software Engineer, Backend",
+        "organization": "Sidia Institute of Science and Technology",
+        "location": "Manaus (in-person)",
+        "description": "I develop backend solutions in Python and Java for global products. I lead the development of high-performance REST APIs in microservice architectures, using Docker, Kubernetes, and CI/CD pipelines, and I apply TDD, Pytest, and code reviews to ensure quality, scalability, and security."
       },
-      {
-        "id": "2",
-        "role": "Software Engineer | Backend",
-        "company": "Bemol Digital",
+      "bemol": {
+        "role": "Software Engineer, Backend",
+        "organization": "Bemol Digital",
         "location": "Manaus",
-        "type": "CLT",
-        "start": "2019-08",
-        "end": "2022-01",
-        "description": "Development of high availability systems for retail, managing large volumes of data. Structuring ETL processes and optimizing SQL queries.",
-        "highlights": [
-          "High availability systems for retail",
-          "ETL and query optimization in PostgreSQL and Redis",
-          "Secure integration between APIs and interfaces",
-          "Agile cycles with a focus on business performance"
-        ]
+        "description": "I developed high-availability systems for the retail sector that handle large volumes of data. I designed ETL processes, optimized SQL queries in PostgreSQL and NoSQL (Redis), and ensured secure integration between APIs and interfaces using agile development cycles."
       }
-    ]
+    }
   },
   "education": {
-    "label": "Training",
-    "title": "Academic background",
-    "items": [
-      {
-        "id": "1",
-        "degree": "Bachelor of Information Systems",
-        "institution": "Federal University of Amazonas - UFAM",
-        "location": "Itacoatiara - AM",
-        "start": "2014-06",
-        "end": "2019-08",
-        "description": "Capstone approved with full marks (10): \"An Analysis of Female Participation in Information Technology\"."
+    "label": "Education",
+    "items": {
+      "bachelor": {
+        "degree": "Information Systems",
+        "institution": "Federal University of Amazonas (UFAM)",
+        "location": "Itacoatiara",
+        "description": "Undergraduate thesis approved with the highest grade (10)."
       }
-    ]
+    },
+    "languages_label": "Languages",
+    "languages": {
+      "pt": "Brazilian Portuguese",
+      "pt_level": "native",
+      "en": "English",
+      "en_level": "very good command"
+    }
   },
   "research": {
     "label": "Research",
-    "title": "Academic publications",
-    "subtitle": "International research on quality, test automation and software engineering.",
-    "items": [
-      {
-        "id": "1",
-        "conference": "ICSCA 2026",
-        "publisher": "ACM",
-        "publisher_badge": "ACM",
-        "title": "E2E-CIFlow: An automated End-to-End testing process",
-        "year": "2026",
-        "location": "Langkawi, Malaysia",
-        "description": "Practical, automated process for End-to-End testing integrated into CI/CD pipelines, using Playwright and GitHub Actions. It demonstrates how the approach speeds up software delivery and reduces fault detection time.",
-        "doi": null,
-        "link": null
+    "title": "Academic Publications",
+    "subtitle": "International research on software quality, test automation, and software engineering.",
+    "role_label": "Role",
+    "place_label": "Where",
+    "status_label": "Status",
+    "result_label": "Result",
+    "doi_label": "DOI",
+    "items": {
+      "icsca-2026": {
+        "venue": "ICSCA 2026 · ACM",
+        "summary": "A practical, automated process for end-to-end testing integrated into CI/CD pipelines, using Playwright and GitHub Actions.",
+        "role": "Lead author",
+        "place": "Langkawi, Malaysia",
+        "status": "Published in the ACM Digital Library"
       },
-      {
-        "id": "2",
-        "conference": "IEEE SEAI 2024",
-        "publisher": "IEEE",
-        "publisher_badge": "IEEE",
-        "title": "Agile Blueprint Model Method in the Software Development Process with Increment of Version",
-        "year": "2024",
-        "location": "Xiamen, China",
-        "description": "Agile modeling method published in the IEEE 4th International Conference on Software Engineering and Artificial Intelligence.",
-        "doi": "10.1109/SEAI62072.2024.10674366",
-        "link": "https://doi.org/10.1109/SEAI62072.2024.10674366"
+      "seai-2024": {
+        "venue": "IEEE SEAI 2024",
+        "summary": "An agile modeling method for the software development process with version increments, presented at the IEEE 4th International Conference on Software Engineering and Artificial Intelligence.",
+        "role": "Lead author",
+        "place": "Xiamen, China"
       },
-      {
-        "id": "3",
-        "conference": "TCC - UFAM",
-        "publisher": "UFAM",
-        "publisher_badge": "UFAM",
-        "title": "An Analysis of Female Participation in Information Technology",
-        "year": "2019",
-        "location": "Itacoatiara, Brazil",
-        "description": "Analysis of female representation in IT at the Brazilian Computer Society (SBC) Symposia over 10 years. Approved with full marks (10).",
-        "doi": null,
-        "link": null
+      "tcc-2019": {
+        "venue": "Undergraduate thesis · UFAM",
+        "summary": "Women's representation in IT at the Brazilian Computer Society symposia over 10 years, and the importance of initiatives to increase women's participation in the field.",
+        "result": "Highest grade (10)",
+        "place": "Itacoatiara, Brazil"
       }
-    ]
+    }
   },
   "contact": {
     "label": "Contact",
-    "title": "Shall we talk?",
-    "subtitle": "Open to opportunities, projects and collaborations. Send us a message!",
-    "social_title": "Social networks",
+    "title": "Let's talk",
+    "subtitle": "I'm open to opportunities in backend software engineering. Reach me through whichever channel you prefer.",
+    "channels": {
+      "email": "Email",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "lattes": "Lattes"
+    },
+    "cv": "Download CV",
+    "agenda_label": "Schedule a call",
+    "agenda_value": "Choose a time slot from my calendar",
+    "write_toggle": "Prefer to write here?",
+    "noscript": "Without JavaScript, the form can't send. Write to the email address alongside.",
     "form_aria_label": "Contact form",
     "form": {
       "name_label": "Name",
       "name_placeholder": "Your full name",
-      "email_label": "E-mail",
+      "email_label": "Email",
       "email_placeholder": "seu@email.com",
       "subject_label": "Subject",
-      "subject_placeholder": "What do you want to talk about?",
+      "subject_placeholder": "Choose a topic",
+      "subject_options": {
+        "job": "Job opportunity",
+        "project": "Project proposal",
+        "research": "Research or academic collaboration",
+        "feedback": "Feedback on the portfolio",
+        "other": "Other"
+      },
       "message_label": "Message",
       "message_placeholder": "Write your message here...",
       "submit": "Send message",
       "submitting": "Sending...",
       "success_title": "Message sent!",
-      "success_body": "Thank you for contacting me. I'll get back to you shortly.",
-      "error_title": "Oops, something went wrong.",
-      "error_body": "Try again or email us directly."
+      "success_body": "Thank you for reaching out. I'll get back to you soon.",
+      "error_title": "I wasn't able to send the message.",
+      "error_body": "Please try again or email me directly."
     },
     "validation": {
-      "name_required": "Name required",
-      "name_min": "Name must be at least 2 characters long",
-      "email_required": "E-mail is mandatory",
-      "email_invalid": "Invalid e-mail",
-      "subject_required": "Subject is mandatory",
-      "message_required": "Message is mandatory",
-      "message_min": "Message must be at least 10 characters long"
-    },
-    "social": {
-      "email": "evelymmarinho.dev@gmail.com",
-      "github": "https://github.com/evelymmarinho",
-      "linkedin": "https://www.linkedin.com/in/evelymmarinho",
-      "lattes": "http://lattes.cnpq.br/evelymmarinho"
+      "name_min": "The name must be at least 2 characters long",
+      "email_invalid": "Invalid email address",
+      "subject_required": "Choose a topic",
+      "message_min": "The message must be at least 10 characters long"
     }
   },
   "footer": {
-    "made_with": "Made with",
-    "and": "e",
-    "rights": "All rights reserved.",
-    "back_to_top": "Back to top"
+    "back_to_top": "Back to top",
+    "location": "Manaus, Brazil"
   },
   "accessibility": {
     "skip_to_content": "Skip to main content",
-    "theme_toggle": "Switch theme",
-    "language_switcher": "Select language",
-    "open_link_new_tab": "Opens in new tab",
-    "project_image_alt": "Project image {title}",
-    "profile_photo_alt": "Profile picture of Evelym Marinho"
+    "open_link_new_tab": "opens in a new tab",
+    "profile_photo_alt": "Photo of Evelym Marinho smiling, with shoulder-length black hair"
   }
 }

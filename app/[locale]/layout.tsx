@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { Providers } from "@/components/providers";
 import { ThemeScript } from "@/components/layout/ThemeScript";
 import "@/app/globals.css";
+
+/** Grupos de mensagens usados por componentes de cliente (Navbar, ThemeToggle, ContactForm). */
+const CLIENT_NAMESPACES = ["nav", "language", "theme", "accessibility", "contact"] as const;
 
 // Fontes da referência servidas pelo próprio site (next/font), só o subconjunto latin, que cobre pt, en e es.
 // Títulos, texto e rótulos; a mono não é pré-carregada (aparece abaixo da dobra). Orçamento: 140 KB no início.
@@ -92,7 +95,10 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
 
   // Permite gerar as páginas de cada idioma no build (renderização estática com next-intl).
   setRequestLocale(locale);
-  const messages = await getMessages();
+  const allMessages = await getMessages();
+  // Só o que as ilhas de cliente usam vai para o navegador; as seções são de servidor.
+  const messages = Object.fromEntries(CLIENT_NAMESPACES.map((ns) => [ns, allMessages[ns]]));
+  const tA11y = await getTranslations("accessibility");
 
   return (
     <html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">
@@ -101,12 +107,12 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         <ThemeScript />
       </head>
       <body className={`${heading.variable} ${body.variable} ${code.variable} font-sans antialiased`}>
-        {/* Skip to main content — Accessibility */}
+        {/* Pular para o conteúdo: primeiro item do teclado, no idioma da página. */}
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-60 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:font-semibold focus:text-on-accent"
         >
-          Pular para o conteúdo principal
+          {tA11y("skip_to_content")}
         </a>
 
         <Providers locale={locale} messages={messages}>

@@ -1,190 +1,191 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { Menu, X, Terminal } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Menu, X } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/Button";
+import { AGENDA_URL } from "@/lib/contact";
 import { CV_URL } from "@/lib/cv";
+import { cn } from "@/lib/utils";
+import type { Locale } from "@/i18n/routing";
 
 const NAV_LINKS = [
-  { label: "about",      href: "#about" },
-  { label: "experience", href: "#experience" },
-  { label: "research",   href: "#research" },
-  { label: "contact",    href: "#contact" },
+  { key: "about", href: "#about" },
+  { key: "projects", href: "#projects" },
+  { key: "experience", href: "#experience" },
+  { key: "research", href: "#research" },
+  { key: "contact", href: "#contact" },
 ] as const;
 
-export function Navbar() {
+/** `logo`: a assinatura (components/layout/Signature.tsx), de servidor, para o desenho não entrar no JavaScript. */
+export function Navbar({ logo }: { logo: ReactNode }) {
   const t = useTranslations("nav");
-  const locale = useLocale();
-  const cvUrl = CV_URL[locale] ?? CV_URL.en;
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const { scrollY } = useScroll();
+  const tLanguage = useTranslations("language");
+  const tA11y = useTranslations("accessibility");
+  const locale = useLocale() as Locale;
+  const cvUrl = CV_URL[locale] ?? CV_URL.pt;
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 20);
-  });
+  const [open, setOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
-  // Lock body scroll when mobile menu is open
+  // Menu de celular: foco no primeiro link ao abrir; Esc fecha e devolve o foco ao botão;
+  // clicar fora fecha. Não prende o foco, porque o menu não cobre a página.
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
+    if (!open) return;
+    firstLinkRef.current?.focus();
 
-  function handleNavClick() {
-    setMobileOpen(false);
-  }
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      buttonRef.current?.focus();
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (panelRef.current?.contains(target) || buttonRef.current?.contains(target)) return;
+      setOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [open]);
+
+  const newTab = <span className="sr-only"> ({tA11y("open_link_new_tab")})</span>;
 
   return (
-    <>
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-          isScrolled
-            ? "bg-bg shadow-soft-sm"
-            : "bg-transparent"
-        )}
-      >
-        <nav
-          aria-label="Navegação principal"
-          className="container-content section-padding flex h-16 items-center justify-between"
-        >
-          {/* Logo */}
-          {/* Logo — flat, sem hover scale (Samsung é estático) */}
-          <a
-            href="#main-content"
-            aria-label="Evelym Marinho — Início"
-            className="flex items-center gap-2.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-focus rounded-xs"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-xs bg-accent text-on-accent">
-              <Terminal className="h-4 w-4" aria-hidden />
-            </div>
-            <span className="hidden text-body font-semibold text-text sm:block">
-              Evelym Marinho
-            </span>
-          </a>
+    <header className="sticky top-0 z-50 border-b border-line bg-bg">
+      <div className="container-site flex h-(--header-h) items-center gap-3 nav:gap-6">
+        {/* Logomarca: assinatura desenhada (decorativa); o nome em texto fica para o leitor de tela. */}
+        <a href="#hero" className="shrink-0 rounded-md py-1 text-text">
+          {logo}
+          <span className="sr-only">Evelym Marinho</span>
+        </a>
 
-          {/* Desktop nav links — Samsung: só muda cor, sem bg hover */}
-          <ul className="hidden items-center gap-0 md:flex" role="list">
-            {NAV_LINKS.map(({ label, href }) => (
-              <li key={label}>
+        <nav aria-label={t("label")} className="ml-auto hidden nav:block">
+          <ul className="flex items-center gap-7">
+            {NAV_LINKS.map(({ key, href }) => (
+              <li key={key}>
                 <a
                   href={href}
-                  className="px-3 py-2 text-body text-text-2 transition-colors duration-150 hover:text-accent-text focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-focus rounded-xs"
+                  className="rounded-md text-[0.95rem] text-text-2 transition-colors hover:text-text"
                 >
-                  {t(label)}
+                  {t(key)}
                 </a>
               </li>
             ))}
           </ul>
-
-          {/* Desktop right actions */}
-          <div className="hidden items-center gap-1 md:flex">
-            <LanguageSwitcher />
-            <ThemeToggle />
-            <a href={cvUrl} target="_blank" rel="noopener noreferrer" aria-label={t("download_cv")}>
-              <Button variant="outline" size="sm">
-                {t("download_cv")}
-              </Button>
-            </a>
-          </div>
-
-          {/* Mobile: theme toggle + hamburger */}
-          <div className="flex items-center gap-1 md:hidden">
-            <ThemeToggle />
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={mobileOpen ? t("close_menu") : t("open_menu")}
-              aria-expanded={mobileOpen}
-              aria-controls="mobile-menu"
-              onClick={(e) => {
-                setMobileOpen((v) => !v);
-                (e.currentTarget as HTMLButtonElement).blur();
-              }}
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                {mobileOpen ? (
-                  <motion.span
-                    key="close"
-                    initial={{ opacity: 0, rotate: -45 }}
-                    animate={{ opacity: 1, rotate: 0 }}
-                    exit={{ opacity: 0, rotate: 45 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <X className="h-5 w-5" />
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    key="menu"
-                    initial={{ opacity: 0, rotate: 45 }}
-                    animate={{ opacity: 1, rotate: 0 }}
-                    exit={{ opacity: 0, rotate: -45 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <Menu className="h-5 w-5" />
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </Button>
-          </div>
         </nav>
-      </header>
 
-      {/* Mobile menu overlay */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            id="mobile-menu"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Menu de navegação"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="fixed inset-0 z-40 flex flex-col bg-bg px-6 pt-24 pb-10 md:hidden"
+        <div className="ml-auto flex items-center gap-1 nav:ml-0 nav:gap-2">
+          <LanguageSwitcher
+            current={locale}
+            label={tLanguage("label")}
+            className="hidden nav:flex"
+          />
+          <ThemeToggle />
+          {AGENDA_URL && (
+            <a
+              href={AGENDA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                buttonVariants({ variant: "primary", size: "sm" }),
+                "hidden nav:inline-flex"
+              )}
+            >
+              {t("schedule")}
+              {newTab}
+            </a>
+          )}
+          <a
+            href={cvUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              buttonVariants({ variant: AGENDA_URL ? "secondary" : "primary", size: "sm" }),
+              "hidden nav:inline-flex"
+            )}
           >
-            <ul className="flex flex-col gap-2" role="list">
-              {NAV_LINKS.map(({ label, href }, i) => (
-                <motion.li
-                  key={label}
-                  initial={{ opacity: 0, x: 24 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06, duration: 0.3 }}
-                >
+            {t("download_cv")}
+            {newTab}
+          </a>
+          <button
+            ref={buttonRef}
+            type="button"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((value) => !value)}
+            className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "px-3 nav:hidden")}
+          >
+            {open ? (
+              <X className="h-4 w-4" aria-hidden />
+            ) : (
+              <Menu className="h-4 w-4" aria-hidden />
+            )}
+            {t("menu")}
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="mobile-menu"
+        ref={panelRef}
+        hidden={!open}
+        className="border-t border-line bg-bg nav:hidden"
+      >
+        <div className="container-site flex flex-col gap-6 py-6">
+          <nav aria-label={t("label")}>
+            <ul className="flex flex-col">
+              {NAV_LINKS.map(({ key, href }, index) => (
+                <li key={key}>
                   <a
+                    ref={index === 0 ? firstLinkRef : undefined}
                     href={href}
-                    onClick={handleNavClick}
-                    className="block rounded-md px-4 py-3 text-h3 font-semibold text-text hover:bg-surface transition-colors"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-md py-3 font-display text-2xl font-bold text-text"
                   >
-                    {t(label)}
+                    {t(key)}
                   </a>
-                </motion.li>
+                </li>
               ))}
             </ul>
-
-            <div className="mt-8 flex items-center gap-3 border-t border-line pt-8">
-              <LanguageSwitcher />
+          </nav>
+          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
+            <LanguageSwitcher current={locale} label={tLanguage("label")} />
+            <div className="flex flex-wrap gap-3">
+              {AGENDA_URL && (
+                <a
+                  href={AGENDA_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonVariants({ variant: "primary", size: "sm" })}
+                >
+                  {t("schedule")}
+                  {newTab}
+                </a>
+              )}
               <a
                 href={cvUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={handleNavClick}
-                className="flex-1"
+                className={buttonVariants({
+                  variant: AGENDA_URL ? "secondary" : "primary",
+                  size: "sm",
+                })}
               >
-                <Button variant="primary" size="md" className="w-full">
-                  {t("download_cv")}
-                </Button>
+                {t("download_cv")}
+                {newTab}
               </a>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+          </div>
+        </div>
+      </div>
+    </header>
   );
 }

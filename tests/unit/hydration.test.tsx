@@ -3,9 +3,11 @@ import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import type { AbstractIntlMessages } from "next-intl";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import HomePage from "@/app/[locale]/page";
-import { THEME_KEY } from "@/lib/theme-script";
+import { Navbar } from "@/components/layout/Navbar";
+import { Signature } from "@/components/layout/Signature";
+import { ContactForm } from "@/components/sections/ContactForm";
 import { Providers } from "@/components/providers";
+import { THEME_KEY } from "@/lib/theme-script";
 import en from "@/messages/en.json";
 import es from "@/messages/es.json";
 import pt from "@/messages/pt.json";
@@ -13,15 +15,14 @@ import pt from "@/messages/pt.json";
 // As mensagens têm listas, que o tipo do next-intl não descreve; o layout faz o mesmo cast.
 const MESSAGES = { pt, en, es } as unknown as Record<string, AbstractIntlMessages>;
 
-// `setRequestLocale` só existe no ambiente de servidor do Next; aqui o idioma vem pelo provedor.
-vi.mock("next-intl/server", () => ({ setRequestLocale: () => {} }));
-
-// A página inteira (componente de servidor assíncrono, resolvido antes), com os mesmos provedores do layout.
-async function page(locale: string): Promise<ReactElement> {
-  const content = await HomePage({ params: Promise.resolve({ locale }) });
+// Só as ilhas de cliente hidratam: o cabeçalho (com o tema e o menu) e o formulário. As seções são de servidor.
+function page(locale: string): ReactElement {
   return (
     <Providers locale={locale} messages={MESSAGES[locale]}>
-      {content}
+      <Navbar logo={<Signature />} />
+      <main>
+        <ContactForm />
+      </main>
     </Providers>
   );
 }
@@ -47,13 +48,12 @@ describe("hidratação sem divergência", () => {
 
   it.each(CASES)("o HTML do servidor hidrata sem avisos em %s, tema %s", async (locale, theme) => {
     (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
-    const tree = await page(locale);
 
     // Renderização de servidor primeiro. Os avisos dela ("useLayoutEffect does nothing on the server")
     // vêm de rodar o renderizador de servidor dentro do jsdom e não indicam divergência.
     const serverSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const container = document.createElement("div");
-    container.innerHTML = renderToString(tree);
+    container.innerHTML = renderToString(page(locale));
     document.body.appendChild(container);
     serverSpy.mockRestore();
     applyTheme(theme);
@@ -65,7 +65,7 @@ describe("hidratação sem divergência", () => {
     });
 
     await act(async () => {
-      hydrateRoot(container, tree, {
+      hydrateRoot(container, page(locale), {
         onRecoverableError: (error) => errors.push(`recoverable: ${String(error)}`),
       });
     });
