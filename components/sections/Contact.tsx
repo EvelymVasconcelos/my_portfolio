@@ -3,7 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { buttonVariants } from "@/components/ui/Button";
 import { ContactForm } from "./ContactForm";
-import { AGENDA_URL, CHANNELS } from "@/lib/contact";
+import { AGENDA_URL, CHANNELS } from "@/lib/contact/channels";
 import { CV_URL } from "@/lib/cv";
 import { cn } from "@/lib/utils";
 

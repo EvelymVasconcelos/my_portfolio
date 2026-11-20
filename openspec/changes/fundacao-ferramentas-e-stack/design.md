@@ -94,8 +94,10 @@ acontece na change 4, que reescreve esses componentes de qualquer forma.
 `lib/contact/schema.ts` define as regras da spec com Zod 4 e devolve códigos (`name_min`, `email_invalid` e outros).
 - O cliente (React Hook Form + `zodResolver`) traduz os códigos com next-intl, e o servidor devolve os mesmos códigos no
   JSON do 400. O texto fica em `messages/` e as regras num lugar só.
-- *Alternativa considerada:* tirar React Hook Form e Zod, como fez o portfólio do Francisco para economizar KB. A decisão
-  fica para a change 4, que mede o JavaScript da página inteira.
+- *Revisão de 2026-11-20, com a página medida:* o schema usa `zod/mini` (5,2 kB com gzip para estas regras, contra
+  93 kB do Zod clássico, medidos com esbuild) e o formulário saiu do React Hook Form e do resolver (13,9 kB): quatro
+  campos não precisam dele, e um `FormData` com a mesma validação resolve. O JavaScript inicial de `/pt` caiu de
+  257,4 para 231,0 kB.
 
 ### 7. Limite de envios em memória, campo isca e e-mail escapado
 - **Limite:** janela deslizante em memória por origem (primeiro IP de `x-forwarded-for`, depois `x-real-ip`), com 5

@@ -23,9 +23,10 @@ Lighthouse (LCP, CLS e TBT no perfil de celular) entra no bloco 7 da change `est
 | Bloco 3 (estrutura nova, ainda com framer-motion) | 289 | Seções de servidor; só as mensagens das ilhas de cliente vão ao navegador |
 | Bloco 4 (movimento) | 252 | framer-motion saiu; movimento em CSS e ilhas de cerca de 1 kB cada |
 | Bloco 5 (cena 3D) | 256 | Entrou só o carregador da cena; a cena em si é baixada depois |
+| Fundação, bloco 6 (formulário seguro) | 231 | Zod clássico trocado por `zod/mini` e React Hook Form removido |
 
-Meta da design: abaixo de 206 kB. Ainda não atingida. Cerca de 155 kB são React 19 e Next 16; o maior peso restante
-do site é a validação do formulário com Zod, que sai no bloco 6 da change `fundacao-ferramentas-e-stack`.
+Meta da design: abaixo de 206 kB. Ainda não atingida: faltam 25 kB. Cerca de 155 kB são React 19 e Next 16, que o site
+não controla; o resto são o next-intl, as ilhas de cliente e o carregador da cena.
 
 ## Fontes
 

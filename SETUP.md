@@ -38,12 +38,16 @@ Copie `.env.local.example` para `.env.local`:
 cp .env.local.example .env.local
 ```
 
-| Variável         | Quando é preciso      | Onde conseguir                                                 |
-| ---------------- | --------------------- | -------------------------------------------------------------- |
-| `DEEPL_API_KEY`  | Só para as traduções  | Chave grátis em [deepl.com/pro-api](https://deepl.com/pro-api) |
-| `RESEND_API_KEY` | Formulário de contato | Chave grátis em [resend.com](https://resend.com)               |
+| Variável             | Quando é preciso      | Onde conseguir                                                                                                                                                                                 |
+| -------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DEEPL_API_KEY`      | Só para as traduções  | Chave grátis em [deepl.com/pro-api](https://deepl.com/pro-api)                                                                                                                                 |
+| `RESEND_API_KEY`     | Formulário de contato | Chave grátis em [resend.com](https://resend.com)                                                                                                                                               |
+| `CONTACT_TO_EMAIL`   | Formulário de contato | E-mail que recebe as mensagens                                                                                                                                                                 |
+| `CONTACT_FROM_EMAIL` | Formulário de contato | Remetente, como `Portfólio <onboarding@resend.dev>`. Com esse remetente de teste, o Resend só entrega para o e-mail da conta dona da chave; para outro destino, verifique um domínio no Resend |
 
-O `.env.local` não vai para o Git.
+O `.env.local` não vai para o Git. Sem as três variáveis do formulário, a rota de contato responde 503 e não tenta enviar.
+
+O limite de 5 envios a cada 10 minutos por origem fica na memória do servidor: em hospedagem serverless, vale por instância.
 
 ---
 

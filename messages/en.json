@@ -306,13 +306,19 @@
       "success_title": "Message sent!",
       "success_body": "Thank you for reaching out. I'll get back to you soon.",
       "error_title": "I wasn't able to send the message.",
-      "error_body": "Please try again or email me directly."
+      "error_body": "Please try again or email me directly.",
+      "rate_limited_title": "Too many messages in a short time.",
+      "rate_limited_body": "Wait a few minutes and try again, or email me directly.",
+      "honeypot_label": "Leave this field blank"
     },
     "validation": {
       "name_min": "The name must be at least 2 characters long",
       "email_invalid": "Invalid email address",
       "subject_required": "Choose a topic",
-      "message_min": "The message must be at least 10 characters long"
+      "message_min": "The message must be at least 10 characters long",
+      "name_max": "The name can be up to 100 characters long",
+      "subject_max": "The topic can be up to 150 characters long",
+      "message_max": "The message can be up to 5,000 characters long"
     }
   },
   "footer": {

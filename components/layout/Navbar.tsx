@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { buttonVariants } from "@/components/ui/Button";
-import { AGENDA_URL } from "@/lib/contact";
+import { AGENDA_URL } from "@/lib/contact/channels";
 import { CV_URL } from "@/lib/cv";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";

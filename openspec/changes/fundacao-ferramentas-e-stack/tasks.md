@@ -65,22 +65,28 @@
 > `estrutura-movimento-e-cena-3d` a partir do bloco 2, para o visual novo aparecer antes. Os blocos 6 a 8 desta change
 > não mexem na aparência e voltam antes de publicar.
 
-- [ ] 6.1 `lib/contact/schema.ts` com Zod 4 e códigos de erro, usado pelo cliente e pelo servidor (D6), com testes
-- [ ] 6.2 `escapeHtml`, limpeza do assunto e testes (incluindo `<script>` e quebra de linha com `Bcc:`)
-- [ ] 6.3 Limitador de envios em memória (5 a cada 10 minutos, `Retry-After`) com testes de janela
-- [ ] 6.4 Reescrever `app/api/contact/route.ts`: tipo de conteúdo, tamanho, JSON, campo isca, schema, limite, escape,
+- [x] 6.1 `lib/contact/schema.ts` com Zod 4 e códigos de erro, usado pelo cliente e pelo servidor (D6), com testes
+- [x] 6.2 `escapeHtml`, limpeza do assunto e testes (incluindo `<script>` e quebra de linha com `Bcc:`)
+- [x] 6.3 Limitador de envios em memória (5 a cada 10 minutos, `Retry-After`) com testes de janela
+- [x] 6.4 Reescrever `app/api/contact/route.ts`: tipo de conteúdo, tamanho, JSON, campo isca, schema, limite, escape,
       texto puro, variáveis de ambiente e erros genéricos (400, 413, 415, 429, 502 e 503)
-- [ ] 6.5 Testes da rota cobrindo todos os cenários da spec `formulario-de-contato`, com o Resend simulado
-- [ ] 6.6 `components/sections/Contact.tsx`: schema compartilhado, campo isca fora do teclado e do leitor de tela,
+- [x] 6.5 Testes da rota cobrindo todos os cenários da spec `formulario-de-contato`, com o Resend simulado
+- [x] 6.6 `components/sections/Contact.tsx`: schema compartilhado, campo isca fora do teclado e do leitor de tela,
       mensagens por status
-- [ ] 6.7 Mensagens novas em `messages/pt.json`, `en.json` e `es.json`
+- [x] 6.7 Mensagens novas em `messages/pt.json`, `en.json` e `es.json`
 - [ ] 6.8 Teste de componente e de navegador: envio só com teclado, aviso anunciado e erros traduzidos em `/en` e `/es`
 - [ ] 6.9 Documentar `CONTACT_TO_EMAIL` e `CONTACT_FROM_EMAIL` no `SETUP.md`. A dona testa um envio real no navegador
       local
 
+> Feito em 2026-11-20. O schema usa `zod/mini` e o formulário saiu do React Hook Form (ver a decisão 6 da design): o
+> JavaScript inicial de `/pt` caiu de 257,4 para 231,0 kB com gzip. As variáveis `CONTACT_TO_EMAIL` e
+> `CONTACT_FROM_EMAIL` estão no `SETUP.md`, no `.env.local.example` e no `.env.local` da dona. Por decisão da dona
+> (2026-11-20), os testes rodam todos juntos no fim: os de 6.5 e 6.8 estão escritos (`tests/unit/contact-*.test.ts*` e
+> `tests/e2e/contato.spec.ts`), e os de unidade passaram uma vez antes da pausa; o e2e ainda não rodou.
+
 ## 7. Cabeçalhos de segurança
 
-- [ ] 7.1 Os cinco cabeçalhos em `next.config` para todas as rotas, e `poweredByHeader: false`
+- [x] 7.1 Os cinco cabeçalhos em `next.config` para todas as rotas, e `poweredByHeader: false`
 - [ ] 7.2 Teste de navegador conferindo os cabeçalhos em `/pt` e na API, e a ausência de `X-Powered-By`
 
 ## 8. CI e linha de base

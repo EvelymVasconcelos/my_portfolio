@@ -1,138 +1,229 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { AlertCircle, CheckCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
+import {
+  CONTACT_FIELDS,
+  HONEYPOT_FIELD,
+  LIMITS,
+  validateContact,
+  type ContactFieldErrors,
+} from "@/lib/contact/schema";
+import { cn } from "@/lib/utils";
 
-type FormStatus = "idle" | "success" | "error";
+type FormStatus = "idle" | "submitting" | "success" | "rate_limited" | "error";
 
 const SUBJECTS = ["job", "project", "research", "feedback", "other"] as const;
 
 /**
- * Formulário de contato (ilha de cliente). A validação compartilhada com o servidor, o campo isca e os limites
- * entram no bloco 6 de openspec/changes/fundacao-ferramentas-e-stack; aqui muda só a forma.
+ * Formulário de contato (ilha de cliente, spec `formulario-de-contato`).
+ *
+ * As regras são as mesmas da rota da API (`lib/contact/schema.ts`): o navegador valida antes de enviar e, se o servidor
+ * recusar algum campo, mostra o erro dele no mesmo lugar. Sem React Hook Form: para quatro campos, o próprio
+ * formulário do navegador e um `FormData` bastam, e a página economiza cerca de 14 kB de JavaScript.
  */
 export function ContactForm() {
   const t = useTranslations("contact");
   const tValidation = useTranslations("contact.validation");
+  const formRef = useRef<HTMLFormElement>(null);
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [errors, setErrors] = useState<ContactFieldErrors>({});
+  // Depois da primeira tentativa, os erros acompanham o que a pessoa digita.
+  const [attempted, setAttempted] = useState(false);
 
-  const schema = z.object({
-    name: z.string().trim().min(2, tValidation("name_min")),
-    email: z.email(tValidation("email_invalid")),
-    subject: z.enum(SUBJECTS, { error: tValidation("subject_required") }),
-    message: z.string().trim().min(10, tValidation("message_min")),
-  });
-  type ContactFormData = z.infer<typeof schema>;
+  /** Lê os campos. O assunto vai com o texto do idioma da página, que é o que a dona lê no e-mail. */
+  function readForm(form: HTMLFormElement) {
+    const data = new FormData(form);
+    const value = (name: string) => String(data.get(name) ?? "");
+    const subjectId = value("subject") as (typeof SUBJECTS)[number] | "";
+    return {
+      name: value("name"),
+      email: value("email"),
+      subject: SUBJECTS.includes(subjectId as never) ? t(`form.subject_options.${subjectId}`) : "",
+      message: value("message"),
+      [HONEYPOT_FIELD]: value(HONEYPOT_FIELD),
+    };
+  }
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<ContactFormData>({ resolver: zodResolver(schema) });
+  /** Leva o foco ao primeiro campo com erro, para o leitor de tela anunciar o problema onde ele está. */
+  function focusFirstError(found: ContactFieldErrors) {
+    const first = CONTACT_FIELDS.find((field) => found[field]);
+    if (first) formRef.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+  }
 
-  const onSubmit = async ({ subject, ...data }: ContactFormData) => {
+  function revalidate() {
+    if (!attempted || !formRef.current) return;
+    const result = validateContact(readForm(formRef.current));
+    setErrors(result.ok ? {} : result.errors);
+  }
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (status === "submitting") return;
+    const form = event.currentTarget;
+    const payload = readForm(form);
+    setAttempted(true);
+
+    const result = validateContact(payload);
+    if (!result.ok) {
+      setErrors(result.errors);
+      setStatus("idle");
+      focusFirstError(result.errors);
+      return;
+    }
+    setErrors({});
+    setStatus("submitting");
+
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, subject: t(`form.subject_options.${subject}`) }),
+        body: JSON.stringify(payload),
       });
-      if (!response.ok) throw new Error();
-      setStatus("success");
-      reset();
+      if (response.ok) {
+        form.reset();
+        setAttempted(false);
+        setStatus("success");
+        return;
+      }
+      if (response.status === 429) {
+        setStatus("rate_limited");
+        return;
+      }
+      if (response.status === 400) {
+        const body = (await response.json().catch(() => null)) as {
+          fields?: ContactFieldErrors;
+        } | null;
+        if (body?.fields && Object.keys(body.fields).length > 0) {
+          setErrors(body.fields);
+          setStatus("idle");
+          focusFirstError(body.fields);
+          return;
+        }
+      }
+      setStatus("error");
     } catch {
       setStatus("error");
     }
+  }
+
+  const message = (field: keyof ContactFieldErrors) => {
+    const code = errors[field];
+    return code ? tValidation(code) : undefined;
   };
+
+  const submitting = status === "submitting";
 
   return (
     // method/action evitam que, sem JavaScript, o navegador envie a mensagem na URL (GET).
     <form
+      ref={formRef}
       method="post"
       action="/api/contact"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={onSubmit}
+      onInput={revalidate}
       noValidate
       aria-label={t("form_aria_label")}
-      className="flex flex-col gap-5"
+      className="relative flex flex-col gap-5"
     >
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Input
           id="contact-name"
+          name="name"
           label={t("form.name_label")}
           placeholder={t("form.name_placeholder")}
           autoComplete="name"
-          error={errors.name?.message}
-          {...register("name")}
+          maxLength={LIMITS.name.max}
+          error={message("name")}
         />
         <Input
           id="contact-email"
+          name="email"
           type="email"
           label={t("form.email_label")}
           placeholder={t("form.email_placeholder")}
           autoComplete="email"
-          error={errors.email?.message}
-          {...register("email")}
+          maxLength={LIMITS.email.max}
+          error={message("email")}
         />
       </div>
 
       <Select
         id="contact-subject"
+        name="subject"
         label={t("form.subject_label")}
         placeholder={t("form.subject_placeholder")}
         options={SUBJECTS.map((id) => ({ value: id, label: t(`form.subject_options.${id}`) }))}
-        error={errors.subject?.message}
+        error={message("subject")}
         defaultValue=""
-        {...register("subject")}
       />
 
       <Textarea
         id="contact-message"
+        name="message"
         label={t("form.message_label")}
         placeholder={t("form.message_placeholder")}
         rows={5}
-        error={errors.message?.message}
-        {...register("message")}
+        maxLength={LIMITS.message.max}
+        error={message("message")}
       />
 
-      {status === "success" && (
-        <div
-          role="alert"
-          className="flex items-start gap-3 rounded-[10px] border border-ok bg-bg px-4 py-3 text-ok"
-        >
-          <CheckCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-          <div>
-            <p className="font-semibold">{t("form.success_title")}</p>
-            <p className="text-text-2">{t("form.success_body")}</p>
-          </div>
-        </div>
-      )}
+      {/* Campo isca: fora da tela, fora do Tab e escondido do leitor de tela. Só robô preenche. */}
+      <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+        <label htmlFor="contact-website">{t("form.honeypot_label")}</label>
+        <input
+          id="contact-website"
+          name={HONEYPOT_FIELD}
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
 
-      {status === "error" && (
-        <div
-          role="alert"
-          className="flex items-start gap-3 rounded-[10px] border border-danger bg-bg px-4 py-3 text-danger"
-        >
-          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-          <div>
-            <p className="font-semibold">{t("form.error_title")}</p>
-            <p className="text-text-2">{t("form.error_body")}</p>
-          </div>
-        </div>
-      )}
+      {/* A região existe desde o início, vazia, para o leitor de tela anunciar o resultado quando ele aparecer. */}
+      <div role="status" aria-live="polite" className="empty:hidden">
+        {status === "success" && (
+          <Notice tone="ok" title={t("form.success_title")} body={t("form.success_body")} />
+        )}
+        {status === "rate_limited" && (
+          <Notice
+            tone="danger"
+            title={t("form.rate_limited_title")}
+            body={t("form.rate_limited_body")}
+          />
+        )}
+        {status === "error" && (
+          <Notice tone="danger" title={t("form.error_title")} body={t("form.error_body")} />
+        )}
+      </div>
 
-      <Button type="submit" variant="primary" size="lg" loading={isSubmitting} className="w-full">
-        {!isSubmitting && <Send className="h-4 w-4" aria-hidden />}
-        {isSubmitting ? t("form.submitting") : t("form.submit")}
+      <Button type="submit" variant="primary" size="lg" loading={submitting} className="w-full">
+        {!submitting && <Send className="h-4 w-4" aria-hidden />}
+        {submitting ? t("form.submitting") : t("form.submit")}
       </Button>
     </form>
+  );
+}
+
+function Notice({ tone, title, body }: { tone: "ok" | "danger"; title: string; body: string }) {
+  const Icon = tone === "ok" ? CheckCircle : AlertCircle;
+  return (
+    <div
+      className={cn(
+        "flex items-start gap-3 rounded-[10px] border bg-bg px-4 py-3",
+        tone === "ok" ? "border-ok text-ok" : "border-danger text-danger"
+      )}
+    >
+      <Icon className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+      <div>
+        <p className="font-semibold">{title}</p>
+        <p className="text-text-2">{body}</p>
+      </div>
+    </div>
   );
 }

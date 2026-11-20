@@ -306,13 +306,19 @@
       "success_title": "¡Mensaje enviado!",
       "success_body": "Gracias por ponerte en contacto conmigo. Te responderé en breve.",
       "error_title": "No he podido enviar el mensaje.",
-      "error_body": "Inténtalo de nuevo o escríbeme directamente al correo electrónico."
+      "error_body": "Inténtalo de nuevo o escríbeme directamente al correo electrónico.",
+      "rate_limited_title": "Demasiados mensajes en poco tiempo.",
+      "rate_limited_body": "Espera unos minutos y vuelve a intentarlo, o escríbeme directamente por correo.",
+      "honeypot_label": "Deja este campo en blanco"
     },
     "validation": {
       "name_min": "El nombre debe tener al menos 2 caracteres",
       "email_invalid": "Correo electrónico no válido",
       "subject_required": "Elige un tema",
-      "message_min": "El mensaje debe tener al menos 10 caracteres"
+      "message_min": "El mensaje debe tener al menos 10 caracteres",
+      "name_max": "El nombre puede tener como máximo 100 caracteres",
+      "subject_max": "El tema puede tener como máximo 150 caracteres",
+      "message_max": "El mensaje puede tener como máximo 5000 caracteres"
     }
   },
   "footer": {

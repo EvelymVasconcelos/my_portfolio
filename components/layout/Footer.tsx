@@ -1,6 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { LATTES_URL } from "@/lib/contact";
+import { LATTES_URL } from "@/lib/contact/channels";
 import type { Locale } from "@/i18n/routing";
 
 /** Rodapé de servidor: sem JavaScript no cliente. "Voltar ao topo" é um link de âncora. */
