@@ -269,6 +269,25 @@
       }
     }
   },
+  "recommendations": {
+    "label": "Recomendaciones",
+    "title": "Lo que dicen de trabajar conmigo",
+    "subtitle": "Recomendaciones publicadas en LinkedIn por quienes trabajaron y estudiaron conmigo.",
+    "original_note": "Escritas en portugués, tal como se publicaron.",
+    "relation": {
+      "same_team": "Trabajó en el mismo equipo",
+      "different_companies": "Trabajó conmigo en empresas diferentes",
+      "studied_together": "Estudió conmigo"
+    },
+    "linkedin": "Ver todas en LinkedIn",
+    "read_more": "Leer completa",
+    "read_less": "Mostrar menos",
+    "prev": "Recomendación anterior",
+    "next": "Siguiente recomendación",
+    "roledescription": "carrusel",
+    "track_label": "Recomendaciones, desplázate hacia el lado",
+    "position": "Recomendación {index} de {total}: {name}"
+  },
   "contact": {
     "label": "Contacto",
     "title": "¿Hablamos?",

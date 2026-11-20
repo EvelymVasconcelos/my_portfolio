@@ -23,7 +23,7 @@ export async function Contact() {
     <section id="contact" aria-labelledby="contact-title" className="band-invert py-24 lg:py-40">
       <div className="container-site">
         <SectionHeading
-          number="06"
+          number="07"
           label={t("label")}
           id="contact-title"
           title={t("title")}

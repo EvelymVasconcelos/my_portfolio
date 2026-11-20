@@ -10,15 +10,17 @@ import { About } from "@/components/sections/About";
 import { Projects } from "@/components/sections/Projects";
 import { Experience } from "@/components/sections/Experience";
 import { Research } from "@/components/sections/Research";
+import { Recommendations } from "@/components/sections/Recommendations";
 import { Contact } from "@/components/sections/Contact";
+import { RECOMMENDATIONS } from "@/lib/content/recommendations";
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
 }
 
 /**
- * Página única, com as seções da referência e a Pesquisa a mais. As Recomendações entram quando a dona enviar
- * os textos (bloco 6 da change estrutura-movimento-e-cena-3d).
+ * Página única, com as seções da referência e a Pesquisa a mais. Sem recomendações cadastradas, a seção delas sai da
+ * página (spec `estrutura-e-conteudo`).
  */
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
@@ -41,6 +43,7 @@ export default async function HomePage({ params }: HomePageProps) {
           <Projects />
           <Experience />
           <Research />
+          {RECOMMENDATIONS.length > 0 && <Recommendations />}
           <Contact />
         </main>
 

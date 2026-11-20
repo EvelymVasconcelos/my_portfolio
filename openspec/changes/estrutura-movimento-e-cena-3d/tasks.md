@@ -144,14 +144,21 @@ layout.
 
 ## 6. Recomendações
 
-- [ ] 6.1 Cadastrar em `lib/content/recommendations.ts` e `messages/` as recomendações que a dona enviar (texto exato,
+- [x] 6.1 Cadastrar em `lib/content/recommendations.ts` e `messages/` as recomendações que a dona enviar (texto exato,
       nome, cargo, empresa, mês e ano, idioma original); sem nenhuma, conferir que a seção e o link somem
-- [ ] 6.2 `Recommendations` e `CarouselControls` como na referência: recomendação em destaque, cartões com iniciais
+- [x] 6.2 `Recommendations` e `CarouselControls` como na referência: recomendação em destaque, cartões com iniciais
       (escondidas do leitor de tela), "Ler completa" em `<details>` nativo, contador "01 / 08" com barra, botões e posição
       traduzidos, `aria-roledescription`, anúncio da recomendação atual, sem avanço automático, faixa com rolagem nativa sem
       JavaScript
 - [ ] 6.3 Testes de navegador: carrossel e "Ler completa" só com teclado, sem JavaScript e com movimento reduzido
 - [ ] 6.4 A dona confere o texto de cada recomendação no site antes de ir ao ar
+
+> Feito em 2026-11-20 com as três recomendações do print enviado pela dona (Francisco Gabriel em destaque, por ser a
+> mais recente; Micaelle Queiroz e Jailson Pereira no carrossel). Os textos estão exatamente como no LinkedIn, inclusive
+> "Evelyn" e "a cerca de". Diferenças em relação à referência: as setas ficam com `aria-disabled` nas pontas (o foco
+> não se perde), uma região viva anuncia a recomendação atual e os controles somem quando todos os cartões cabem na
+> tela. O Contato passou a "07". Por decisão da dona, os testes de 6.3 e as capturas de referência dos testes visuais
+> ficam para a rodada final de testes.
 
 ## 7. Fechamento
 
