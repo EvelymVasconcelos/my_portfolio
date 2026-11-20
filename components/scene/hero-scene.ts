@@ -560,14 +560,21 @@ export async function createHeroScene(
   const UP = new Vector3(0, 1, 0);
   const dir = new Vector3();
   const mid = new Vector3();
-  function link(m: Mesh, a: Vector3, b: Vector3, r: number) {
+  const cuffStart = new Vector3();
+  /**
+   * Estica um cilindro de altura 1 entre `a` e `b` (o topo, `radiusTop`, fica em `b`). Cilindro, e não cápsula: esticar
+   * uma cápsula deforma as pontas em ovos; as juntas redondas são esferas próprias (ombro e cotovelo).
+   */
+  function link(m: Mesh, a: Vector3, b: Vector3) {
     dir.subVectors(b, a);
     const L = dir.length();
     mid.addVectors(a, b).multiplyScalar(0.5);
     m.position.copy(mid);
     m.quaternion.setFromUnitVectors(UP, dir.normalize());
-    m.scale.set(1, Math.max(0.01, L - 2 * r), 1);
+    m.scale.set(1, Math.max(0.01, L), 1);
   }
+  /** Manga do moletom: afina do ombro ao punho (raios em cada ponta). */
+  const R = { shoulder: 0.088, elbow: 0.074, wrist: 0.062 };
   const sides = [-1, 1].map((s) => {
     const hand = new Group();
     root.add(hand);
@@ -590,13 +597,17 @@ export async function createHeroScene(
     thumb.rotation.set(PI / 2, 0, 0.7 * s);
     return {
       s,
-      shoulder: new Vector3(0.35 * s, 0.5, Z),
-      elbow: new Vector3(0.42 * s, 0.15, Z + 0.38),
+      // Ombro um pouco para dentro e abaixo da linha do tronco: a esfera do ombro arredonda a curva do moletom.
+      shoulder: new Vector3(0.33 * s, 0.43, Z + 0.02),
+      elbow: new Vector3(0.4 * s, 0.13, Z + 0.37),
       wrist: new Vector3(0.17 * s, 0.075, -0.4),
       base: new Vector3(0.17 * s, 0.075, -0.4),
-      arm: mesh(new CapsuleGeometry(0.085, 1, 8, 20), mHoodie),
-      forearm: mesh(new CapsuleGeometry(0.072, 1, 8, 20), mHoodie),
-      cuff: mesh(new TorusGeometry(0.055, 0.018, 12, 28), mHoodie),
+      shoulderJoint: mesh(new SphereGeometry(R.shoulder, 28, 20), mHoodie),
+      arm: mesh(new CylinderGeometry(R.elbow, R.shoulder, 1, 28, 1, true), mHoodie),
+      elbowJoint: mesh(new SphereGeometry(R.elbow, 28, 20), mHoodie),
+      forearm: mesh(new CylinderGeometry(R.wrist, R.elbow, 1, 28, 1, true), mHoodie),
+      // Punho canelado: um pouco mais estreito que a manga, com a borda da abertura visível.
+      cuff: mesh(new CylinderGeometry(R.wrist - 0.004, R.wrist - 0.002, 0.045, 28), mHoodie),
       hand,
       fingers,
     };
@@ -979,12 +990,15 @@ export async function createHeroScene(
       side.fingers.forEach((d, j) => {
         d.rotation.x = Math.max(0, Math.sin(t * 11 + j * 1.9 + i * 3.1)) * 0.5 * typing;
       });
-      link(side.arm, side.shoulder, side.elbow, 0.085);
-      link(side.forearm, side.elbow, side.wrist, 0.072);
-      side.cuff.position.copy(side.wrist);
-      side.cuff.position.z -= 0.035;
-      side.cuff.quaternion.copy(side.forearm.quaternion);
-      side.cuff.rotateX(PI / 2);
+      side.shoulderJoint.position.copy(side.shoulder);
+      side.elbowJoint.position.copy(side.elbow);
+      // A manga termina um pouco antes do punho; o punho canelado cobre o trecho até a mão.
+      cuffStart.copy(side.wrist).sub(side.elbow).setLength(0.05);
+      cuffStart.subVectors(side.wrist, cuffStart);
+      link(side.arm, side.shoulder, side.elbow);
+      link(side.forearm, side.elbow, cuffStart);
+      link(side.cuff, cuffStart, side.wrist);
+      side.cuff.scale.y = 1;
     });
     // cabeça: leve aceno de concentração, acompanhando o ponteiro; piscadas
     ptr.x += (ptr.tx - ptr.x) * 0.06;
