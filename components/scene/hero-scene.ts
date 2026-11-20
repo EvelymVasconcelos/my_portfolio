@@ -447,6 +447,8 @@ export async function createHeroScene(
   const handle = mesh(new TorusGeometry(0.05, 0.013, 12, 28, PI * 1.25), mCeramic);
   handle.position.set(0.835, 0.09, -0.18);
   handle.rotation.z = -PI * 0.62;
+  // Vapor: branco no escuro; no claro, branco some no fundo, então vira um cinza-lilás (cor e pico em `setTheme`).
+  let steamPeak = 0.28;
   const steam = [0, 1, 2].map(() => {
     const m = new Mesh(
       new SphereGeometry(0.03, 12, 10),
@@ -925,6 +927,9 @@ export async function createHeroScene(
     mCeramic.color.set("#f7f5fa");
     mPot.color.set(c.dark ? "#3b3747" : "#e4dfec");
     mLed.color.set(c.accent2Text || c.accentText);
+    for (const m of steam)
+      (m.material as MeshBasicMaterial).color.set(c.dark ? "#ffffff" : "#8a7fa3");
+    steamPeak = c.dark ? 0.28 : 0.4;
     screenLight.color.set(c.dark ? "#c9b8ff" : "#d9ccff");
     Object.assign(ink, {
       bg: c.dark ? "rgba(26,25,32,0.95)" : "rgba(255,255,255,0.96)",
@@ -991,7 +996,7 @@ export async function createHeroScene(
     steam.forEach((m, i) => {
       const fz = (t * 0.22 + i / 3) % 1;
       m.position.set(0.74 + Math.sin(fz * 6 + i) * 0.025, 0.2 + fz * 0.4, -0.18);
-      (m.material as MeshBasicMaterial).opacity = Math.sin(fz * PI) * 0.28;
+      (m.material as MeshBasicMaterial).opacity = Math.sin(fz * PI) * steamPeak;
       m.scale.setScalar(0.6 + fz * 1.2);
     });
     editor.m.position.y = 1.2 + Math.sin(t * 0.6) * 0.025;
