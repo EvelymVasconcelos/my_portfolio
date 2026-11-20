@@ -3,11 +3,23 @@
  * O rótulo de cada canal fica em messages/, em `contact.channels.<id>`.
  */
 
+const EMAIL = "evelymmarinho.dev@gmail.com";
+
 /**
- * Página de agendamento (Google Agenda ou outra). Vazio: "Agendar call" não aparece em lugar nenhum, para não haver
- * link morto, e o Contato abre direto o formulário. A dona ainda não tem o link (2026-11-19).
+ * Página de agendamento (Google Agenda ou outra). A dona vai mandar o link (2026-11-20); até lá fica vazio e o
+ * "Agendar call" aparece mesmo assim, abrindo um e-mail com o assunto preenchido (ver `scheduleLink`).
  */
 export const AGENDA_URL = "";
+
+/**
+ * Destino do "Agendar call" no menu e no Contato: a agenda, em nova aba, quando houver link; sem link, um e-mail para
+ * a dona com o assunto já escrito no idioma da página. Assim o botão nunca fica sem destino.
+ */
+export function scheduleLink(subject: string) {
+  return AGENDA_URL
+    ? { href: AGENDA_URL, external: true }
+    : { href: `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}`, external: false };
+}
 
 export interface Channel {
   id: "email" | "linkedin" | "github" | "lattes";
@@ -19,8 +31,8 @@ export interface Channel {
 export const CHANNELS: readonly Channel[] = [
   {
     id: "email",
-    href: "mailto:evelymmarinho.dev@gmail.com",
-    display: "evelymmarinho.dev@gmail.com",
+    href: `mailto:${EMAIL}`,
+    display: EMAIL,
   },
   {
     id: "linkedin",

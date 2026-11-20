@@ -12,7 +12,8 @@
     "download_cv": "Download CV",
     "label": "Main",
     "menu": "Menu",
-    "schedule": "Schedule a call"
+    "schedule": "Schedule a call",
+    "schedule_subject": "Schedule a call"
   },
   "theme": {
     "toggle_dark": "Switch to the dark theme",
@@ -338,7 +339,8 @@
       "name_max": "The name can be up to 100 characters long",
       "subject_max": "The topic can be up to 150 characters long",
       "message_max": "The message can be up to 5,000 characters long"
-    }
+    },
+    "agenda_value_email": "Email me and we'll find a time"
   },
   "footer": {
     "back_to_top": "Back to top",

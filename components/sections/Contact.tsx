@@ -3,14 +3,14 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { buttonVariants } from "@/components/ui/Button";
 import { ContactForm } from "./ContactForm";
-import { AGENDA_URL, CHANNELS } from "@/lib/contact/channels";
+import { CHANNELS, scheduleLink } from "@/lib/contact/channels";
 import { CV_URL } from "@/lib/cv";
 import { cn } from "@/lib/utils";
 
 /**
- * Contato, de servidor, como na referência: canais, "Baixar CV", "Agendar call" (só com link configurado) e o
- * formulário num <details> nativo, que abre por teclado e anuncia o estado sem JavaScript. Sem link de agenda, o
- * formulário já vem aberto.
+ * Contato, de servidor, como na referência: canais, "Baixar CV", o cartão "Agendar call" e o formulário num <details>
+ * nativo, fechado, que abre por teclado e anuncia o estado sem JavaScript. Sem link de agenda, o cartão abre um e-mail
+ * com o assunto preenchido (`scheduleLink`).
  */
 export async function Contact() {
   const t = await getTranslations("contact");
@@ -18,6 +18,8 @@ export async function Contact() {
   const locale = await getLocale();
   const cvUrl = CV_URL[locale] ?? CV_URL.pt;
   const newTab = <span className="sr-only"> ({tA11y("open_link_new_tab")})</span>;
+  const tNav = await getTranslations("nav");
+  const schedule = scheduleLink(tNav("schedule_subject"));
 
   return (
     <section id="contact" aria-labelledby="contact-title" className="band-invert py-24 lg:py-40">
@@ -66,7 +68,7 @@ export async function Contact() {
               target="_blank"
               rel="noopener noreferrer"
               className={buttonVariants({
-                variant: AGENDA_URL ? "secondary" : "primary",
+                variant: "secondary",
                 size: "lg",
                 className: "self-start",
               })}
@@ -78,33 +80,29 @@ export async function Contact() {
           </div>
 
           <div className="flex flex-col gap-5">
-            {AGENDA_URL && (
-              <a
-                href={AGENDA_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-5 rounded-2xl border border-accent bg-surface p-6 transition-colors hover:bg-surface-2"
-              >
-                <span
-                  aria-hidden="true"
-                  className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-accent text-on-accent"
-                >
-                  <CalendarClock className="h-5 w-5" />
-                </span>
-                <span className="flex flex-col gap-1">
-                  <span className="font-display text-xl font-bold text-text">
-                    {t("agenda_label")}
-                  </span>
-                  <span className="text-text-2">{t("agenda_value")}</span>
-                </span>
-                {newTab}
-              </a>
-            )}
-
-            <details
-              open={!AGENDA_URL}
-              className="group/form rounded-2xl border border-line bg-surface"
+            <a
+              href={schedule.href}
+              {...(schedule.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="flex items-center gap-5 rounded-2xl border border-accent bg-surface p-6 transition-colors hover:bg-surface-2"
             >
+              <span
+                aria-hidden="true"
+                className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-accent text-on-accent"
+              >
+                <CalendarClock className="h-5 w-5" />
+              </span>
+              <span className="flex flex-col gap-1">
+                <span className="font-display text-xl font-bold text-text">
+                  {t("agenda_label")}
+                </span>
+                <span className="text-text-2">
+                  {t(schedule.external ? "agenda_value" : "agenda_value_email")}
+                </span>
+              </span>
+              {schedule.external && newTab}
+            </a>
+
+            <details className="group/form rounded-2xl border border-line bg-surface">
               <summary
                 className={cn(
                   "flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl p-6",

@@ -160,6 +160,11 @@ layout.
 > tela. O Contato passou a "07". Por decisão da dona, os testes de 6.3 e as capturas de referência dos testes visuais
 > ficam para a rodada final de testes.
 
+> Decisão da dona (2026-11-20): o "Agendar call" aparece desde já, no topo e no Contato, e o formulário volta a vir
+> fechado, como na referência. Enquanto `AGENDA_URL` estiver vazio, o botão abre um e-mail para a dona com o assunto
+> "Agendar uma call" no idioma da página (`scheduleLink` em `lib/contact/channels.ts`). Com o link, basta preenchê-lo.
+> O teste de `estrutura.spec.ts` que espera o formulário aberto muda na rodada final de testes.
+
 ## 7. Fechamento
 
 - [ ] 7.1 Axe WCAG 2.2 A/AA sem violações em pt/en/es nos dois temas, com a lista de exceções da fundação vazia

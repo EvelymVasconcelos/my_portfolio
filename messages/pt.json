@@ -12,7 +12,8 @@
     "download_cv": "Baixar CV",
     "label": "Principal",
     "menu": "Menu",
-    "schedule": "Agendar call"
+    "schedule": "Agendar call",
+    "schedule_subject": "Agendar uma call"
   },
   "theme": {
     "toggle_dark": "Mudar para o tema escuro",
@@ -338,7 +339,8 @@
       "name_max": "O nome pode ter até 100 caracteres",
       "subject_max": "O assunto pode ter até 150 caracteres",
       "message_max": "A mensagem pode ter até 5.000 caracteres"
-    }
+    },
+    "agenda_value_email": "Me mande um e-mail e combinamos um horário"
   },
   "footer": {
     "back_to_top": "Voltar ao topo",

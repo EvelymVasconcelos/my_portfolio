@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { buttonVariants } from "@/components/ui/Button";
-import { AGENDA_URL } from "@/lib/contact/channels";
+import { scheduleLink } from "@/lib/contact/channels";
 import { CV_URL } from "@/lib/cv";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
@@ -57,6 +57,8 @@ export function Navbar({ logo }: { logo: ReactNode }) {
   }, [open]);
 
   const newTab = <span className="sr-only"> ({tA11y("open_link_new_tab")})</span>;
+  const schedule = scheduleLink(t("schedule_subject"));
+  const scheduleProps = schedule.external ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-bg">
@@ -89,26 +91,23 @@ export function Navbar({ logo }: { logo: ReactNode }) {
             className="hidden nav:flex"
           />
           <ThemeToggle />
-          {AGENDA_URL && (
-            <a
-              href={AGENDA_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                buttonVariants({ variant: "primary", size: "sm" }),
-                "hidden nav:inline-flex"
-              )}
-            >
-              {t("schedule")}
-              {newTab}
-            </a>
-          )}
+          <a
+            href={schedule.href}
+            {...scheduleProps}
+            className={cn(
+              buttonVariants({ variant: "primary", size: "sm" }),
+              "hidden nav:inline-flex"
+            )}
+          >
+            {t("schedule")}
+            {schedule.external && newTab}
+          </a>
           <a
             href={cvUrl}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              buttonVariants({ variant: AGENDA_URL ? "secondary" : "primary", size: "sm" }),
+              buttonVariants({ variant: "secondary", size: "sm" }),
               "hidden nav:inline-flex"
             )}
           >
@@ -159,25 +158,19 @@ export function Navbar({ logo }: { logo: ReactNode }) {
           <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
             <LanguageSwitcher current={locale} label={tLanguage("label")} />
             <div className="flex flex-wrap gap-3">
-              {AGENDA_URL && (
-                <a
-                  href={AGENDA_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={buttonVariants({ variant: "primary", size: "sm" })}
-                >
-                  {t("schedule")}
-                  {newTab}
-                </a>
-              )}
+              <a
+                href={schedule.href}
+                {...scheduleProps}
+                className={buttonVariants({ variant: "primary", size: "sm" })}
+              >
+                {t("schedule")}
+                {schedule.external && newTab}
+              </a>
               <a
                 href={cvUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={buttonVariants({
-                  variant: AGENDA_URL ? "secondary" : "primary",
-                  size: "sm",
-                })}
+                className={buttonVariants({ variant: "secondary", size: "sm" })}
               >
                 {t("download_cv")}
                 {newTab}
