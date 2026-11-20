@@ -404,7 +404,7 @@ export async function createHeroScene(
   screenLight.position.set(0, 0.45, -0.32);
   root.add(screenLight);
 
-  /* ── Mesa, notebook, caneca e planta ── */
+  /* ── Mesa, notebook, caneca, garrafa e planta ── */
   mesh(new RoundedBoxGeometry(2.15, 0.08, 1.3, 4, 0.03), mDesk, root, false).position.set(
     0,
     -0.04,
@@ -455,6 +455,65 @@ export async function createHeroScene(
     root.add(m);
     return m;
   });
+  /* Garrafa térmica (copo de 887 ml com alça, pedido da dona em 2026-11-20): corpo creme com quatro listras, aro de
+     metal, tampa e alça lilás. Sem logo de marca. Fica à direita e atrás da caneca, para não escondê-la. */
+  const bottle = new Group();
+  bottle.position.set(0.93, 0, -0.42);
+  bottle.rotation.y = -0.35;
+  root.add(bottle);
+  const mBottle = P({ color: 0xf4efe6, roughness: 0.42, clearcoat: 0.5, clearcoatRoughness: 0.5 });
+  const mLilac = P({ color: 0xb48ad8, roughness: 0.38, clearcoat: 0.45 });
+  // Aço escovado claro: totalmente metálico, ele refletiria o fundo escuro e ficaria preto.
+  const mSteel = P({ color: 0xdedce4, metalness: 0.55, roughness: 0.3, clearcoat: 0.6 });
+  // Perfil: base estreita, que alarga no terço de baixo e segue quase reta até o aro.
+  const bottleProfile = [
+    v2(0, 0),
+    v2(0.05, 0),
+    v2(0.057, 0.006),
+    v2(0.058, 0.085),
+    v2(0.07, 0.14),
+    v2(0.074, 0.27),
+    v2(0.075, 0.3),
+    v2(0, 0.3),
+  ];
+  mesh(new LatheGeometry(bottleProfile, 48), mBottle, bottle);
+  // Raio do corpo na altura y (entre 0,14 e 0,3), para as listras acompanharem o afunilamento.
+  const bodyRadius = (y: number) => 0.07 + ((y - 0.14) / 0.13) * 0.004 + 0.0012;
+  const stripes: [number, number][] = [
+    [0.226, 0xef6a4b],
+    [0.206, 0xf3ad3d],
+    [0.186, 0xc6a3e8],
+    [0.166, 0xec5b3f],
+  ];
+  for (const [y, color] of stripes) {
+    const h = 0.014;
+    const band = mesh(
+      new CylinderGeometry(bodyRadius(y + h / 2), bodyRadius(y - h / 2), h, 48, 1, true),
+      P({ color, roughness: 0.45, clearcoat: 0.4 }),
+      bottle,
+      false
+    );
+    band.position.y = y;
+  }
+  mesh(new CylinderGeometry(0.0765, 0.0765, 0.026, 48), mSteel, bottle).position.y = 0.313;
+  const cap = mesh(new CylinderGeometry(0.074, 0.0785, 0.03, 48), mLilac, bottle);
+  cap.position.y = 0.341;
+  mesh(new RoundedBoxGeometry(0.032, 0.04, 0.03, 3, 0.008), mLilac, bottle).position.set(
+    0,
+    0.37,
+    0.03
+  );
+  // Alça: uma tira em arco presa nas laterais da tampa, inclinada para trás.
+  const strap = mesh(new TorusGeometry(0.079, 0.011, 10, 40, PI), mLilac, bottle);
+  strap.scale.set(1, 1.05, 1.9);
+  strap.position.set(0, 0.345, -0.01);
+  strap.rotation.x = -0.3;
+  for (const side of [-1, 1]) {
+    const hinge = mesh(new CylinderGeometry(0.012, 0.012, 0.014, 20), mSteel, bottle);
+    hinge.rotation.z = PI / 2;
+    hinge.position.set(side * 0.081, 0.345, -0.01);
+  }
+
   const potProfile = [v2(0, 0), v2(0.07, 0), v2(0.095, 0.15), v2(0.088, 0.155), v2(0.08, 0.14)];
   mesh(new LatheGeometry(potProfile, 32), mPot).position.set(-0.8, 0, 0.1);
   for (let f = 0; f < 7; f++) {
