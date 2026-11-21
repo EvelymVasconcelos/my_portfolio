@@ -17,6 +17,7 @@ import {
   CapsuleGeometry,
   CatmullRomCurve3,
   CircleGeometry,
+  ClampToEdgeWrapping,
   CylinderGeometry,
   DirectionalLight,
   DoubleSide,
@@ -36,6 +37,7 @@ import {
   RepeatWrapping,
   Scene,
   SphereGeometry,
+  SplineCurve,
   SRGBColorSpace,
   TorusGeometry,
   TubeGeometry,
@@ -50,6 +52,7 @@ import {
 } from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
+import { SIGNATURE } from "@/lib/brand/signature-data";
 
 export type SceneTheme = "light" | "dark";
 export type SceneState = "running" | "paused" | "poster";
@@ -432,21 +435,110 @@ export async function createHeroScene(
   screen.rotation.y = PI;
   mesh(new CircleGeometry(0.04, 32), mLed, lid, false).position.set(0, 0.36, 0.0115);
 
-  const mugProfile = [
-    v2(0, 0),
-    v2(0.075, 0),
-    v2(0.085, 0.01),
-    v2(0.088, 0.17),
-    v2(0.08, 0.175),
-    v2(0.078, 0.02),
-  ];
-  mesh(new LatheGeometry(mugProfile, 40), mCeramic).position.set(0.74, 0, -0.18);
-  const coffee = mesh(new CircleGeometry(0.077, 32), mCoffee, root, false);
+  /* Caneca da Evelym (fotos enviadas pela dona em 2026-11-20): porcelana branca em tulipa, com base estreita, barriga
+     arredondada e boca levemente aberta; alça em orelha do lado esquerdo; "Evelym" em letra cursiva (o traçado da
+     assinatura do site, components/layout/Signature.tsx) entre quatro corações vermelhos. */
+  const mug = new Group();
+  mug.position.set(0.74, 0, -0.18);
+  mug.rotation.y = 0.08; // o nome de frente para a câmera
+  root.add(mug);
+  // Contorno externo (raio, altura), da base à boca.
+  const mugOuter = new SplineCurve([
+    v2(0.057, 0.004),
+    v2(0.071, 0.02),
+    v2(0.085, 0.05),
+    v2(0.09, 0.082),
+    v2(0.088, 0.115),
+    v2(0.084, 0.15),
+    v2(0.086, 0.182),
+  ]).getPoints(48);
+  mesh(
+    new LatheGeometry(
+      [
+        v2(0, 0),
+        v2(0.054, 0),
+        ...mugOuter,
+        v2(0.0855, 0.185),
+        v2(0.0795, 0.181),
+        v2(0.077, 0.13),
+        v2(0.079, 0.07),
+        v2(0.066, 0.022),
+        v2(0, 0.02),
+      ],
+      56
+    ),
+    mCeramic,
+    mug
+  );
+  const coffee = mesh(new CircleGeometry(0.0775, 40), mCoffee, mug, false);
   coffee.rotation.x = -PI / 2;
-  coffee.position.set(0.74, 0.15, -0.18);
-  const handle = mesh(new TorusGeometry(0.05, 0.013, 12, 28, PI * 1.25), mCeramic);
-  handle.position.set(0.835, 0.09, -0.18);
-  handle.rotation.z = -PI * 0.62;
+  coffee.position.y = 0.152;
+  // Alça em orelha: grossa, larga e arredondada, presa logo abaixo da boca e no começo da barriga.
+  const handleCurve = new CatmullRomCurve3([
+    new Vector3(-0.079, 0.152, 0),
+    new Vector3(-0.112, 0.162, 0),
+    new Vector3(-0.142, 0.146, 0),
+    new Vector3(-0.155, 0.108, 0),
+    new Vector3(-0.145, 0.07, 0),
+    new Vector3(-0.115, 0.047, 0),
+    new Vector3(-0.088, 0.045, 0),
+  ]);
+  mesh(new TubeGeometry(handleCurve, 40, 0.0125, 14, false), mCeramic, mug);
+  // Estampa: uma faixa que acompanha a barriga da caneca, um tiquinho por fora, com o desenho num canvas.
+  const DECAL_ARC = 2.1;
+  const decalProfile = new SplineCurve(mugOuter)
+    .getPoints(64)
+    .filter((p) => p.y > 0.03 && p.y < 0.155)
+    .map((p) => v2(p.x + 0.0007, p.y));
+  const decalMap = tex(1024, 640, (g, w, h) => {
+    // "Evelym": os seis primeiros desenhos da assinatura (caixa de 3,7 a 277,9 por 11,8 a 149,6 no desenho original).
+    const k = 2.85;
+    g.save();
+    g.translate(w / 2 - ((3.7 + 277.9) / 2) * k, h * 0.5 - ((11.8 + 149.6) / 2) * k + 30);
+    g.scale(k, k);
+    g.fillStyle = "#17151c";
+    g.strokeStyle = "#17151c";
+    g.lineWidth = 2.6;
+    for (const d of SIGNATURE.glyphs.slice(0, 6)) {
+      const path = new Path2D(d);
+      g.fill(path);
+      g.stroke(path);
+    }
+    g.restore();
+    // Corações: dois acima e dois abaixo do nome, como na caneca.
+    const heart = (x: number, y: number, size: number) => {
+      g.save();
+      g.translate(x, y);
+      g.scale(size / 20, size / 20);
+      g.fillStyle = "#d8262e";
+      g.beginPath();
+      g.moveTo(0, 6);
+      g.bezierCurveTo(-12, -2, -8, -12, 0, -6);
+      g.bezierCurveTo(8, -12, 12, -2, 0, 6);
+      g.fill();
+      g.restore();
+    };
+    heart(w * 0.26, h * 0.13, 46);
+    heart(w * 0.74, h * 0.17, 46);
+    heart(w * 0.3, h * 0.9, 46);
+    heart(w * 0.7, h * 0.88, 46);
+  });
+  decalMap.wrapS = decalMap.wrapT = ClampToEdgeWrapping;
+  decalMap.colorSpace = SRGBColorSpace;
+  mesh(
+    new LatheGeometry(decalProfile, 48, -DECAL_ARC / 2, DECAL_ARC),
+    P({
+      map: decalMap,
+      transparent: true,
+      roughness: 0.18,
+      clearcoat: 1,
+      depthWrite: false,
+      polygonOffset: true,
+      polygonOffsetFactor: -2,
+    }),
+    mug,
+    false
+  );
   // Vapor: branco no escuro; no claro, branco some no fundo, então vira um cinza-lilás (cor e pico em `setTheme`).
   let steamPeak = 0.28;
   const steam = [0, 1, 2].map(() => {
