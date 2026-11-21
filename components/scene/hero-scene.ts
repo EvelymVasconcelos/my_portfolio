@@ -13,6 +13,7 @@
  */
 import {
   ACESFilmicToneMapping,
+  BufferGeometry,
   CanvasTexture,
   CapsuleGeometry,
   CatmullRomCurve3,
@@ -21,6 +22,7 @@ import {
   CylinderGeometry,
   DirectionalLight,
   DoubleSide,
+  Float32BufferAttribute,
   Fog,
   Group,
   HemisphereLight,
@@ -44,7 +46,6 @@ import {
   Vector2,
   Vector3,
   WebGLRenderer,
-  type BufferGeometry,
   type Material,
   type MeshPhysicalMaterialParameters,
   type Object3D,
@@ -710,10 +711,19 @@ export async function createHeroScene(
   head.position.set(0, 1.0, Z + 0.06);
   head.rotation.x = 0.15;
   root.add(head);
-  mesh(new SphereGeometry(0.25, 56, 40), mSkin, head).scale.set(0.9, 1.04, 0.95);
-  const chin = mesh(new SphereGeometry(0.135, 40, 28), mSkin, head);
-  chin.position.set(0, -0.135, 0.075);
-  chin.scale.set(0.95, 0.86, 0.95);
+  // Rosto em V (fotos da dona, 2026-11-20): da linha dos olhos para baixo, a cabeça afina até um queixo estreito.
+  const skull = new SphereGeometry(0.25, 64, 48);
+  const sp = skull.attributes.position;
+  // O queixo sai da própria cabeça, alongada para baixo e afinando até a ponta, sem emenda.
+  for (let i = 0; i < sp.count; i++) {
+    const y = sp.getY(i);
+    const t = Math.min(1, Math.max(0, -y / 0.25));
+    sp.setX(i, sp.getX(i) * (1 - 0.36 * t ** 1.3));
+    sp.setY(i, y - 0.06 * t ** 2.2);
+    if (sp.getZ(i) > 0) sp.setZ(i, sp.getZ(i) * (1 + 0.06 * t));
+  }
+  skull.computeVertexNormals();
+  mesh(skull, mSkin, head).scale.set(0.9, 1.04, 0.95);
   for (const s of [-1, 1]) {
     const ear = mesh(new SphereGeometry(0.04, 16, 12), mSkin, head);
     ear.position.set(0.222 * s, -0.02, 0);
@@ -789,16 +799,23 @@ export async function createHeroScene(
     cheek.rotation.y = 0.42 * s;
     return eye;
   });
-  // nariz pequeno, ponta arredondada e asas discretas
+  // nariz afilado: dorso reto e ponta fina projetada para a frente, asas discretas
   const nose = new Group();
-  nose.position.set(0, -0.064, 0.232);
+  nose.position.set(0, -0.064, 0.236);
   head.add(nose);
-  mesh(new SphereGeometry(0.0145, 24, 16), mSkin, nose).scale.set(1.15, 0.88, 0.75);
-  const bridge = mesh(new SphereGeometry(0.011, 20, 14), mSkin, nose);
-  bridge.position.set(0, 0.03, -0.007);
-  bridge.scale.set(0.8, 2.6, 0.75);
+  const tip = mesh(new SphereGeometry(0.017, 24, 16), mSkin, nose);
+  tip.scale.set(0.92, 0.86, 1.3);
+  tip.position.z = 0.008;
+  const bridge = mesh(new SphereGeometry(0.0135, 20, 14), mSkin, nose);
+  bridge.position.set(0, 0.036, -0.002);
+  bridge.rotation.x = -0.18;
+  bridge.scale.set(0.72, 3, 1.05);
   for (const s of [-1, 1])
-    mesh(new SphereGeometry(0.0085, 16, 12), mSkin, nose).position.set(0.0125 * s, -0.004, -0.008);
+    mesh(new SphereGeometry(0.0095, 16, 12), mSkin, nose).position.set(0.0145 * s, -0.006, -0.006);
+  // sombra suave sob a ponta, para o nariz aparecer com a luz de frente
+  const noseShade = mesh(new PlaneGeometry(0.05, 0.026), blush, nose, false);
+  noseShade.position.set(0, -0.018, 0.004);
+  noseShade.rotation.x = -0.5;
   // boca: lábios rosa-amarronzados e a linha do sorriso com os cantos para cima
   const mouth = new Group();
   mouth.position.set(0, -0.118, 0.212);
@@ -820,8 +837,10 @@ export async function createHeroScene(
     mLipLine,
     mouth
   );
-  // cabelo: chanel até os ombros (casca com abertura para o rosto e pontas para dentro), franja de lado
-  const hairProfile = [
+  // Cabelo repartido ao meio, sem franja, até os ombros com as pontas para dentro (fotos da dona, 2026-11-20). Uma
+  // casca inteira, da qual se recorta a abertura do rosto: estreita no alto (a risca do meio, que deixa ver o couro
+  // cabeludo) e larga da altura dos olhos para baixo, com o cabelo emoldurando as laterais do rosto.
+  const hairRows = new SplineCurve([
     v2(0.001, 0.29),
     v2(0.14, 0.275),
     v2(0.235, 0.2),
@@ -831,35 +850,41 @@ export async function createHeroScene(
     v2(0.3, -0.33),
     v2(0.27, -0.375),
     v2(0.245, -0.36),
-  ];
-  mesh(new LatheGeometry(hairProfile, 64, 1.05, PI * 2 - 2.1), mHair, head).scale.set(1, 1, 1.02);
-  mesh(
-    new LatheGeometry(
-      [v2(0.001, 0.292), v2(0.14, 0.277), v2(0.222, 0.215), v2(0.245, 0.17), v2(0.252, 0.15)],
-      48
-    ),
-    mHair,
-    head
-  );
-  const fringe = mesh(
-    new LatheGeometry(
-      [
-        v2(0.001, 0.297),
-        v2(0.15, 0.283),
-        v2(0.248, 0.2),
-        v2(0.27, 0.135),
-        v2(0.266, 0.1),
-        v2(0.255, 0.092),
-      ],
-      40,
-      -0.25,
-      1.15
-    ),
-    mHair,
-    head
-  );
-  fringe.rotation.z = 0.3;
-  fringe.position.set(-0.02, -0.01, 0);
+  ]).getPoints(80);
+  // Meia largura da abertura do rosto na altura y.
+  const faceOpening = (y: number) =>
+    y > 0.25
+      ? 0.008
+      : y > 0.17
+        ? 0.008 + ((0.25 - y) / 0.08) * 0.1
+        : y > 0.05
+          ? 0.108 + ((0.17 - y) / 0.12) * 0.092
+          : 0.2;
+  // Cada fileira dá a volta a partir da borda do rosto (ângulo calculado), então a borda sai lisa, sem degraus.
+  const COLS = 120;
+  const hairPos: number[] = [];
+  const hairUv: number[] = [];
+  const hairIndex: number[] = [];
+  hairRows.forEach((p, i) => {
+    const open = Math.asin(Math.min(1, faceOpening(p.y) / Math.max(p.x, 1e-4)));
+    for (let j = 0; j <= COLS; j++) {
+      const phi = open + ((PI * 2 - 2 * open) * j) / COLS;
+      hairPos.push(p.x * Math.sin(phi), p.y, p.x * Math.cos(phi));
+      hairUv.push(j / COLS, i / (hairRows.length - 1));
+    }
+  });
+  for (let i = 0; i < hairRows.length - 1; i++)
+    for (let j = 0; j < COLS; j++) {
+      const a = i * (COLS + 1) + j;
+      const b = a + COLS + 1;
+      hairIndex.push(a, b, a + 1, b, b + 1, a + 1);
+    }
+  const hairGeo = new BufferGeometry();
+  hairGeo.setAttribute("position", new Float32BufferAttribute(hairPos, 3));
+  hairGeo.setAttribute("uv", new Float32BufferAttribute(hairUv, 2));
+  hairGeo.setIndex(hairIndex);
+  hairGeo.computeVertexNormals();
+  mesh(hairGeo, mHair, head).scale.set(1, 1, 1.02);
   // headphone: arco com acolchoado, hastes de metal, conchas com almofada e um LED
   mesh(new TorusGeometry(0.305, 0.02, 14, 64, PI), mPhones, head).position.set(0, 0, -0.03);
   const padding = mesh(new TorusGeometry(0.288, 0.016, 10, 48, PI * 0.5), mCushion, head);
