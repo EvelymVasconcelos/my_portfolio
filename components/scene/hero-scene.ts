@@ -744,56 +744,65 @@ export async function createHeroScene(
     transparent: true,
     depthWrite: false,
   });
+  // Olhos (foto da dona, 2026-11-20): amendoados, íris castanho-escura grande, pálpebra de cima cobrindo o alto da íris
+  // (olhar relaxado) e sobrancelha grossa, reta e baixa. No grupo de cada olho, +x é o canto de fora (o esquerdo é
+  // espelhado), e o grupo gira com a curva do rosto: a íris centrada no que se vê evita o olhar vesgo.
   const eyes = [-1, 1].map((s) => {
     const g = new Group();
-    g.position.set(0.083 * s, -0.004, 0.204);
+    g.position.set(0.083 * s, -0.004, 0.207);
+    g.rotation.y = 0.14 * s;
     g.scale.set(1.14 * s, 1.14, 1.14); // espelha o lado esquerdo
     head.add(g);
     const eye = new Group();
     g.add(eye);
-    mesh(new SphereGeometry(0.03, 32, 20), mSclera, eye, false).scale.set(1.3, 0.68, 0.4);
-    const iris = mesh(new SphereGeometry(0.0145, 28, 20), mIris, eye, false);
-    iris.position.set(0.001, -0.002, 0.0092);
+    mesh(new SphereGeometry(0.03, 32, 20), mSclera, eye, false).scale.set(1.3, 0.66, 0.4);
+    const iris = mesh(new SphereGeometry(0.0158, 28, 20), mIris, eye, false);
+    iris.position.set(0.0065, -0.002, 0.0094);
     iris.scale.set(1, 1, 0.36);
-    const pupil = mesh(new SphereGeometry(0.0068, 20, 14), mPupil, eye, false);
-    pupil.position.set(0.001, -0.002, 0.0118);
+    const pupil = mesh(new SphereGeometry(0.0066, 20, 14), mPupil, eye, false);
+    pupil.position.set(0.0065, -0.002, 0.012);
     pupil.scale.set(1, 1, 0.36);
-    mesh(new CircleGeometry(0.0036, 12), mGlint, eye, false).position.set(-0.004, 0.004, 0.0148);
-    mesh(new CircleGeometry(0.0016, 8), mGlint, eye, false).position.set(0.006, -0.007, 0.0148);
-    // cílios com gatinho, linha de baixo e sobrancelha
+    mesh(new CircleGeometry(0.0034, 12), mGlint, eye, false).position.set(0.0015, 0.003, 0.015);
+    mesh(new CircleGeometry(0.0015, 8), mGlint, eye, false).position.set(0.008, -0.008, 0.015);
+    // pálpebra de cima: uma calota de pele sobre o olho, com a borda logo acima do centro da íris
+    const upperLid = mesh(new SphereGeometry(0.031, 32, 16, 0, PI * 2, 0, 0.86), mSkin, eye, false);
+    upperLid.scale.set(1.32, 0.68, 0.43);
+    // cílios na borda da pálpebra, com um gatinho curto no canto de fora, e a linha de baixo
     stroke(
       [
-        [-0.041, -0.001, 0.009],
-        [-0.02, 0.0135, 0.012],
-        [0.01, 0.0165, 0.012],
-        [0.034, 0.0095, 0.011],
-        [0.05, 0.019, 0.007],
+        [-0.04, -0.001, 0.009],
+        [-0.02, 0.0115, 0.0125],
+        [0.008, 0.0142, 0.013],
+        [0.032, 0.0095, 0.011],
+        [0.046, 0.0145, 0.008],
       ],
-      0.0036,
+      0.0032,
       mLash,
       g
     );
     stroke(
       [
-        [-0.032, -0.01, 0.011],
-        [-0.005, -0.0175, 0.012],
-        [0.028, -0.011, 0.011],
+        [-0.032, -0.011, 0.011],
+        [-0.004, -0.0175, 0.012],
+        [0.028, -0.012, 0.011],
       ],
-      0.001,
+      0.0009,
       mBrow,
       g
     );
-    stroke(
-      [
-        [-0.042, 0.036, 0.008],
-        [-0.015, 0.049, 0.01],
-        [0.018, 0.049, 0.01],
-        [0.045, 0.038, 0.006],
-      ],
-      0.0058,
-      mBrow,
-      g
-    );
+    // sobrancelha: grossa no começo (perto do nariz), quase reta, afinando para fora
+    const browCurve = new CatmullRomCurve3([
+      new Vector3(-0.044, 0.027, 0.012),
+      new Vector3(-0.012, 0.035, 0.013),
+      new Vector3(0.022, 0.036, 0.011),
+      new Vector3(0.052, 0.026, 0.004),
+    ]);
+    for (let k = 0; k <= 14; k++) {
+      const u = k / 14;
+      const hair = mesh(new SphereGeometry(1, 12, 8), mBrow, g, false);
+      hair.position.copy(browCurve.getPoint(u));
+      hair.scale.set(0.0085, 0.0075 - u * 0.0042, 0.003);
+    }
     const cheek = mesh(new PlaneGeometry(0.08, 0.06), blush, head, false);
     cheek.position.set(0.112 * s, -0.078, 0.214);
     cheek.rotation.y = 0.42 * s;
@@ -818,14 +827,14 @@ export async function createHeroScene(
   noseShade.rotation.x = -0.5;
   // boca: lábios rosa-amarronzados e a linha do sorriso com os cantos para cima
   const mouth = new Group();
-  mouth.position.set(0, -0.118, 0.212);
+  mouth.position.set(0, -0.12, 0.2215);
   head.add(mouth);
   const upper = mesh(new SphereGeometry(0.022, 28, 16), mLip, mouth, false);
-  upper.scale.set(1.55, 0.26, 0.42);
+  upper.scale.set(1.5, 0.33, 0.45);
   upper.position.y = 0.0035;
   const lower = mesh(new SphereGeometry(0.022, 28, 16), mLip, mouth, false);
-  lower.scale.set(1.38, 0.34, 0.46);
-  lower.position.y = -0.007;
+  lower.scale.set(1.36, 0.44, 0.5);
+  lower.position.y = -0.0085;
   stroke(
     [
       [-0.036, 0.004, 0.0085],
