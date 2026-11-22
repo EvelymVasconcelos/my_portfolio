@@ -14,7 +14,10 @@
     "test:e2e": "next build && playwright test",
     "test:e2e:update": "next build && playwright test --update-snapshots=all",
     "translate": "tsx scripts/translate.ts",
-    "scene:posters": "tsx scripts/render-scene-posters.ts"
+    "scene:posters": "tsx scripts/render-scene-posters.ts",
+    "personagem:instalar": "flatpak run org.blender.Blender -b --python \"$PWD/scripts/personagem/instalar_pacote.py\" --",
+    "personagem": "flatpak run org.blender.Blender -b --python \"$PWD/scripts/personagem/gerar.py\"",
+    "personagem:render": "flatpak run org.blender.Blender -b \"$PWD/.cache/personagem/evelym.blend\" --python \"$PWD/scripts/personagem/render.py\""
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",

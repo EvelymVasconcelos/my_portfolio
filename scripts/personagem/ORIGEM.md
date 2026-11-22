@@ -1,0 +1,46 @@
+# Origem e licença da personagem 3D
+
+Registro exigido pela spec `cena-3d` ("Modelo da personagem reproduzível e de origem livre"). Cada parte da personagem
+diz de onde veio, em que versão e com que licença. Conferido em 2026-11-22.
+
+## Ferramentas (rodam só na máquina de quem gera o modelo, nada disso vai para o site)
+
+| Ferramenta                                  | Versão                                                                                 | Licença                 | Como instalar                                                                            |
+| ------------------------------------------- | -------------------------------------------------------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------- |
+| Blender                                     | 5.3.0 (hash `02f0899d78e3`), Flatpak `org.blender.Blender`, commit `3e510e35073011ea…` | GPL-2.0-or-later        | `flatpak install --user flathub org.blender.Blender`                                     |
+| MPFB (extensão do MakeHuman para o Blender) | 2.0.18 (build 20261010)                                                                | código GPL-3.0-or-later | `flatpak run org.blender.Blender -b --online-mode -c extension install -s --enable mpfb` |
+
+O código do MPFB é GPL, mas só roda aqui para gerar o modelo e não é distribuído com o site. O que vai para o site são
+os modelos gerados, cobertos pela licença dos modelos (abaixo).
+
+## Modelos (vão para o site, dentro do `.glb`)
+
+Licença: **CC0**. Pela página de licença do MakeHuman (https://static.makehumancommunity.org/about/license.html), todos os
+modelos centrais são CC0: "you are free to do as you see fit with the asset or derivates of the assets. You do not need
+to pay anything, include any copyright notices nor give attribution".
+
+| Parte                                                                                                  | Origem                         | Item                                                           |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------ | -------------------------------------------------------------- |
+| Malha base do corpo e do rosto, alvos de forma (rosto, queixo, nariz, olhos) e esqueleto `game_engine` | dentro da extensão MPFB 2.0.18 | `data/3dobjs/base.obj`, `data/targets/`, `data/rigs/standard/` |
+| Olhos                                                                                                  | pacote de sistema              | `eyes/high-poly`, material `eyes/materials/brown.mhmat`        |
+| Sobrancelhas                                                                                           | pacote de sistema              | `eyebrows/eyebrow005`                                          |
+| Cílios                                                                                                 | pacote de sistema              | `eyelashes/eyelashes02`                                        |
+| Cabelo                                                                                                 | pacote de sistema              | `hair/bob02`                                                   |
+| Pele                                                                                                   | pacote de sistema              | `skins/young_asian_female`                                     |
+| Roupa provisória (até o moletom da tarefa 2.4)                                                         | pacote de sistema              | `clothes/female_sportsuit01`                                   |
+
+**Pacote de sistema:** `makehuman_system_assets_cc0.zip`, baixado em 2026-11-22 de
+https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip (página:
+https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html). 280.737.770 bytes, SHA-256
+`b542127a8e25547c7c29c19f2d1d2adb9a664c80396ecd694095dbc8028a0107`. O instalador confere o hash antes de instalar.
+
+O que for criado por script neste repositório (forma de estilo, moletom com capuz, mechas de cabelo, se houver) é obra
+própria do portfólio.
+
+## Como gerar do zero
+
+1. Instalar o Blender e o MPFB (tabela acima).
+2. Baixar o pacote de sistema para uma pasta da home (o Blender do Flatpak não enxerga o `/tmp`) e instalar:
+   `npm run personagem:instalar -- ~/Downloads/makehuman-pacotes/makehuman_system_assets_cc0.zip`
+3. `npm run personagem`: gera `.cache/personagem/evelym.blend`.
+4. `npm run personagem:render`: gera os renders em `design/prototipos/personagem-3d/`.

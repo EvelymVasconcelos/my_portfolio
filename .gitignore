@@ -53,3 +53,6 @@ pnpm-lock.yaml
 /playwright-report/
 /test-results/
 /blob-report/
+
+# Personagem 3D: arquivo do Blender gerado por scripts/personagem/gerar.py (refeito a qualquer momento)
+/.cache/

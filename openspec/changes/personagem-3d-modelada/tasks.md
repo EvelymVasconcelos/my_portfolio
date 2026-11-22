@@ -2,13 +2,13 @@
 
 Termina com: um render de teste da base do MPFB saindo do Blender por script, sem abrir a interface.
 
-- [ ] 1.1 Instalar a extensão MPFB e o pacote de modelos de sistema (CC0) no Blender 5.3 do Flatpak, por linha de comando,
+- [x] 1.1 Instalar a extensão MPFB e o pacote de modelos de sistema (CC0) no Blender 5.3 do Flatpak, por linha de comando,
       e conferir que o Python do Blender chama o MPFB sem interface. Se não funcionar, aplicar o plano do risco da design
       (Blender 4.5 LTS numa pasta do usuário)
-- [ ] 1.2 Criar `scripts/personagem/` com o script de geração (`gerar.py`), um script de renders (`render.py`) e um
+- [x] 1.2 Criar `scripts/personagem/` com o script de geração (`gerar.py`), um script de renders (`render.py`) e um
       `npm run personagem` que chama o Blender sem interface, com as versões das ferramentas fixadas
-- [ ] 1.3 Criar `scripts/personagem/ORIGEM.md` com a fonte, a versão e a licença de cada parte usada (D1)
-- [ ] 1.4 Gerar a base humana (mulher adulta, proporções da Evelym) com esqueleto, olhos, sobrancelhas e cílios, e
+- [x] 1.3 Criar `scripts/personagem/ORIGEM.md` com a fonte, a versão e a licença de cada parte usada (D1)
+- [x] 1.4 Gerar a base humana (mulher adulta, proporções da Evelym) com esqueleto, olhos, sobrancelhas e cílios, e
       renderizar frente, três quartos e perfil
 
 ## 2. Rosto e estilo (protótipo: renders para a dona aprovar)
