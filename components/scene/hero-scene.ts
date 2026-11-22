@@ -318,8 +318,26 @@ export async function createHeroScene(
 
   /* ── Materiais ─────────────────────────────────────────────────────── */
   const P = (o: MeshPhysicalMaterialParameters) => new MeshPhysicalMaterial(o);
+  // Poros: um relevo fino e irregular, para a pele não parecer plástico.
+  const pores = tex(
+    256,
+    256,
+    (g, w, h) => {
+      g.fillStyle = "#808080";
+      g.fillRect(0, 0, w, h);
+      for (let i = 0; i < 2600; i++) {
+        g.fillStyle = `rgba(${rnd() < 0.5 ? "60,60,60" : "190,190,190"},0.35)`;
+        g.beginPath();
+        g.arc(rnd() * w, rnd() * h, 0.6 + rnd() * 1.2, 0, PI * 2);
+        g.fill();
+      }
+    },
+    [6, 6]
+  );
   const mSkin = P({
     color: 0xc4875f,
+    bumpMap: pores,
+    bumpScale: 0.12,
     roughness: 0.5,
     sheen: 0.4,
     sheenColor: 0xffcfa8,
@@ -336,11 +354,80 @@ export async function createHeroScene(
     bumpMap: strands,
     bumpScale: 0.6,
     side: DoubleSide,
+    // brilho em faixa, atravessando os fios, como em cabelo de verdade
+    anisotropy: 0.5,
+    anisotropyRotation: PI / 2,
+    envMapIntensity: 0.55,
+  });
+  // Mechas soltas: uma camada por fora com fios recortados (pontas irregulares), que quebra o contorno liso.
+  const strandAlpha = tex(512, 256, (g, w, h) => {
+    g.fillStyle = "#000";
+    g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 900; i++) {
+      const x = rnd() * w;
+      const top = rnd() * h * 0.5;
+      const bottom = h * (0.55 + rnd() * 0.45);
+      g.strokeStyle = `rgba(255,255,255,${0.5 + rnd() * 0.5})`;
+      g.lineWidth = 0.8 + rnd() * 1.6;
+      g.beginPath();
+      g.moveTo(x, top);
+      g.bezierCurveTo(
+        x + 3,
+        top + (bottom - top) * 0.4,
+        x - 3,
+        top + (bottom - top) * 0.7,
+        x + 1,
+        bottom
+      );
+      g.stroke();
+    }
+  });
+  const mHairStrands = P({
+    color: 0x15100e,
+    roughness: 0.42,
+    sheen: 1,
+    sheenRoughness: 0.32,
+    sheenColor: 0x6b5852,
+    alphaMap: strandAlpha,
+    alphaTest: 0.45,
+    side: DoubleSide,
+    anisotropy: 0.5,
+    anisotropyRotation: PI / 2,
+    envMapIntensity: 0.55,
   });
   const mBrow = new MeshStandardMaterial({ color: 0x1c1210, roughness: 0.8 });
   const mSclera = P({ color: 0xf5f0ec, roughness: 0.15, clearcoat: 1 });
-  const mIris = P({ color: 0x2c1a10, roughness: 0.18, clearcoat: 1 });
-  const mPupil = new MeshBasicMaterial({ color: 0x0b0707 });
+  const irisMap = tex(256, 256, (g, w) => {
+    const c = w / 2;
+    const base = g.createRadialGradient(c, c, 0, c, c, c);
+    base.addColorStop(0, "#100804");
+    base.addColorStop(0.3, "#25140a");
+    base.addColorStop(0.62, "#432612");
+    base.addColorStop(0.86, "#2b180c");
+    base.addColorStop(0.95, "#100804");
+    base.addColorStop(1, "rgba(28,15,8,0)");
+    g.fillStyle = base;
+    g.fillRect(0, 0, w, w);
+    // raios da íris
+    for (let i = 0; i < 160; i++) {
+      const a = rnd() * PI * 2;
+      const r0 = c * (0.3 + rnd() * 0.1);
+      const r1 = c * (0.7 + rnd() * 0.2);
+      g.strokeStyle = `rgba(${rnd() < 0.5 ? "140,88,44" : "26,13,6"},${0.18 + rnd() * 0.22})`;
+      g.lineWidth = 1 + rnd() * 1.5;
+      g.beginPath();
+      g.moveTo(c + Math.cos(a) * r0, c + Math.sin(a) * r0);
+      g.lineTo(c + Math.cos(a) * r1, c + Math.sin(a) * r1);
+      g.stroke();
+    }
+    // pupila
+    g.fillStyle = "#070404";
+    g.beginPath();
+    g.arc(c, c, c * 0.36, 0, PI * 2);
+    g.fill();
+  });
+  irisMap.colorSpace = SRGBColorSpace;
+  const mIris = P({ map: irisMap, roughness: 0.15, clearcoat: 1, transparent: true });
   const mGlint = new MeshBasicMaterial({ color: 0xffffff });
   const mLash = new MeshStandardMaterial({ color: 0x120b0d, roughness: 0.6 });
   const mHoodie = P({
@@ -711,22 +798,22 @@ export async function createHeroScene(
   head.position.set(0, 1.0, Z + 0.06);
   head.rotation.x = 0.15;
   root.add(head);
-  // Rosto em V (fotos da dona, 2026-11-20): da linha dos olhos para baixo, a cabeça afina até um queixo estreito.
-  const skull = new SphereGeometry(0.25, 64, 48);
+  // Rosto fino e alongado, com queixo pequeno (pedido da dona em 2026-11-22, no estilo de personagem de animação):
+  // as maçãs do rosto mantêm a largura e, abaixo delas, a cabeça afina depressa até um queixo curto, sem emenda.
+  const skull = new SphereGeometry(0.25, 72, 56);
   const sp = skull.attributes.position;
-  // O queixo sai da própria cabeça, alongada para baixo e afinando até a ponta, sem emenda.
   for (let i = 0; i < sp.count; i++) {
     const y = sp.getY(i);
     const t = Math.min(1, Math.max(0, -y / 0.25));
-    sp.setX(i, sp.getX(i) * (1 - 0.36 * t ** 1.3));
-    sp.setY(i, y - 0.06 * t ** 2.2);
-    if (sp.getZ(i) > 0) sp.setZ(i, sp.getZ(i) * (1 + 0.06 * t));
+    sp.setX(i, sp.getX(i) * (1 - 0.42 * t ** 1.7));
+    sp.setY(i, y - 0.018 * t ** 3);
+    if (sp.getZ(i) > 0) sp.setZ(i, sp.getZ(i) * (1 + 0.05 * t));
   }
   skull.computeVertexNormals();
-  mesh(skull, mSkin, head).scale.set(0.9, 1.04, 0.95);
+  mesh(skull, mSkin, head).scale.set(0.84, 1.08, 0.95);
   for (const s of [-1, 1]) {
     const ear = mesh(new SphereGeometry(0.04, 16, 12), mSkin, head);
-    ear.position.set(0.222 * s, -0.02, 0);
+    ear.position.set(0.207 * s, -0.02, 0);
     ear.scale.set(0.4, 1, 0.75);
   }
   function stroke(pts: number[][], r: number, mat: Material, parent: Object3D) {
@@ -744,29 +831,52 @@ export async function createHeroScene(
     transparent: true,
     depthWrite: false,
   });
+  const eyeShadow = new MeshBasicMaterial({
+    map: tex(128, 64, (g, w, h) => {
+      const gr = g.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
+      gr.addColorStop(0, "rgba(96,52,44,0.32)");
+      gr.addColorStop(1, "rgba(96,52,44,0)");
+      g.setTransform(1, 0, 0, h / w, 0, (h - (h * h) / w) / 2);
+      g.fillStyle = gr;
+      g.fillRect(0, 0, w, w);
+    }),
+    transparent: true,
+    depthWrite: false,
+  });
   // Olhos (foto da dona, 2026-11-20): amendoados, íris castanho-escura grande, pálpebra de cima cobrindo o alto da íris
   // (olhar relaxado) e sobrancelha grossa, reta e baixa. No grupo de cada olho, +x é o canto de fora (o esquerdo é
   // espelhado), e o grupo gira com a curva do rosto: a íris centrada no que se vê evita o olhar vesgo.
   const eyes = [-1, 1].map((s) => {
     const g = new Group();
-    g.position.set(0.083 * s, -0.004, 0.207);
-    g.rotation.y = 0.14 * s;
-    g.scale.set(1.14 * s, 1.14, 1.14); // espelha o lado esquerdo
+    g.position.set(0.079 * s, -0.002, 0.209);
+    g.rotation.y = 0.16 * s;
+    g.scale.set(1.3 * s, 1.3, 1.3); // espelha o lado esquerdo
     head.add(g);
     const eye = new Group();
     g.add(eye);
     mesh(new SphereGeometry(0.03, 32, 20), mSclera, eye, false).scale.set(1.3, 0.66, 0.4);
-    const iris = mesh(new SphereGeometry(0.0158, 28, 20), mIris, eye, false);
-    iris.position.set(0.0065, -0.002, 0.0094);
-    iris.scale.set(1, 1, 0.36);
-    const pupil = mesh(new SphereGeometry(0.0066, 20, 14), mPupil, eye, false);
-    pupil.position.set(0.0065, -0.002, 0.012);
-    pupil.scale.set(1, 1, 0.36);
+    // íris desenhada (raios âmbar, anel escuro na borda e a pupila) num disco logo à frente do branco do olho
+    const iris = mesh(new CircleGeometry(0.0162, 40), mIris, eye, false);
+    iris.position.set(0.0065, -0.002, 0.0126);
     mesh(new CircleGeometry(0.0034, 12), mGlint, eye, false).position.set(0.0015, 0.003, 0.015);
     mesh(new CircleGeometry(0.0015, 8), mGlint, eye, false).position.set(0.008, -0.008, 0.015);
     // pálpebra de cima: uma calota de pele sobre o olho, com a borda logo acima do centro da íris
     const upperLid = mesh(new SphereGeometry(0.031, 32, 16, 0, PI * 2, 0, 0.86), mSkin, eye, false);
     upperLid.scale.set(1.32, 0.68, 0.43);
+    // dobra da pálpebra e uma sombra suave entre a pálpebra e a sobrancelha, que dão profundidade ao olhar
+    stroke(
+      [
+        [-0.034, 0.012, 0.0115],
+        [-0.008, 0.0215, 0.0135],
+        [0.022, 0.02, 0.0125],
+        [0.042, 0.013, 0.009],
+      ],
+      0.0008,
+      mLipLine,
+      g
+    );
+    const lidShade = mesh(new PlaneGeometry(0.1, 0.036), eyeShadow, g, false);
+    lidShade.position.set(0.004, 0.02, 0.0108);
     // cílios na borda da pálpebra, com um gatinho curto no canto de fora, e a linha de baixo
     stroke(
       [
@@ -792,19 +902,19 @@ export async function createHeroScene(
     );
     // sobrancelha: grossa no começo (perto do nariz), quase reta, afinando para fora
     const browCurve = new CatmullRomCurve3([
-      new Vector3(-0.044, 0.027, 0.012),
-      new Vector3(-0.012, 0.035, 0.013),
-      new Vector3(0.022, 0.036, 0.011),
-      new Vector3(0.052, 0.026, 0.004),
+      new Vector3(-0.043, 0.025, 0.012),
+      new Vector3(-0.012, 0.032, 0.013),
+      new Vector3(0.022, 0.033, 0.011),
+      new Vector3(0.05, 0.024, 0.004),
     ]);
     for (let k = 0; k <= 14; k++) {
       const u = k / 14;
       const hair = mesh(new SphereGeometry(1, 12, 8), mBrow, g, false);
       hair.position.copy(browCurve.getPoint(u));
-      hair.scale.set(0.0085, 0.0075 - u * 0.0042, 0.003);
+      hair.scale.set(0.0082, 0.006 - u * 0.0033, 0.003);
     }
     const cheek = mesh(new PlaneGeometry(0.08, 0.06), blush, head, false);
-    cheek.position.set(0.112 * s, -0.078, 0.214);
+    cheek.position.set(0.1 * s, -0.075, 0.21);
     cheek.rotation.y = 0.42 * s;
     return eye;
   });
@@ -894,6 +1004,7 @@ export async function createHeroScene(
   hairGeo.setIndex(hairIndex);
   hairGeo.computeVertexNormals();
   mesh(hairGeo, mHair, head).scale.set(1, 1, 1.02);
+  mesh(hairGeo, mHairStrands, head, false).scale.set(1.035, 1.012, 1.06);
   // headphone: arco com acolchoado, hastes de metal, conchas com almofada e um LED
   mesh(new TorusGeometry(0.305, 0.02, 14, 64, PI), mPhones, head).position.set(0, 0, -0.03);
   const padding = mesh(new TorusGeometry(0.288, 0.016, 10, 48, PI * 0.5), mCushion, head);
