@@ -6,6 +6,8 @@
 export interface SceneEnv {
   reducedMotion: boolean;
   webgl: boolean;
+  /** WebGL desenhado pela CPU (SwiftShader, llvmpipe): sem GPU, a cena trava a página. */
+  softwareWebGL?: boolean;
   /** `navigator.connection.saveData`, quando o navegador informa. */
   saveData?: boolean;
   /** `navigator.deviceMemory` em GB, quando o navegador informa. */
@@ -24,23 +26,38 @@ export function isWeakDevice(env: Pick<SceneEnv, "deviceMemory" | "cores">): boo
 }
 
 export function canRunScene(env: SceneEnv): boolean {
-  if (env.reducedMotion || !env.webgl) return false;
+  if (env.reducedMotion || !env.webgl || env.softwareWebGL) return false;
   if (env.saveData) return false;
   return !isWeakDevice(env);
 }
 
-/** Testa WebGL com um canvas descartável e libera o contexto logo em seguida. */
-export function hasWebGL(): boolean {
+/** Nome do renderizador que indica WebGL desenhado pela CPU, sem GPU. */
+const SOFTWARE_RENDERER = /swiftshader|llvmpipe|softpipe|software|basic render/i;
+
+/**
+ * Testa WebGL com um canvas descartável e libera o contexto logo em seguida. Também diz se ele é desenhado por software:
+ * sem GPU, a cena custou mais de 10 s de thread principal no Lighthouse de celular (2026-11-23).
+ */
+export function probeWebGL(): { webgl: boolean; software: boolean } {
   try {
     const canvas = document.createElement("canvas");
     const gl = (canvas.getContext("webgl2") ??
       canvas.getContext("webgl")) as WebGLRenderingContext | null;
-    if (!gl) return false;
+    if (!gl) return { webgl: false, software: false };
+    const info = gl.getExtension("WEBGL_debug_renderer_info");
+    const renderer = String(
+      gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER) ?? ""
+    );
     gl.getExtension("WEBGL_lose_context")?.loseContext();
-    return true;
+    return { webgl: true, software: SOFTWARE_RENDERER.test(renderer) };
   } catch {
-    return false;
+    return { webgl: false, software: false };
   }
+}
+
+/** Só a presença de WebGL (com ou sem GPU). */
+export function hasWebGL(): boolean {
+  return probeWebGL().webgl;
 }
 
 /** Lê o ambiente do navegador. Só no cliente, depois da hidratação. */
@@ -49,9 +66,11 @@ export function readSceneEnv(): SceneEnv {
     connection?: { saveData?: boolean };
     deviceMemory?: number;
   };
+  const gl = probeWebGL();
   return {
     reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    webgl: hasWebGL(),
+    webgl: gl.webgl,
+    softwareWebGL: gl.software,
     saveData: nav.connection?.saveData,
     deviceMemory: nav.deviceMemory,
     cores: nav.hardwareConcurrency || undefined,

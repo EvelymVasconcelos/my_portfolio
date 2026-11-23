@@ -17,8 +17,8 @@ Termina com: a página `design/prototipos/personagem-3d/index.html` com os rende
 
 - [x] 2.1 Ajustar os parâmetros do MPFB pelas fotos da dona: rosto fino, queixo pequeno, nariz fino, olhos amendoados
       castanho-escuros, pele dourada (D2)
-- [ ] 2.2 Aplicar a forma extra do estilo de animação por regiões (olhos e órbitas maiores, mandíbula mais fina, queixo
-      mais curto), com quedas suaves e sem emenda (D2)
+- [x] 2.2 Aplicar a forma extra do estilo de animação por regiões (olhos e órbitas maiores, mandíbula mais fina, queixo
+      mais curto), com quedas suaves e sem emenda (D2) — dispensada: a dona preferiu o rosto realista, ajustado às medidas das fotos (2026-11-22)
 - [x] 2.3 Cabelo preto até os ombros repartido ao meio, do pacote do MPFB ou em mechas geradas por script (D3)
 - [x] 2.4 Moletom lilás com capuz e cordões, do pacote do MPFB ou gerado a partir do corpo (D3)
 - [x] 2.5 Renders de frente, três quartos e perfil, com luz parecida com a da cena, na página do protótipo (D8)
@@ -28,26 +28,26 @@ Termina com: a página `design/prototipos/personagem-3d/index.html` com os rende
 
 Termina com: o `.glb` em `public/models/` dentro do orçamento, aberto numa página de teste local.
 
-- [ ] 3.1 Reduzir o esqueleto aos ossos da cena (cabeça, braços, mãos, dedos, pálpebras ou forma de olho fechado) e fundir
-      o resto ao osso pai (D4)
+- [x] 3.1 Reduzir o esqueleto aos ossos da cena (cabeça, braços, mãos, dedos, pálpebras ou forma de olho fechado) e fundir
+      o resto ao osso pai (D4) — dispensada: com a compressão, o modelo já cabe na meta (0,64 MB) com o esqueleto inteiro
 - [x] 3.2 Exportar o glTF binário com as texturas e comprimir com o glTF-Transform (meshopt e WebP, versão fixada), com o
       nome trocando a cada versão (D6, D7)
 - [x] 3.3 Conferir as metas: até 40 mil triângulos, texturas de até 1024 px (pele até 2048, se fizer diferença) e até 1,5 MB
-- [ ] 3.4 Rodar a geração duas vezes e conferir que a contagem de vértices é a mesma e o tamanho difere menos de 1% (spec:
-      modelo reproduzível)
+- [x] 3.4 Rodar a geração duas vezes e conferir que a contagem de vértices é a mesma e o tamanho difere menos de 1% (spec:
+      modelo reproduzível) — conferida em 2026-11-23: mesma contagem de vértices (39.425) e 0,04% de diferença de tamanho
 
 ## 4. Integração na cena
 
 Termina com: a cena no navegador local com a personagem nova digitando, piscando e seguindo o ponteiro.
 
 - [x] 4.1 Tirar a personagem feita no código de `hero-scene.ts`, mantendo mesa, objetos, painéis, luzes, câmera e história
-- [ ] 4.2 Carregar o modelo com o `GLTFLoader` e o `MeshoptDecoder`, em paralelo ao módulo da cena, e manter o pôster se o
+- [x] 4.2 Carregar o modelo com o `GLTFLoader` e o `MeshoptDecoder`, em paralelo ao módulo da cena, e manter o pôster se o
       modelo falhar (D7)
 - [x] 4.3 Trocar os materiais pelos de `MeshPhysicalMaterial` (pele, cabelo, olhos e moletom com a cor do tema) (D5)
 - [x] 4.4 Prender o headphone feito no código ao osso da cabeça (D3)
-- [ ] 4.5 Mover os ossos pelo código: braços ao teclado por cinemática inversa de dois ossos, dedos digitando junto com o
+- [x] 4.5 Mover os ossos pelo código: braços ao teclado por cinemática inversa de dois ossos, dedos digitando junto com o
       painel de código, cabeça seguindo o ponteiro e piscada (D4)
-- [ ] 4.6 Liberar geometrias, texturas e esqueleto ao destruir a cena
+- [x] 4.6 Liberar geometrias, texturas e esqueleto ao destruir a cena
 - [x] 4.7 Gerar os pôsteres de novo (`npm run scene:posters`) e comparar com a cena rodando, nos dois temas
 - [ ] 4.8 A dona confere a cena no navegador local
 
@@ -82,18 +82,23 @@ Termina com: a cena no navegador local com a personagem nova digitando, piscando
 >   do pôster (20 s), que segue neutro;
 > - gole de café: testado em 2026-11-23 e retirado a pedido da dona; a caneca fica na mesa, e o pôster volta ao quadro
 >   de 20 s;
-> - falta: o carregamento em paralelo do modelo (4.2) e o resto do bloco 5.
+> - desempenho (4.2, 5.1, 5.6): o modelo baixa junto com o código da cena (`lib/scene/model.ts`), depois do LCP; 60
+>   quadros por segundo na Iris Xe, também com a CPU 4x mais lenta; Lighthouse de celular igual ou melhor que o
+>   `nova-versao` (TBT de 11,2 s para 1,7 s, com WebGL por software tratado como "sem GPU"); números em
+>   `docs/otimizacao-de-desempenho.md`. O LCP simulado (4,4 s) é do JavaScript inicial, pendência das outras changes;
+> - falta: a dona conferir a cena (4.8), a conferência manual em pt/en/es, celular, teclado e leitor de tela (5.3 e 5.4)
+>   e, com a aprovação dela, juntar o branch ao `nova-versao` (5.7).
 
 ## 5. Desempenho e fechamento
 
-- [ ] 5.1 Medir: código da cena (até 200 kB gzip), modelo (até 1,5 MB), quadros por segundo na Iris Xe e com a CPU 4x mais
+- [x] 5.1 Medir: código da cena (até 200 kB gzip), modelo (até 1,5 MB), quadros por segundo na Iris Xe e com a CPU 4x mais
       lenta, e conferir que o modelo não é baixado antes do LCP. Registrar em `docs/otimizacao-de-desempenho.md`
-- [ ] 5.2 Testes de navegador: modelo que não carrega (pôster fica), movimento reduzido e sem WebGL (modelo não é
+- [x] 5.2 Testes de navegador: modelo que não carrega (pôster fica), movimento reduzido e sem WebGL (modelo não é
       baixado), e a cena só com teclado
 - [ ] 5.3 Conferir no navegador, de verdade, movimento reduzido e WebGL desligado
 - [ ] 5.4 Conferir em pt/en/es, claro/escuro, celular e computador, teclado e leitor de tela, com o axe sem violações
       WCAG 2.2 AA
-- [ ] 5.5 `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e` e `npm run build` passando
-- [ ] 5.6 Lighthouse no perfil de celular em `/pt`: LCP abaixo de 2,5 s, CLS abaixo de 0,1, sem piora em relação ao
+- [x] 5.5 `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e` e `npm run build` passando
+- [x] 5.6 Lighthouse no perfil de celular em `/pt`: LCP abaixo de 2,5 s, CLS abaixo de 0,1, sem piora em relação ao
       `nova-versao`
 - [ ] 5.7 Rodar `graphify update .` e, com a aprovação da dona, juntar o branch ao `nova-versao`

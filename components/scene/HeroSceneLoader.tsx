@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { canRunScene, readSceneEnv } from "@/lib/scene/can-run-scene";
+import { fetchModel } from "@/lib/scene/model";
 import type { HeroScene, SceneLabels, SceneState } from "./hero-scene";
 
 type LoaderState = SceneState | "loading" | "captured";
@@ -27,7 +28,10 @@ export function HeroSceneLoader({ labels }: { labels: SceneLabels }) {
     // Testes em navegador sem GPU: a cena não desiste por lentidão (tests/e2e/cena.spec.ts).
     const testMode = (window as Window & { __SCENE_TEST__?: boolean }).__SCENE_TEST__ === true;
 
-    if (!capture && !canRunScene(readSceneEnv())) {
+    const env = readSceneEnv();
+    // Testes e captura do pôster rodam sem GPU, de propósito: para eles, o WebGL por software vale.
+    if (capture || testMode) env.softwareWebGL = false;
+    if (!capture && !canRunScene(env)) {
       setState("poster");
       return;
     }
@@ -62,9 +66,13 @@ export function HeroSceneLoader({ labels }: { labels: SceneLabels }) {
       if (cancelled) return;
       setState("loading");
       try {
+        // O modelo da personagem baixa junto com o código da cena, e não depois dele.
+        const model = fetchModel();
+        model.catch(() => {}); // se o import falhar antes, a recusa do download não vira erro solto no console
         const { createHeroScene } = await import("./hero-scene");
         if (cancelled) return;
         const created = await createHeroScene(container!, {
+          model,
           labels: labelsRef.current,
           coarse: window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 900,
           capture,

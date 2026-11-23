@@ -20,6 +20,8 @@ describe("portão da cena 3D", () => {
 
   it("não roda sem WebGL", () => {
     expect(canRunScene({ ...ok, webgl: false })).toBe(false);
+    // WebGL desenhado pela CPU (sem GPU): a cena trava a página, então fica a imagem.
+    expect(canRunScene({ ...ok, softwareWebGL: true })).toBe(false);
   });
 
   it("não roda com economia de dados", () => {

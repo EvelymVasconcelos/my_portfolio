@@ -53,6 +53,7 @@ import {
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { fetchModel } from "@/lib/scene/model";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { SIGNATURE } from "@/lib/brand/signature-data";
 
@@ -78,6 +79,8 @@ export interface HeroSceneOptions {
   /** Testes em navegador sem GPU: não rebaixa nem desiste por lentidão. */
   noDowngrade?: boolean;
   onState?: (state: SceneState) => void;
+  /** Modelo da personagem já sendo baixado pelo carregador, em paralelo com este módulo (lib/scene/model.ts). */
+  model?: Promise<ArrayBuffer>;
 }
 
 export interface HeroScene {
@@ -94,8 +97,6 @@ const CYCLE = 24;
  * daqui deixa a troca imagem → cena imperceptível; depois a história recomeça sozinha.
  */
 const POSTER_T = 20;
-/** Personagem gerada por scripts/personagem/ (npm run personagem; exportar.py gera o arquivo). */
-const MODEL_URL = "/models/evelym.glb";
 /** O modelo sai em metros; a cena usa uma escala maior (a mesa tem 2,15 de largura). */
 const MODEL_SCALE = 2.05;
 /** Fones feitos para a cabeça antiga (raio 0,25): reduzidos para a cabeça do modelo, em metros. */
@@ -587,7 +588,9 @@ export async function createHeroScene(
   /* ── Personagem: modelo 3D gerado no Blender por scripts/personagem/ (rosto do retrato da Evelym, cabelo, moletom) ── */
   const Z = -0.95;
   // Modelo comprimido com meshopt (npm run personagem:comprimir): o decodificador tem cerca de 6 kB e roda em JavaScript.
-  const gltf = await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync(MODEL_URL);
+  const gltf = await new GLTFLoader()
+    .setMeshoptDecoder(MeshoptDecoder)
+    .parseAsync(await (opts.model ?? fetchModel()), "");
   const evelym = gltf.scene;
   evelym.scale.setScalar(MODEL_SCALE);
   root.add(evelym);

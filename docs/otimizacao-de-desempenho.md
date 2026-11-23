@@ -18,12 +18,12 @@ Lighthouse (LCP, CLS e TBT no perfil de celular) entra no bloco 7 da change `est
 
 ## JavaScript inicial de `/pt` (gzip)
 
-| Momento | kB | O que mudou |
-|---|---|---|
+| Momento                                           | kB  | O que mudou                                                               |
+| ------------------------------------------------- | --- | ------------------------------------------------------------------------- |
 | Bloco 3 (estrutura nova, ainda com framer-motion) | 289 | Seções de servidor; só as mensagens das ilhas de cliente vão ao navegador |
-| Bloco 4 (movimento) | 252 | framer-motion saiu; movimento em CSS e ilhas de cerca de 1 kB cada |
-| Bloco 5 (cena 3D) | 256 | Entrou só o carregador da cena; a cena em si é baixada depois |
-| Fundação, bloco 6 (formulário seguro) | 231 | Zod clássico trocado por `zod/mini` e React Hook Form removido |
+| Bloco 4 (movimento)                               | 252 | framer-motion saiu; movimento em CSS e ilhas de cerca de 1 kB cada        |
+| Bloco 5 (cena 3D)                                 | 256 | Entrou só o carregador da cena; a cena em si é baixada depois             |
+| Fundação, bloco 6 (formulário seguro)             | 231 | Zod clássico trocado por `zod/mini` e React Hook Form removido            |
 
 Meta da design: abaixo de 206 kB. Ainda não atingida: faltam 25 kB. Cerca de 155 kB são React 19 e Next 16, que o site
 não controla; o resto são o next-intl, as ilhas de cliente e o carregador da cena.
@@ -35,12 +35,12 @@ em 3 arquivos. Orçamento: 140 kB.
 
 ## Cena 3D do Hero
 
-| Medida | Valor | Meta |
-|---|---|---|
-| Código da cena (Three.js 0.160 com import seletivo e o módulo) | 125,1 kB gzip, fora do carregamento inicial | até 200 kB |
-| Quadros por segundo, Iris Xe, densidade 2 | 60,2 | 60 |
-| Quadros por segundo com a CPU 4x mais lenta | 60,2 | acima de 30 |
-| Imagens estáticas (pôsteres, WebP com transparência) | 37 kB (claro) e 38 kB (escuro) | — |
+| Medida                                                         | Valor                                       | Meta        |
+| -------------------------------------------------------------- | ------------------------------------------- | ----------- |
+| Código da cena (Three.js 0.160 com import seletivo e o módulo) | 125,1 kB gzip, fora do carregamento inicial | até 200 kB  |
+| Quadros por segundo, Iris Xe, densidade 2                      | 60,2                                        | 60          |
+| Quadros por segundo com a CPU 4x mais lenta                    | 60,2                                        | acima de 30 |
+| Imagens estáticas (pôsteres, WebP com transparência)           | 37 kB (claro) e 38 kB (escuro)              | —           |
 
 Como a cena se protege:
 
@@ -54,3 +54,32 @@ Como a cena se protege:
 O Three.js fica fixo na 0.160.0, a versão do protótipo aprovado. Com a 0.187 (a da referência), a mesma cena saía mais
 clara: pele (235, 202, 175) contra (219, 171, 141) do protótipo e notebook cinza em vez de preto, medidos no mesmo pixel
 das duas capturas. Com a 0.160, os pixels batem e o código da cena fica 15 kB menor (140,4 → 125,1 kB gzip).
+
+## Personagem modelada (change `personagem-3d-modelada`, 2026-11-23)
+
+A personagem passou a ser um modelo 3D gerado no Blender (`scripts/personagem/`) e carregado pela cena.
+
+| Medida                                                               | Valor                                                       | Meta          |
+| -------------------------------------------------------------------- | ----------------------------------------------------------- | ------------- |
+| Modelo (`public/models/evelym.glb`, meshopt e WebP)                  | 0,64 MB, 427 kB transferidos com gzip                       | até 1,5 MB    |
+| Código da cena (Three.js, `GLTFLoader`, `MeshoptDecoder` e o módulo) | 154,9 kB gzip                                               | até 200 kB    |
+| Quadros por segundo, Iris Xe, densidade 2                            | 60,1                                                        | 60            |
+| Quadros por segundo com a CPU 4x mais lenta                          | 60,1                                                        | acima de 30   |
+| Início do download do modelo                                         | junto com o código da cena (556 ms), depois do LCP (396 ms) | depois do LCP |
+
+**WebGL sem GPU.** No Lighthouse de celular, o navegador desenha WebGL por software (SwiftShader) e a cena ocupava a
+thread principal por mais de 10 s, nas duas personagens. Desde 2026-11-23, WebGL por software (SwiftShader, llvmpipe)
+conta como "sem GPU" e a imagem estática fica no lugar (`probeWebGL` em `lib/scene/can-run-scene.ts`); os testes de
+navegador e a geração dos pôsteres continuam forçando a cena.
+
+**Lighthouse, perfil de celular, `/pt`, mediana de 3 execuções (Lighthouse 13.6.0):**
+
+| Versão                                               | Desempenho | Acessibilidade | Boas práticas | SEO | LCP    | CLS | TBT       |
+| ---------------------------------------------------- | ---------- | -------------- | ------------- | --- | ------ | --- | --------- |
+| `nova-versao` (personagem antiga)                    | 52         | 100            | 100           | 100 | 4,44 s | 0   | 11.179 ms |
+| personagem modelada, antes do ajuste                 | 52         | 100            | 100           | 100 | 4,60 s | 0   | 11.904 ms |
+| personagem modelada, sem cena com WebGL por software | 57         | 100            | 100           | 100 | 4,44 s | 0   | 1.736 ms  |
+
+O LCP simulado (4,4 s, meta 2,5 s) vem do JavaScript inicial da página (React e Next), não da cena: o elemento do LCP é
+a imagem estática do Hero, pintada em cerca de 0,7 s na medição real. Fica para o fechamento das changes
+`fundacao-ferramentas-e-stack` e `estrutura-movimento-e-cena-3d` (JavaScript inicial em 231 kB, meta 206 kB).
