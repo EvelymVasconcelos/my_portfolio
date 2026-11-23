@@ -56,3 +56,4 @@ pnpm-lock.yaml
 
 # Personagem 3D: arquivo do Blender gerado por scripts/personagem/gerar.py (refeito a qualquer momento)
 /.cache/
+__pycache__/

@@ -339,6 +339,10 @@ def acabamento():
     armadura = next(o for o in bpy.data.objects if o.type == "ARMATURE")
     _obj, mechas = cabelo.gerar(corpo, armadura)
     print(f"CABELO {mechas} mechas")
+    import moletom
+
+    roupa = objeto("." + PERSONAGEM["clothes"][0].split("/")[0])
+    moletom.gerar(armadura, roupa.material_slots[0].material)
     tingir(corpo, ACABAMENTO["tom_da_pele"])
     for pelos, opacidade in (("eyebrows", "opacidade_das_sobrancelhas"), ("eyelashes", "opacidade_dos_cilios")):
         pelo = objeto("." + PERSONAGEM[pelos].split("/")[0])

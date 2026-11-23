@@ -15,14 +15,12 @@ import {
   ACESFilmicToneMapping,
   BufferGeometry,
   CanvasTexture,
-  CapsuleGeometry,
   CatmullRomCurve3,
   CircleGeometry,
   ClampToEdgeWrapping,
   CylinderGeometry,
   DirectionalLight,
   DoubleSide,
-  Float32BufferAttribute,
   Fog,
   Group,
   HemisphereLight,
@@ -36,6 +34,7 @@ import {
   PlaneGeometry,
   PMREMGenerator,
   PointLight,
+  Quaternion,
   RepeatWrapping,
   Scene,
   SphereGeometry,
@@ -53,6 +52,7 @@ import {
 } from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { SIGNATURE } from "@/lib/brand/signature-data";
 
 export type SceneTheme = "light" | "dark";
@@ -93,6 +93,12 @@ const CYCLE = 24;
  * daqui deixa a troca imagem → cena imperceptível; depois a história recomeça sozinha.
  */
 const POSTER_T = 20;
+/** Personagem gerada por scripts/personagem/ (npm run personagem; exportar.py gera o arquivo). */
+const MODEL_URL = "/models/evelym.glb";
+/** O modelo sai em metros; a cena usa uma escala maior (a mesa tem 2,15 de largura). */
+const MODEL_SCALE = 2.05;
+/** Fones feitos para a cabeça antiga (raio 0,25): reduzidos para a cabeça do modelo, em metros. */
+const PHONES_SCALE = 0.34;
 /** Média de quadros abaixo disso por 3 s rebaixa a qualidade; se persistir, a imagem volta (spec cena-3d). */
 const MIN_FPS = 30;
 const FPS_WINDOW = 3;
@@ -248,24 +254,6 @@ export async function createHeroScene(
     textures.push(t);
     return t;
   }
-  const strands = tex(
-    256,
-    256,
-    (g, w, h) => {
-      g.fillStyle = "#808080";
-      g.fillRect(0, 0, w, h);
-      for (let i = 0; i < 520; i++) {
-        const x = rnd() * w;
-        g.strokeStyle = `rgba(${rnd() < 0.5 ? "40,40,40" : "200,200,200"},0.35)`;
-        g.lineWidth = 0.6 + rnd();
-        g.beginPath();
-        g.moveTo(x, 0);
-        g.bezierCurveTo(x + 6, h * 0.3, x - 6, h * 0.7, x + 3, h);
-        g.stroke();
-      }
-    },
-    [3, 1]
-  );
   const weave = tex(
     128,
     128,
@@ -318,118 +306,6 @@ export async function createHeroScene(
 
   /* ── Materiais ─────────────────────────────────────────────────────── */
   const P = (o: MeshPhysicalMaterialParameters) => new MeshPhysicalMaterial(o);
-  // Poros: um relevo fino e irregular, para a pele não parecer plástico.
-  const pores = tex(
-    256,
-    256,
-    (g, w, h) => {
-      g.fillStyle = "#808080";
-      g.fillRect(0, 0, w, h);
-      for (let i = 0; i < 2600; i++) {
-        g.fillStyle = `rgba(${rnd() < 0.5 ? "60,60,60" : "190,190,190"},0.35)`;
-        g.beginPath();
-        g.arc(rnd() * w, rnd() * h, 0.6 + rnd() * 1.2, 0, PI * 2);
-        g.fill();
-      }
-    },
-    [6, 6]
-  );
-  const mSkin = P({
-    color: 0xc4875f,
-    bumpMap: pores,
-    bumpScale: 0.12,
-    roughness: 0.5,
-    sheen: 0.4,
-    sheenColor: 0xffcfa8,
-    sheenRoughness: 0.55,
-  });
-  const mLip = P({ color: 0x9b5552, roughness: 0.55, clearcoat: 0.08 });
-  const mLipLine = new MeshStandardMaterial({ color: 0x6e3433, roughness: 0.6 });
-  const mHair = P({
-    color: 0x15100e,
-    roughness: 0.4,
-    sheen: 1,
-    sheenRoughness: 0.32,
-    sheenColor: 0x6b5852,
-    bumpMap: strands,
-    bumpScale: 0.6,
-    side: DoubleSide,
-    // brilho em faixa, atravessando os fios, como em cabelo de verdade
-    anisotropy: 0.5,
-    anisotropyRotation: PI / 2,
-    envMapIntensity: 0.55,
-  });
-  // Mechas soltas: uma camada por fora com fios recortados (pontas irregulares), que quebra o contorno liso.
-  const strandAlpha = tex(512, 256, (g, w, h) => {
-    g.fillStyle = "#000";
-    g.fillRect(0, 0, w, h);
-    for (let i = 0; i < 900; i++) {
-      const x = rnd() * w;
-      const top = rnd() * h * 0.5;
-      const bottom = h * (0.55 + rnd() * 0.45);
-      g.strokeStyle = `rgba(255,255,255,${0.5 + rnd() * 0.5})`;
-      g.lineWidth = 0.8 + rnd() * 1.6;
-      g.beginPath();
-      g.moveTo(x, top);
-      g.bezierCurveTo(
-        x + 3,
-        top + (bottom - top) * 0.4,
-        x - 3,
-        top + (bottom - top) * 0.7,
-        x + 1,
-        bottom
-      );
-      g.stroke();
-    }
-  });
-  const mHairStrands = P({
-    color: 0x15100e,
-    roughness: 0.42,
-    sheen: 1,
-    sheenRoughness: 0.32,
-    sheenColor: 0x6b5852,
-    alphaMap: strandAlpha,
-    alphaTest: 0.45,
-    side: DoubleSide,
-    anisotropy: 0.5,
-    anisotropyRotation: PI / 2,
-    envMapIntensity: 0.55,
-  });
-  const mBrow = new MeshStandardMaterial({ color: 0x1c1210, roughness: 0.8 });
-  const mSclera = P({ color: 0xf5f0ec, roughness: 0.15, clearcoat: 1 });
-  const irisMap = tex(256, 256, (g, w) => {
-    const c = w / 2;
-    const base = g.createRadialGradient(c, c, 0, c, c, c);
-    base.addColorStop(0, "#100804");
-    base.addColorStop(0.3, "#25140a");
-    base.addColorStop(0.62, "#432612");
-    base.addColorStop(0.86, "#2b180c");
-    base.addColorStop(0.95, "#100804");
-    base.addColorStop(1, "rgba(28,15,8,0)");
-    g.fillStyle = base;
-    g.fillRect(0, 0, w, w);
-    // raios da íris
-    for (let i = 0; i < 160; i++) {
-      const a = rnd() * PI * 2;
-      const r0 = c * (0.3 + rnd() * 0.1);
-      const r1 = c * (0.7 + rnd() * 0.2);
-      g.strokeStyle = `rgba(${rnd() < 0.5 ? "140,88,44" : "26,13,6"},${0.18 + rnd() * 0.22})`;
-      g.lineWidth = 1 + rnd() * 1.5;
-      g.beginPath();
-      g.moveTo(c + Math.cos(a) * r0, c + Math.sin(a) * r0);
-      g.lineTo(c + Math.cos(a) * r1, c + Math.sin(a) * r1);
-      g.stroke();
-    }
-    // pupila
-    g.fillStyle = "#070404";
-    g.beginPath();
-    g.arc(c, c, c * 0.36, 0, PI * 2);
-    g.fill();
-  });
-  irisMap.colorSpace = SRGBColorSpace;
-  const mIris = P({ map: irisMap, roughness: 0.15, clearcoat: 1, transparent: true });
-  const mGlint = new MeshBasicMaterial({ color: 0xffffff });
-  const mLash = new MeshStandardMaterial({ color: 0x120b0d, roughness: 0.6 });
   const mHoodie = P({
     roughness: 0.92,
     sheen: 0.45,
@@ -439,7 +315,6 @@ export async function createHeroScene(
     bumpScale: 0.35,
   });
   const mCord = P({ color: 0xf4f2f7, roughness: 0.7 });
-  const mAglet = P({ color: 0xd9d6de, metalness: 1, roughness: 0.25 });
   const mAluminum = P({ metalness: 0.85, roughness: 0.3, clearcoat: 0.4 });
   const mKeyboard = new MeshStandardMaterial({ map: keyboard, roughness: 0.7 });
   const mScreen = new MeshBasicMaterial({ toneMapped: false });
@@ -706,305 +581,76 @@ export async function createHeroScene(
     leaf.rotation.set(Math.sin(a) * 0.5, -a, Math.cos(a) * 0.5);
   }
 
-  /* ── Corpo: moletom com capuz, cordões com ponteira de metal ── */
+  /* ── Personagem: modelo 3D gerado no Blender por scripts/personagem/ (rosto do retrato da Evelym, cabelo, moletom) ── */
   const Z = -0.95;
-  const torsoProfile = [
-    v2(0.33, -0.3),
-    v2(0.36, -0.05),
-    v2(0.37, 0.22),
-    v2(0.355, 0.42),
-    v2(0.3, 0.54),
-    v2(0.17, 0.62),
-    v2(0.1, 0.64),
-  ];
-  const torso = mesh(new LatheGeometry(torsoProfile, 48), mHoodie);
-  torso.position.set(0, 0.02, Z);
-  torso.scale.set(1.12, 1, 0.74);
-  const hood = mesh(new TorusGeometry(0.17, 0.07, 18, 44), mHoodie);
-  hood.position.set(0, 0.64, Z - 0.05);
-  hood.rotation.x = 1.25;
-  hood.scale.set(1.3, 1, 1);
-  const hoodBack = mesh(new SphereGeometry(0.2, 32, 24, 0, PI * 2, 0, PI / 2), mHoodie);
-  hoodBack.position.set(0, 0.6, Z - 0.2);
-  hoodBack.rotation.x = -1.9;
-  hoodBack.scale.set(1.15, 0.7, 0.85);
-  for (const x of [-0.055, 0.055]) {
-    const c = mesh(new CylinderGeometry(0.008, 0.008, 0.2, 8), mCord);
-    c.position.set(x, 0.5, Z + 0.255);
-    c.rotation.x = -0.12;
-    mesh(new CylinderGeometry(0.01, 0.009, 0.03, 10), mAglet).position.set(x, 0.39, Z + 0.268);
-  }
-  mesh(new CylinderGeometry(0.075, 0.085, 0.2, 24), mSkin).position.set(0, 0.72, Z + 0.02);
-
-  /* ── Braços, punhos e mãos com dedos que digitam ── */
-  const UP = new Vector3(0, 1, 0);
-  const dir = new Vector3();
-  const mid = new Vector3();
-  const cuffStart = new Vector3();
-  /**
-   * Estica um cilindro de altura 1 entre `a` e `b` (o topo, `radiusTop`, fica em `b`). Cilindro, e não cápsula: esticar
-   * uma cápsula deforma as pontas em ovos; as juntas redondas são esferas próprias (ombro e cotovelo).
-   */
-  function link(m: Mesh, a: Vector3, b: Vector3) {
-    dir.subVectors(b, a);
-    const L = dir.length();
-    mid.addVectors(a, b).multiplyScalar(0.5);
-    m.position.copy(mid);
-    m.quaternion.setFromUnitVectors(UP, dir.normalize());
-    m.scale.set(1, Math.max(0.01, L), 1);
-  }
-  /** Manga do moletom: afina do ombro ao punho (raios em cada ponta). */
-  const R = { shoulder: 0.088, elbow: 0.074, wrist: 0.062 };
-  const sides = [-1, 1].map((s) => {
-    const hand = new Group();
-    root.add(hand);
-    mesh(new SphereGeometry(0.05, 20, 14), mSkin, hand).scale.set(1, 0.45, 1.15);
-    const fingers = [0, 1, 2, 3].map((i) => {
-      const d = new Group();
-      d.position.set((-0.03 + i * 0.02) * -s, -0.008, 0.045);
-      hand.add(d);
-      const g = mesh(
-        new CapsuleGeometry(0.0095, 0.04 - Math.abs(i - 1.5) * 0.006, 4, 10),
-        mSkin,
-        d
-      );
-      g.rotation.x = PI / 2 + 0.5;
-      g.position.set(0, -0.012, 0.022);
-      return d;
-    });
-    const thumb = mesh(new CapsuleGeometry(0.011, 0.032, 4, 10), mSkin, hand);
-    thumb.position.set(0.045 * -s, -0.01, 0.02);
-    thumb.rotation.set(PI / 2, 0, 0.7 * s);
-    return {
-      s,
-      // Ombro um pouco para dentro e abaixo da linha do tronco: a esfera do ombro arredonda a curva do moletom.
-      shoulder: new Vector3(0.33 * s, 0.43, Z + 0.02),
-      elbow: new Vector3(0.4 * s, 0.13, Z + 0.37),
-      wrist: new Vector3(0.17 * s, 0.075, -0.4),
-      base: new Vector3(0.17 * s, 0.075, -0.4),
-      shoulderJoint: mesh(new SphereGeometry(R.shoulder, 28, 20), mHoodie),
-      arm: mesh(new CylinderGeometry(R.elbow, R.shoulder, 1, 28, 1, true), mHoodie),
-      elbowJoint: mesh(new SphereGeometry(R.elbow, 28, 20), mHoodie),
-      forearm: mesh(new CylinderGeometry(R.wrist, R.elbow, 1, 28, 1, true), mHoodie),
-      // Punho canelado: um pouco mais estreito que a manga, com a borda da abertura visível.
-      cuff: mesh(new CylinderGeometry(R.wrist - 0.004, R.wrist - 0.002, 0.045, 28), mHoodie),
-      hand,
-      fingers,
-    };
-  });
-
-  /* ── Cabeça: rosto a partir das fotos da Evelym (pele dourada, olhos amendoados com gatinho, sorriso leve) ── */
-  const head = new Group();
-  head.position.set(0, 1.0, Z + 0.06);
-  head.rotation.x = 0.15;
-  root.add(head);
-  // Rosto fino e alongado, com queixo pequeno (pedido da dona em 2026-11-22, no estilo de personagem de animação):
-  // as maçãs do rosto mantêm a largura e, abaixo delas, a cabeça afina depressa até um queixo curto, sem emenda.
-  const skull = new SphereGeometry(0.25, 72, 56);
-  const sp = skull.attributes.position;
-  for (let i = 0; i < sp.count; i++) {
-    const y = sp.getY(i);
-    const t = Math.min(1, Math.max(0, -y / 0.25));
-    sp.setX(i, sp.getX(i) * (1 - 0.42 * t ** 1.7));
-    sp.setY(i, y - 0.018 * t ** 3);
-    if (sp.getZ(i) > 0) sp.setZ(i, sp.getZ(i) * (1 + 0.05 * t));
-  }
-  skull.computeVertexNormals();
-  mesh(skull, mSkin, head).scale.set(0.84, 1.08, 0.95);
-  for (const s of [-1, 1]) {
-    const ear = mesh(new SphereGeometry(0.04, 16, 12), mSkin, head);
-    ear.position.set(0.207 * s, -0.02, 0);
-    ear.scale.set(0.4, 1, 0.75);
-  }
-  function stroke(pts: number[][], r: number, mat: Material, parent: Object3D) {
-    const curve = new CatmullRomCurve3(pts.map((q) => new Vector3(q[0], q[1], q[2] ?? 0)));
-    return mesh(new TubeGeometry(curve, 24, r, 6, false), mat, parent, false);
-  }
-  const blush = new MeshBasicMaterial({
-    map: tex(64, 64, (g, w, h) => {
-      const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-      gr.addColorStop(0, "rgba(214,110,96,0.55)");
-      gr.addColorStop(1, "rgba(214,110,96,0)");
-      g.fillStyle = gr;
-      g.fillRect(0, 0, w, h);
-    }),
-    transparent: true,
-    depthWrite: false,
-  });
-  const eyeShadow = new MeshBasicMaterial({
-    map: tex(128, 64, (g, w, h) => {
-      const gr = g.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
-      gr.addColorStop(0, "rgba(96,52,44,0.32)");
-      gr.addColorStop(1, "rgba(96,52,44,0)");
-      g.setTransform(1, 0, 0, h / w, 0, (h - (h * h) / w) / 2);
-      g.fillStyle = gr;
-      g.fillRect(0, 0, w, w);
-    }),
-    transparent: true,
-    depthWrite: false,
-  });
-  // Olhos (foto da dona, 2026-11-20): amendoados, íris castanho-escura grande, pálpebra de cima cobrindo o alto da íris
-  // (olhar relaxado) e sobrancelha grossa, reta e baixa. No grupo de cada olho, +x é o canto de fora (o esquerdo é
-  // espelhado), e o grupo gira com a curva do rosto: a íris centrada no que se vê evita o olhar vesgo.
-  const eyes = [-1, 1].map((s) => {
-    const g = new Group();
-    g.position.set(0.079 * s, -0.002, 0.209);
-    g.rotation.y = 0.16 * s;
-    g.scale.set(1.3 * s, 1.3, 1.3); // espelha o lado esquerdo
-    head.add(g);
-    const eye = new Group();
-    g.add(eye);
-    mesh(new SphereGeometry(0.03, 32, 20), mSclera, eye, false).scale.set(1.3, 0.66, 0.4);
-    // íris desenhada (raios âmbar, anel escuro na borda e a pupila) num disco logo à frente do branco do olho
-    const iris = mesh(new CircleGeometry(0.0162, 40), mIris, eye, false);
-    iris.position.set(0.0065, -0.002, 0.0126);
-    mesh(new CircleGeometry(0.0034, 12), mGlint, eye, false).position.set(0.0015, 0.003, 0.015);
-    mesh(new CircleGeometry(0.0015, 8), mGlint, eye, false).position.set(0.008, -0.008, 0.015);
-    // pálpebra de cima: uma calota de pele sobre o olho, com a borda logo acima do centro da íris
-    const upperLid = mesh(new SphereGeometry(0.031, 32, 16, 0, PI * 2, 0, 0.86), mSkin, eye, false);
-    upperLid.scale.set(1.32, 0.68, 0.43);
-    // dobra da pálpebra e uma sombra suave entre a pálpebra e a sobrancelha, que dão profundidade ao olhar
-    stroke(
-      [
-        [-0.034, 0.012, 0.0115],
-        [-0.008, 0.0215, 0.0135],
-        [0.022, 0.02, 0.0125],
-        [0.042, 0.013, 0.009],
-      ],
-      0.0008,
-      mLipLine,
-      g
-    );
-    const lidShade = mesh(new PlaneGeometry(0.1, 0.036), eyeShadow, g, false);
-    lidShade.position.set(0.004, 0.02, 0.0108);
-    // cílios na borda da pálpebra, com um gatinho curto no canto de fora, e a linha de baixo
-    stroke(
-      [
-        [-0.04, -0.001, 0.009],
-        [-0.02, 0.0115, 0.0125],
-        [0.008, 0.0142, 0.013],
-        [0.032, 0.0095, 0.011],
-        [0.046, 0.0145, 0.008],
-      ],
-      0.0032,
-      mLash,
-      g
-    );
-    stroke(
-      [
-        [-0.032, -0.011, 0.011],
-        [-0.004, -0.0175, 0.012],
-        [0.028, -0.012, 0.011],
-      ],
-      0.0009,
-      mBrow,
-      g
-    );
-    // sobrancelha: grossa no começo (perto do nariz), quase reta, afinando para fora
-    const browCurve = new CatmullRomCurve3([
-      new Vector3(-0.043, 0.025, 0.012),
-      new Vector3(-0.012, 0.032, 0.013),
-      new Vector3(0.022, 0.033, 0.011),
-      new Vector3(0.05, 0.024, 0.004),
-    ]);
-    for (let k = 0; k <= 14; k++) {
-      const u = k / 14;
-      const hair = mesh(new SphereGeometry(1, 12, 8), mBrow, g, false);
-      hair.position.copy(browCurve.getPoint(u));
-      hair.scale.set(0.0082, 0.006 - u * 0.0033, 0.003);
-    }
-    const cheek = mesh(new PlaneGeometry(0.08, 0.06), blush, head, false);
-    cheek.position.set(0.1 * s, -0.075, 0.21);
-    cheek.rotation.y = 0.42 * s;
-    return eye;
-  });
-  // nariz afilado: dorso reto e ponta fina projetada para a frente, asas discretas
-  const nose = new Group();
-  nose.position.set(0, -0.064, 0.236);
-  head.add(nose);
-  const tip = mesh(new SphereGeometry(0.017, 24, 16), mSkin, nose);
-  tip.scale.set(0.92, 0.86, 1.3);
-  tip.position.z = 0.008;
-  const bridge = mesh(new SphereGeometry(0.0135, 20, 14), mSkin, nose);
-  bridge.position.set(0, 0.036, -0.002);
-  bridge.rotation.x = -0.18;
-  bridge.scale.set(0.72, 3, 1.05);
-  for (const s of [-1, 1])
-    mesh(new SphereGeometry(0.0095, 16, 12), mSkin, nose).position.set(0.0145 * s, -0.006, -0.006);
-  // sombra suave sob a ponta, para o nariz aparecer com a luz de frente
-  const noseShade = mesh(new PlaneGeometry(0.05, 0.026), blush, nose, false);
-  noseShade.position.set(0, -0.018, 0.004);
-  noseShade.rotation.x = -0.5;
-  // boca: lábios rosa-amarronzados e a linha do sorriso com os cantos para cima
-  const mouth = new Group();
-  mouth.position.set(0, -0.12, 0.2215);
-  head.add(mouth);
-  const upper = mesh(new SphereGeometry(0.022, 28, 16), mLip, mouth, false);
-  upper.scale.set(1.5, 0.33, 0.45);
-  upper.position.y = 0.0035;
-  const lower = mesh(new SphereGeometry(0.022, 28, 16), mLip, mouth, false);
-  lower.scale.set(1.36, 0.44, 0.5);
-  lower.position.y = -0.0085;
-  stroke(
-    [
-      [-0.036, 0.004, 0.0085],
-      [-0.013, -0.0015, 0.0098],
-      [0.013, -0.0015, 0.0098],
-      [0.036, 0.004, 0.0085],
-    ],
-    0.0014,
-    mLipLine,
-    mouth
+  const gltf = await new GLTFLoader().loadAsync(MODEL_URL);
+  const evelym = gltf.scene;
+  evelym.scale.setScalar(MODEL_SCALE);
+  root.add(evelym);
+  const centro = evelym.getObjectByName("centro_cabeca");
+  if (!centro) throw new Error("modelo sem o ponto centro_cabeca");
+  // O centro da cabeça vai para onde ficava o da personagem anterior: as mãos, na pose do modelo, chegam ao teclado.
+  evelym.updateMatrixWorld(true);
+  evelym.position.add(
+    new Vector3(0, 1.0, Z + 0.06).sub(root.worldToLocal(centro.getWorldPosition(new Vector3())))
   );
-  // Cabelo repartido ao meio, sem franja, até os ombros com as pontas para dentro (fotos da dona, 2026-11-20). Uma
-  // casca inteira, da qual se recorta a abertura do rosto: estreita no alto (a risca do meio, que deixa ver o couro
-  // cabeludo) e larga da altura dos olhos para baixo, com o cabelo emoldurando as laterais do rosto.
-  const hairRows = new SplineCurve([
-    v2(0.001, 0.29),
-    v2(0.14, 0.275),
-    v2(0.235, 0.2),
-    v2(0.272, 0.06),
-    v2(0.278, -0.08),
-    v2(0.29, -0.22),
-    v2(0.3, -0.33),
-    v2(0.27, -0.375),
-    v2(0.245, -0.36),
-  ]).getPoints(80);
-  // Meia largura da abertura do rosto na altura y.
-  const faceOpening = (y: number) =>
-    y > 0.25
-      ? 0.008
-      : y > 0.17
-        ? 0.008 + ((0.25 - y) / 0.08) * 0.1
-        : y > 0.05
-          ? 0.108 + ((0.17 - y) / 0.12) * 0.092
-          : 0.2;
-  // Cada fileira dá a volta a partir da borda do rosto (ângulo calculado), então a borda sai lisa, sem degraus.
-  const COLS = 120;
-  const hairPos: number[] = [];
-  const hairUv: number[] = [];
-  const hairIndex: number[] = [];
-  hairRows.forEach((p, i) => {
-    const open = Math.asin(Math.min(1, faceOpening(p.y) / Math.max(p.x, 1e-4)));
-    for (let j = 0; j <= COLS; j++) {
-      const phi = open + ((PI * 2 - 2 * open) * j) / COLS;
-      hairPos.push(p.x * Math.sin(phi), p.y, p.x * Math.cos(phi));
-      hairUv.push(j / COLS, i / (hairRows.length - 1));
+  evelym.traverse((o) => {
+    const m = o as Mesh;
+    if (!m.isMesh) return;
+    m.castShadow = m.receiveShadow = true;
+    m.frustumCulled = false; // a caixa de uma malha com esqueleto não acompanha os ossos
+    const mat = m.material as MeshStandardMaterial;
+    if (mat.name === "evelym.female_sportsuit01") m.material = mHoodie;
+    else if (mat.name === "evelym.cordao") m.material = mCord;
+    else if (mat.name === "evelym.pele") {
+      m.material = P({
+        map: mat.map,
+        roughness: 0.5,
+        sheen: 0.4,
+        sheenColor: 0xffcfa8,
+        sheenRoughness: 0.55,
+      });
+      mat.dispose();
+    } else if (mat.name === "evelym.cabelo" || mat.name === "evelym.eyelashes02") {
+      // transparência recortada: sem problema de ordem de desenho entre as mechas
+      // (o carregador desliga a escrita de profundidade em material transparente; sem ela, o couro cabeludo cobre o cabelo)
+      mat.transparent = false;
+      mat.depthWrite = true;
+      mat.alphaTest = 0.5;
+      mat.side = DoubleSide;
+      mat.envMapIntensity = 0.55;
     }
   });
-  for (let i = 0; i < hairRows.length - 1; i++)
-    for (let j = 0; j < COLS; j++) {
-      const a = i * (COLS + 1) + j;
-      const b = a + COLS + 1;
-      hairIndex.push(a, b, a + 1, b, b + 1, a + 1);
-    }
-  const hairGeo = new BufferGeometry();
-  hairGeo.setAttribute("position", new Float32BufferAttribute(hairPos, 3));
-  hairGeo.setAttribute("uv", new Float32BufferAttribute(hairUv, 2));
-  hairGeo.setIndex(hairIndex);
-  hairGeo.computeVertexNormals();
-  mesh(hairGeo, mHair, head).scale.set(1, 1, 1.02);
-  mesh(hairGeo, mHairStrands, head, false).scale.set(1.035, 1.012, 1.06);
+  const bone = (name: string) => {
+    const b = evelym.getObjectByName(name);
+    if (!b) throw new Error(`modelo sem o osso ${name}`);
+    return b;
+  };
+  const headBone = bone("head");
+  const hands = (["l", "r"] as const).map((s) => ({
+    hand: bone(`hand_${s}`),
+    fingers: ["index", "middle", "ring", "pinky"].map((f) => bone(`${f}_01_${s}`)),
+  }));
+  const rest = new Map<Object3D, Quaternion>();
+  for (const b of [headBone, ...hands.flatMap((h) => [h.hand, ...h.fingers])])
+    rest.set(b, b.quaternion.clone());
+  const AX = new Vector3(1, 0, 0);
+  const AY = new Vector3(0, 1, 0);
+  const qParent = new Quaternion();
+  const qInv = new Quaternion();
+  const qTurn = new Quaternion();
+  const qNod = new Quaternion();
+  /** Gira o osso a partir da pose de descanso por `q`, um giro dado nos eixos da cena. */
+  function turn(b: Object3D, q: Quaternion) {
+    b.parent!.getWorldQuaternion(qParent);
+    qInv.copy(qParent).invert();
+    b.quaternion.copy(qInv).multiply(q).multiply(qParent).multiply(rest.get(b)!);
+  }
+  // Os fones são da cena (já aprovados), presos ao centro da cabeça, no tamanho da cabeça do modelo.
+  const head = new Group();
+  head.scale.setScalar(PHONES_SCALE);
+  centro.add(head);
+
   // headphone: arco com acolchoado, hastes de metal, conchas com almofada e um LED
   mesh(new TorusGeometry(0.305, 0.02, 14, 64, PI), mPhones, head).position.set(0, 0, -0.03);
   const padding = mesh(new TorusGeometry(0.288, 0.016, 10, 48, PI * 0.5), mCushion, head);
@@ -1213,37 +859,20 @@ export async function createHeroScene(
     const live = u >= 16 ? 1 : 0;
     if (live !== lastBadge) drawBadge((lastBadge = live) === 1);
 
-    // mãos e dedos digitando (calmos quando o código termina); braços acompanham
+    // mãos e dedos digitando (calmos quando o código termina)
     const typing = typed < TOTAL_CHARS ? 1 : 0.12;
-    sides.forEach((side, i) => {
-      const lat = Math.sin(t * 2.3 + i * 1.7) * 0.025 * typing;
-      side.wrist.set(
-        side.base.x + lat,
-        side.base.y + Math.max(0, Math.sin(t * 6 + i)) * 0.006 * typing,
-        side.base.z
-      );
-      side.hand.position.copy(side.wrist);
-      side.hand.rotation.set(0.12, -0.15 * side.s, 0);
-      side.fingers.forEach((d, j) => {
-        d.rotation.x = Math.max(0, Math.sin(t * 11 + j * 1.9 + i * 3.1)) * 0.5 * typing;
+    hands.forEach((side, i) => {
+      turn(side.hand, qTurn.setFromAxisAngle(AY, Math.sin(t * 2.3 + i * 1.7) * 0.06 * typing));
+      side.fingers.forEach((f, j) => {
+        const curl = Math.max(0, Math.sin(t * 11 + j * 1.9 + i * 3.1)) * 0.45 * typing;
+        turn(f, qTurn.setFromAxisAngle(AX, curl));
       });
-      side.shoulderJoint.position.copy(side.shoulder);
-      side.elbowJoint.position.copy(side.elbow);
-      // A manga termina um pouco antes do punho; o punho canelado cobre o trecho até a mão.
-      cuffStart.copy(side.wrist).sub(side.elbow).setLength(0.05);
-      cuffStart.subVectors(side.wrist, cuffStart);
-      link(side.arm, side.shoulder, side.elbow);
-      link(side.forearm, side.elbow, cuffStart);
-      link(side.cuff, cuffStart, side.wrist);
-      side.cuff.scale.y = 1;
     });
-    // cabeça: leve aceno de concentração, acompanhando o ponteiro; piscadas
+    // cabeça: leve aceno de concentração, acompanhando o ponteiro
     ptr.x += (ptr.tx - ptr.x) * 0.06;
     ptr.y += (ptr.ty - ptr.y) * 0.06;
-    head.rotation.x = 0.15 + Math.sin(t * 0.8) * 0.02;
-    head.rotation.y = Math.sin(t * 0.33) * 0.05 + ptr.x * 0.1;
-    const blink = t % 4.6 < 0.13;
-    for (const eye of eyes) eye.scale.y = blink ? 0.12 : 1;
+    qTurn.setFromAxisAngle(AY, Math.sin(t * 0.33) * 0.05 + ptr.x * 0.1);
+    turn(headBone, qTurn.multiply(qNod.setFromAxisAngle(AX, 0.06 + Math.sin(t * 0.8) * 0.02)));
     steam.forEach((m, i) => {
       const fz = (t * 0.22 + i / 3) % 1;
       m.position.set(0.74 + Math.sin(fz * 6 + i) * 0.025, 0.2 + fz * 0.4, -0.18);

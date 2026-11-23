@@ -20,7 +20,7 @@ Termina com: a página `design/prototipos/personagem-3d/index.html` com os rende
 - [ ] 2.2 Aplicar a forma extra do estilo de animação por regiões (olhos e órbitas maiores, mandíbula mais fina, queixo
       mais curto), com quedas suaves e sem emenda (D2)
 - [x] 2.3 Cabelo preto até os ombros repartido ao meio, do pacote do MPFB ou em mechas geradas por script (D3)
-- [ ] 2.4 Moletom lilás com capuz e cordões, do pacote do MPFB ou gerado a partir do corpo (D3)
+- [x] 2.4 Moletom lilás com capuz e cordões, do pacote do MPFB ou gerado a partir do corpo (D3)
 - [x] 2.5 Renders de frente, três quartos e perfil, com luz parecida com a da cena, na página do protótipo (D8)
 - [ ] 2.6 A dona aprova os renders, ou pede ajustes (cada rodada é mudança de parâmetro e renders novos)
 
@@ -40,16 +40,27 @@ Termina com: o `.glb` em `public/models/` dentro do orçamento, aberto numa pág
 
 Termina com: a cena no navegador local com a personagem nova digitando, piscando e seguindo o ponteiro.
 
-- [ ] 4.1 Tirar a personagem feita no código de `hero-scene.ts`, mantendo mesa, objetos, painéis, luzes, câmera e história
+- [x] 4.1 Tirar a personagem feita no código de `hero-scene.ts`, mantendo mesa, objetos, painéis, luzes, câmera e história
 - [ ] 4.2 Carregar o modelo com o `GLTFLoader` e o `MeshoptDecoder`, em paralelo ao módulo da cena, e manter o pôster se o
       modelo falhar (D7)
-- [ ] 4.3 Trocar os materiais pelos de `MeshPhysicalMaterial` (pele, cabelo, olhos e moletom com a cor do tema) (D5)
-- [ ] 4.4 Prender o headphone feito no código ao osso da cabeça (D3)
+- [x] 4.3 Trocar os materiais pelos de `MeshPhysicalMaterial` (pele, cabelo, olhos e moletom com a cor do tema) (D5)
+- [x] 4.4 Prender o headphone feito no código ao osso da cabeça (D3)
 - [ ] 4.5 Mover os ossos pelo código: braços ao teclado por cinemática inversa de dois ossos, dedos digitando junto com o
       painel de código, cabeça seguindo o ponteiro e piscada (D4)
 - [ ] 4.6 Liberar geometrias, texturas e esqueleto ao destruir a cena
-- [ ] 4.7 Gerar os pôsteres de novo (`npm run scene:posters`) e comparar com a cena rodando, nos dois temas
+- [x] 4.7 Gerar os pôsteres de novo (`npm run scene:posters`) e comparar com a cena rodando, nos dois temas
 - [ ] 4.8 A dona confere a cena no navegador local
+
+> Primeira integração em 2026-11-23, a pedido da dona ("vamos ver como fica na cena, com o moletom"), antes do fim do
+> bloco 2 e do bloco 3:
+>
+> - o rosto vem do retrato projetado (rodada 6), com cabelo preto; moletom com mangas, tronco, capuz e cordões feitos
+>   por script (`moletom.py` e `exportar.py`);
+> - `npm run personagem:exportar` grava `public/models/evelym.glb`: 2,23 MB, 44.674 triângulos, ainda sem compressão
+>   (3.2) e com o esqueleto inteiro (3.1). A meta de 1,5 MB e 40 mil triângulos fica para o bloco 3;
+> - a cena carrega o modelo pelo `GLTFLoader` (código da cena: 125,1 → 148,5 kB gzip), prende os fones ao centro da
+>   cabeça, usa o material do tema no moletom e mexe os dedos, as mãos e a cabeça pelos ossos;
+> - falta: piscada e sorriso (2.6 e 4.5), o carregamento em paralelo do modelo (4.2) e o resto do bloco 5.
 
 ## 5. Desempenho e fechamento
 
