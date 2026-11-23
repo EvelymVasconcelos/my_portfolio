@@ -387,9 +387,9 @@ export async function createHeroScene(
   );
   const lid = new Group();
   lid.position.set(0, 0.032, 0.115);
-  // Tampa bem aberta (cerca de 125°): com a personagem modelada, a tampa mais em pé escondia antebraços e mãos, e os
-  // braços pareciam tocos (2026-11-23). Assim as mãos aparecem no teclado.
-  lid.rotation.x = 0.62;
+  // Tampa em pé, de propósito: ela cobre o peito e os braços, e acima dela aparecem só a cabeça, o capuz e o alto dos
+  // ombros (decisão da dona em 2026-11-23, depois de ver os braços inteiros).
+  lid.rotation.x = 0.16;
   root.add(lid);
   mesh(new RoundedBoxGeometry(0.98, 0.64, 0.022, 4, 0.012), mAluminum, lid).position.y = 0.32;
   const bezel = mesh(new PlaneGeometry(0.95, 0.61), mBezel, lid, false);
@@ -896,7 +896,7 @@ export async function createHeroScene(
   }
 
   /* ── Quadro: história, mãos digitando, cabeça, vapor e câmera ── */
-  const lookAt = new Vector3(0, 0.55, -0.42);
+  const lookAt = new Vector3(0, 0.66, -0.42);
   const ptr = { x: 0, y: 0, tx: 0, ty: 0 };
   let progress = 0;
 
@@ -948,8 +948,7 @@ export async function createHeroScene(
     terminal.m.position.y = 1.38 + Math.sin(t * 0.6 + 1.5) * 0.025;
     badge.m.position.y = 0.92 + Math.sin(t * 0.6 + 3) * 0.02;
     // câmera em três quartos, enquadrando tudo (nada cortado), com parallax leve do ponteiro e da rolagem
-    // câmera mais alta que a original (1,55): olha por cima da tampa e mostra os braços chegando ao teclado
-    camera.position.set(1.05 + ptr.x * 0.3, 2.3 - ptr.y * 0.2, 3.6 - progress * 0.3);
+    camera.position.set(1.05 + ptr.x * 0.3, 1.55 - ptr.y * 0.2, 3.85 - progress * 0.3);
     camera.lookAt(lookAt);
   }
 

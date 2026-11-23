@@ -68,6 +68,8 @@ Termina com: a cena no navegador local com a personagem nova digitando, piscando
 > - braços (2026-11-23, decisão da dona): a tampa do notebook escondia antebraços e mãos, e os braços pareciam tocos. A
 >   tampa abriu mais (cerca de 125°), a câmera subiu (1,55 → 2,3) e os cotovelos abriram; o moletom cai reto na frente
 >   do tronco e não marca o corpo; os cordões descem por cima do tecido;
+> - enquadramento final (2026-11-23, decisão da dona): a cena inteira, com a câmera de volta ao ângulo original, e a
+>   tampa do notebook em pé, cobrindo o peito e os braços; acima dela aparecem só a cabeça, o capuz e o alto dos ombros;
 > - falta: sorriso (2.6), o carregamento em paralelo do modelo (4.2) e o resto do bloco 5.
 
 ## 5. Desempenho e fechamento
