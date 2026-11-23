@@ -654,10 +654,12 @@ export async function createHeroScene(
   });
 
   const blinkers: Mesh[] = [];
+  const smilers: Mesh[] = [];
   evelym.traverse((o) => {
     const m = o as Mesh;
     if (!m.isMesh) return;
     if (m.morphTargetDictionary?.piscar !== undefined) blinkers.push(m);
+    if (m.morphTargetDictionary?.sorriso !== undefined) smilers.push(m);
     m.castShadow = m.receiveShadow = true;
     m.frustumCulled = false; // a caixa de uma malha com esqueleto não acompanha os ossos
     const mat = m.material as MeshStandardMaterial;
@@ -938,6 +940,11 @@ export async function createHeroScene(
           ? Math.sin(((bt - 0.3) / 0.16) * PI)
           : 0;
     for (const m of blinkers) m.morphTargetInfluences![m.morphTargetDictionary!.piscar] = blink;
+    // sorriso leve quando o deploy vai para produção (16 s); séria de novo antes do quadro do pôster (20 s)
+    const sorrir =
+      Math.min(1, Math.max(0, (u - 16.3) / 0.6)) * Math.min(1, Math.max(0, (19.6 - u) / 0.7));
+    const smile = sorrir * sorrir * (3 - 2 * sorrir);
+    for (const m of smilers) m.morphTargetInfluences![m.morphTargetDictionary!.sorriso] = smile;
     // mãos e dedos digitando (calmos quando o código termina)
     const typing = typed < TOTAL_CHARS ? 1 : 0.12;
     hands.forEach((side, i) => {

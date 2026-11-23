@@ -287,6 +287,51 @@ def cabelo_sobre_o_capuz():
     print(f"CABELO sobre o capuz: {len(movidos)} vértices empurrados para fora")
 
 
+# Sorriso leve, animado no site: alvos do MakeHuman, com estes pesos, acima da expressão neutra do gerar.py.
+SORRISO = {
+    "mouth-angles-up": 1.0,
+    "mouth-scale-horiz-incr": 0.3,
+    "l-cheek-trans-up": 0.4,
+    "r-cheek-trans-up": 0.4,
+    "l-cheek-volume-incr": 0.3,
+    "r-cheek-volume-incr": 0.3,
+}
+
+
+def guardar_sorriso():
+    """Antes da pose: calcula quanto cada vértice do corpo anda no sorriso e guarda num atributo ("sorriso"). O Blender não
+    aplica o esqueleto numa malha com formas, então a forma em si só é criada no fim (criar_sorriso), a partir dele."""
+    from bl_ext.blender_org.mpfb.services import TargetService
+
+    corpo = next(o for o in malhas() if o.name.endswith(".body"))
+    n = len(corpo.data.vertices)
+    soma = [Vector() for _ in range(n)]
+    for alvo, peso in SORRISO.items():
+        caminho = TargetService.target_full_path(alvo)
+        TargetService.load_target(corpo, caminho, weight=1.0, name="tmp_sorriso")
+        chaves = corpo.data.shape_keys.key_blocks
+        base, forma = chaves[0], chaves["tmp_sorriso"]
+        for i in range(n):
+            soma[i] += (forma.data[i].co - base.data[i].co) * peso
+        bpy.context.view_layer.objects.active = corpo
+        bpy.ops.object.shape_key_remove(all=True, apply_mix=False)
+    atributo = corpo.data.attributes.new("sorriso", "FLOAT_VECTOR", "POINT")
+    for i, d in enumerate(soma):
+        atributo.data[i].vector = d
+    print(f"SORRISO maior deslocamento: {max(d.length for d in soma) * 1000:.1f} mm")
+
+
+def criar_sorriso():
+    corpo = next(o for o in malhas() if o.name.endswith(".body"))
+    if not corpo.data.shape_keys:
+        corpo.shape_key_add(name="Basis")
+    forma = corpo.shape_key_add(name="sorriso")
+    atributo = corpo.data.attributes["sorriso"]
+    for i, v in enumerate(corpo.data.vertices):
+        forma.data[i].co = v.co + atributo.data[i].vector
+    corpo.data.attributes.remove(atributo)
+
+
 def forma_de_piscar():
     """Forma "piscar" nas pálpebras: a de cima desce até encontrar a de baixo, cobrindo o olho. Os cílios de cima descem
     junto. No site, a cena liga e desliga essa forma (morph target)."""
@@ -396,6 +441,7 @@ def ponto_da_cabeca(armadura):
 
 def main():
     armadura = next(o for o in bpy.data.objects if o.type == "ARMATURE")
+    guardar_sorriso()
     pose_de_digitar(armadura)
     cortar()
     roupa = next(o for o in malhas() if o.name.endswith(".female_sportsuit01"))
@@ -407,6 +453,7 @@ def main():
     cabelo_sobre_o_capuz()
     assar_pele()
     forma_de_piscar()
+    criar_sorriso()
     ponto_da_cabeca(armadura)
     os.makedirs(os.path.dirname(SAIDA), exist_ok=True)
     bpy.ops.export_scene.gltf(

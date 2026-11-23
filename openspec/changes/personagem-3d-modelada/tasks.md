@@ -22,7 +22,7 @@ Termina com: a página `design/prototipos/personagem-3d/index.html` com os rende
 - [x] 2.3 Cabelo preto até os ombros repartido ao meio, do pacote do MPFB ou em mechas geradas por script (D3)
 - [x] 2.4 Moletom lilás com capuz e cordões, do pacote do MPFB ou gerado a partir do corpo (D3)
 - [x] 2.5 Renders de frente, três quartos e perfil, com luz parecida com a da cena, na página do protótipo (D8)
-- [ ] 2.6 A dona aprova os renders, ou pede ajustes (cada rodada é mudança de parâmetro e renders novos)
+- [x] 2.6 A dona aprova os renders, ou pede ajustes (cada rodada é mudança de parâmetro e renders novos)
 
 ## 3. Arquivo do modelo
 
@@ -77,6 +77,9 @@ Termina com: a cena no navegador local com a personagem nova digitando, piscando
 > - testes: 114 de unidade e 72 de navegador passando; os testes de estrutura e contato foram atualizados para as
 >   Recomendações e o "Agendar call", os de movimento esperam o `data-motion="ready"` e as capturas visuais foram
 >   refeitas;
+> - sorriso animado (2026-11-23, ideia da dona): forma "sorriso" no corpo (cantos da boca, largura da boca e maçãs do
+>   rosto); ela fica séria e sorri de leve quando o selo vira "Em produção" (16 s), voltando a ficar séria antes do quadro
+>   do pôster (20 s), que segue neutro;
 > - falta: o carregamento em paralelo do modelo (4.2) e o resto do bloco 5.
 
 ## 5. Desempenho e fechamento
