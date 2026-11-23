@@ -40,6 +40,10 @@ https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehum
 https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html). 280.737.770 bytes, SHA-256
 `b542127a8e25547c7c29c19f2d1d2adb9a664c80396ecd694095dbc8028a0107`. O instalador confere o hash antes de instalar.
 
+**Pele do rosto:** o retrato estilizado da própria Evelym (arquivo `40.png`, enviado por ela em 2026-11-22 e guardado em
+`~/Documentos/fotos-personagem/`, fora do repositório), projetado no rosto 3D por `scripts/personagem/projetar.py`. A imagem é
+dela, e ela pediu o uso. Ela não entra no Git; o que vai para o site é a textura da pele gerada a partir dela.
+
 O que é criado por script neste repositório é obra própria do portfólio: o cabelo (`scripts/personagem/cabelo.py`, mechas
 em faixas e a textura de fios, desde 2026-11-22) e, quando existirem, a forma de estilo e o moletom com capuz.
 
@@ -48,7 +52,8 @@ em faixas e a textura de fios, desde 2026-11-22) e, quando existirem, a forma de
 1. Instalar o Blender e o MPFB (tabela acima).
 2. Baixar o pacote de sistema para uma pasta da home (o Blender do Flatpak não enxerga o `/tmp`) e instalar:
    `npm run personagem:instalar -- ~/Downloads/makehuman-pacotes/makehuman_system_assets_cc0.zip`
-3. `npm run personagem`: gera `.cache/personagem/evelym.blend`.
+3. `npm run personagem`: gera `.cache/personagem/evelym.blend` com o retrato projetado no rosto (precisa do ambiente com
+   o MediaPipe do passo 5 e do retrato em `~/Documentos/fotos-personagem/40.png`, ou em `PERSONAGEM_FOTO`).
 4. `npm run personagem:render`: gera os renders em `design/prototipos/personagem-3d/`.
 5. Para ajustar o rosto às fotos de novo (opcional; o resultado já está em `scripts/personagem/rosto-ajustado.json`):
    - `python3 -m venv --without-pip .cache/personagem/venv` e

@@ -76,69 +76,46 @@
   </head>
   <body>
     <main>
-      <p class="rodada">Rodada 5 · proporções medidas nas fotos</p>
+      <p class="rodada">Rodada 6 · retrato projetado no rosto</p>
       <h1>Personagem 3D da Evelym</h1>
       <p>
-        O rosto agora sai das medidas. O MediaPipe (gratuito, roda nesta máquina) marca 478 pontos
-        do rosto em 14 fotos da Evelym, as 8 reais e os 6 retratos estilizados, e um script ajusta a
-        personagem em ciclo (gera, renderiza de frente, mede e corrige) até as proporções baterem. O
-        alvo mistura 60% dos retratos e 40% das fotos reais.
+        O rosto agora vem do retrato que a Evelym escolheu, projetado na pele do modelo 3D, sem
+        custo e sem enviar a imagem para nenhum serviço:
       </p>
       <ul>
         <li>
-          dentro de 3% das fotos: largura e altura do rosto, mandíbula, largura do olho, largura,
-          comprimento e projeção do nariz e largura da boca;
+          o MediaPipe marca 468 pontos do rosto no retrato e no render da personagem; uma câmera
+          calculada leva o rosto 3D até o retrato (erro médio de 1,3% da distância entre os olhos) e
+          uma correção fina encaixa olhos, nariz e boca;
         </li>
         <li>
-          ainda um pouco longe: o olho está um pouco mais puxado, a sobrancelha um pouco mais baixa
-          e o lábio de cima um pouco mais grosso que nas fotos;
+          sobrancelhas, delineado, lábios e o contorno do rosto vêm do retrato; os olhos 3D
+          continuam, para piscar;
         </li>
         <li>
-          as medidas usam a distância entre os olhos como unidade, então valem para qualquer foto,
-          de qualquer tamanho.
+          uma máscara de borda suave limita o retrato ao rosto e deixa de fora o cabelo lilás da
+          foto;
         </li>
+        <li>cabelo preto, como a Evelym escolheu.</li>
       </ul>
-      <p>
-        <strong>Para escolher:</strong> cabelo preto, como nas fotos, ou lilás, como nos retratos
-        (combina com o roxo do site).
-      </p>
       <p>Ainda falta: moletom lilás com capuz, sorriso e piscada.</p>
       <div class="vistas">
         <figure>
-          <img
-            src="render-rosto.webp"
-            alt="Rosto de perto, cabelo preto"
-            width="900"
-            height="1100"
-          />
-          <figcaption>De perto · cabelo preto</figcaption>
+          <img src="render-rosto.webp" alt="Rosto de perto, de frente" width="900" height="1100" />
+          <figcaption>De perto</figcaption>
         </figure>
         <figure>
           <img
-            src="render-rosto-lilas.webp"
-            alt="Rosto de perto, cabelo lilás"
+            src="render-rosto-34.webp"
+            alt="Rosto de perto, de três quartos"
             width="900"
             height="1100"
           />
-          <figcaption>De perto · cabelo lilás</figcaption>
+          <figcaption>De perto, de três quartos</figcaption>
         </figure>
         <figure>
-          <img
-            src="render-frente.webp"
-            alt="Personagem de frente, cabelo preto"
-            width="900"
-            height="1100"
-          />
-          <figcaption>Frente · cabelo preto</figcaption>
-        </figure>
-        <figure>
-          <img
-            src="render-frente-lilas.webp"
-            alt="Personagem de frente, cabelo lilás"
-            width="900"
-            height="1100"
-          />
-          <figcaption>Frente · cabelo lilás</figcaption>
+          <img src="render-frente.webp" alt="Personagem de frente" width="900" height="1100" />
+          <figcaption>Frente</figcaption>
         </figure>
         <figure>
           <img

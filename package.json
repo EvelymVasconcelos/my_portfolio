@@ -16,7 +16,7 @@
     "translate": "tsx scripts/translate.ts",
     "scene:posters": "tsx scripts/render-scene-posters.ts",
     "personagem:instalar": "flatpak run org.blender.Blender -b --python \"$PWD/scripts/personagem/instalar_pacote.py\" --",
-    "personagem": "flatpak run org.blender.Blender -b --python \"$PWD/scripts/personagem/gerar.py\"",
+    "personagem": ".cache/personagem/venv/bin/python scripts/personagem/projetar_rosto.py",
     "personagem:render": "flatpak run org.blender.Blender -b \"$PWD/.cache/personagem/evelym.blend\" --python \"$PWD/scripts/personagem/render.py\""
   },
   "dependencies": {

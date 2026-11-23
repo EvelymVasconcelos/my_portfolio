@@ -20,9 +20,10 @@ VISTAS = {
     "tres-quartos": (35, 1.15, 0.17),
     "perfil": (90, 1.15, 0.17),
     "rosto": (12, 0.5, 0.115),  # de perto: olhos, nariz, sobrancelhas e boca
+    "rosto-34": (35, 0.5, 0.115),  # de perto, no ângulo da cena
 }
 # Variante de cor do cabelo, para a dona escolher (lilás dos retratos estilizados, ou o preto das fotos).
-VARIANTES = {"lilas": ((0.2, 0.06, 0.32), (0.62, 0.36, 0.85))}
+VARIANTES = {}  # a dona escolheu o cabelo preto (2026-11-22); a variante lilás saiu
 
 
 def topo_da_cabeca():
@@ -102,6 +103,20 @@ def main():
         cena.render.filepath = os.path.join(pasta, cena_arquivo)
         bpy.ops.render.render(write_still=True)
         print("RENDER", cena.render.filepath)
+        # Câmera ao lado da imagem: o projetar.py leva os pontos do rosto da imagem de volta para a superfície 3D.
+        import json
+
+        with open(medida + ".camera.json", "w", encoding="utf8") as f:
+            json.dump(
+                {
+                    "matriz": [list(linha) for linha in camera.matrix_world],
+                    "lente": camera.data.lens,
+                    "sensor": camera.data.sensor_width,
+                    "largura": cena.render.resolution_x,
+                    "altura": cena.render.resolution_y,
+                },
+                f,
+            )
         return
 
     fotografar()
