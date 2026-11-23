@@ -21,7 +21,7 @@ Termina com: a página `design/prototipos/personagem-3d/index.html` com os rende
       mais curto), com quedas suaves e sem emenda (D2)
 - [x] 2.3 Cabelo preto até os ombros repartido ao meio, do pacote do MPFB ou em mechas geradas por script (D3)
 - [ ] 2.4 Moletom lilás com capuz e cordões, do pacote do MPFB ou gerado a partir do corpo (D3)
-- [ ] 2.5 Renders de frente, três quartos e perfil, com luz parecida com a da cena, na página do protótipo (D8)
+- [x] 2.5 Renders de frente, três quartos e perfil, com luz parecida com a da cena, na página do protótipo (D8)
 - [ ] 2.6 A dona aprova os renders, ou pede ajustes (cada rodada é mudança de parâmetro e renders novos)
 
 ## 3. Arquivo do modelo
