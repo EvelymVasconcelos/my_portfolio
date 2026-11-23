@@ -30,9 +30,9 @@ Termina com: o `.glb` em `public/models/` dentro do orçamento, aberto numa pág
 
 - [ ] 3.1 Reduzir o esqueleto aos ossos da cena (cabeça, braços, mãos, dedos, pálpebras ou forma de olho fechado) e fundir
       o resto ao osso pai (D4)
-- [ ] 3.2 Exportar o glTF binário com as texturas e comprimir com o glTF-Transform (meshopt e WebP, versão fixada), com o
+- [x] 3.2 Exportar o glTF binário com as texturas e comprimir com o glTF-Transform (meshopt e WebP, versão fixada), com o
       nome trocando a cada versão (D6, D7)
-- [ ] 3.3 Conferir as metas: até 40 mil triângulos, texturas de até 1024 px (pele até 2048, se fizer diferença) e até 1,5 MB
+- [x] 3.3 Conferir as metas: até 40 mil triângulos, texturas de até 1024 px (pele até 2048, se fizer diferença) e até 1,5 MB
 - [ ] 3.4 Rodar a geração duas vezes e conferir que a contagem de vértices é a mesma e o tamanho difere menos de 1% (spec:
       modelo reproduzível)
 
@@ -70,7 +70,14 @@ Termina com: a cena no navegador local com a personagem nova digitando, piscando
 >   do tronco e não marca o corpo; os cordões descem por cima do tecido;
 > - enquadramento final (2026-11-23, decisão da dona): a cena inteira, com a câmera de volta ao ângulo original, e a
 >   tampa do notebook em pé, cobrindo o peito e os braços; acima dela aparecem só a cabeça, o capuz e o alto dos ombros;
-> - falta: sorriso (2.6), o carregamento em paralelo do modelo (4.2) e o resto do bloco 5.
+> - compressão (3.2 e 3.3): `npm run personagem:comprimir` (glTF-Transform 4.5.1: dedup, prune mantendo o
+>   `centro_cabeca`, texturas de até 1024 px em WebP e meshopt) leva o modelo de 2,60 MB a 0,64 MB (427 kB com gzip); a
+>   cena usa o `MeshoptDecoder` e passa a 154,9 kB gzip. A expressão fica neutra (decisão da dona); o esqueleto não foi
+>   reduzido (3.1), porque o arquivo já está dentro da meta;
+> - testes: 114 de unidade e 72 de navegador passando; os testes de estrutura e contato foram atualizados para as
+>   Recomendações e o "Agendar call", os de movimento esperam o `data-motion="ready"` e as capturas visuais foram
+>   refeitas;
+> - falta: o carregamento em paralelo do modelo (4.2) e o resto do bloco 5.
 
 ## 5. Desempenho e fechamento
 

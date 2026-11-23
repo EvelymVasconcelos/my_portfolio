@@ -1,4 +1,4 @@
-"""Exporta a personagem para o site: public/models/evelym.glb (roda no Blender, sobre o evelym.blend já projetado).
+"""Exporta a personagem: .cache/personagem/evelym-bruto.glb (comprimido depois por `npm run personagem:comprimir`) (roda no Blender, sobre o evelym.blend já projetado).
 
 Passos:
 1. braços na pose de digitar (cinemática inversa até o teclado), aplicada como pose de descanso: no site, só dedos,
@@ -18,7 +18,8 @@ import bpy
 from mathutils import Vector
 
 RAIZ = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-SAIDA = os.environ.get("PERSONAGEM_GLB", os.path.join(RAIZ, "public", "models", "evelym.glb"))
+# Arquivo bruto: o `npm run personagem:comprimir` gera, a partir dele, o public/models/evelym.glb do site.
+SAIDA = os.environ.get("PERSONAGEM_GLB", os.path.join(RAIZ, ".cache", "personagem", "evelym-bruto.glb"))
 
 EXPORTAR = {
     # Mãos no teclado: em relação ao centro da cabeça, em metros (x para o lado, y para a frente é negativo, z para cima).

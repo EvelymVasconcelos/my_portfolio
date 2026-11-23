@@ -18,7 +18,8 @@
     "personagem:instalar": "flatpak run org.blender.Blender -b --python \"$PWD/scripts/personagem/instalar_pacote.py\" --",
     "personagem": ".cache/personagem/venv/bin/python scripts/personagem/projetar_rosto.py",
     "personagem:render": "flatpak run org.blender.Blender -b \"$PWD/.cache/personagem/evelym.blend\" --python \"$PWD/scripts/personagem/render.py\"",
-    "personagem:exportar": "cp .cache/personagem/evelym.blend .cache/personagem/evelym-exportar.blend && flatpak run org.blender.Blender -b \"$PWD/.cache/personagem/evelym-exportar.blend\" --python \"$PWD/scripts/personagem/exportar.py\""
+    "personagem:exportar": "cp .cache/personagem/evelym.blend .cache/personagem/evelym-exportar.blend && flatpak run org.blender.Blender -b \"$PWD/.cache/personagem/evelym-exportar.blend\" --python \"$PWD/scripts/personagem/exportar.py\"",
+    "personagem:comprimir": "npx -y @gltf-transform/cli@4.5.1 dedup .cache/personagem/evelym-bruto.glb .cache/personagem/c1.glb && npx -y @gltf-transform/cli@4.5.1 prune .cache/personagem/c1.glb .cache/personagem/c2.glb --keep-leaves && npx -y @gltf-transform/cli@4.5.1 resize .cache/personagem/c2.glb .cache/personagem/c3.glb --width 1024 --height 1024 && npx -y @gltf-transform/cli@4.5.1 webp .cache/personagem/c3.glb .cache/personagem/c4.glb --quality 85 && npx -y @gltf-transform/cli@4.5.1 meshopt .cache/personagem/c4.glb public/models/evelym.glb"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",

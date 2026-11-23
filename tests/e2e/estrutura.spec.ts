@@ -6,7 +6,15 @@ import { LOCALES } from "./helpers";
  * referência, com a Pesquisa a mais, container da referência, página legível sem JavaScript e tudo pelo teclado.
  */
 
-const SECTIONS = ["hero", "about", "projects", "experience", "research", "contact"];
+const SECTIONS = [
+  "hero",
+  "about",
+  "projects",
+  "experience",
+  "research",
+  "recommendations",
+  "contact",
+];
 
 for (const locale of LOCALES) {
   test(`/${locale}: seções na ordem, títulos ligados e links da barra com destino`, async ({
@@ -48,12 +56,14 @@ test("container da referência: 1312 px em 1440, sem rolagem lateral em 390", as
   expect(overflow).toBe(0);
 });
 
-test('sem link de agenda, "Agendar call" não aparece e o formulário já vem aberto', async ({
+test('sem link de agenda, "Agendar call" abre um e-mail com assunto e o formulário vem fechado', async ({
   page,
 }) => {
+  // Decisão da dona (2026-11-20): o botão aparece desde já; sem agenda, ele leva a um e-mail, nunca a um link morto.
   await page.goto("/pt");
-  await expect(page.getByText("Agendar call")).toHaveCount(0);
-  await expect(page.locator("#contact details")).toHaveAttribute("open", "");
+  const agenda = page.locator("#contact a", { hasText: "Agendar call" });
+  await expect(agenda).toHaveAttribute("href", /^mailto:.+\?subject=Agendar%20uma%20call$/);
+  await expect(page.locator("#contact details")).not.toHaveAttribute("open", "");
 });
 
 test.describe("sem JavaScript", () => {
@@ -77,9 +87,9 @@ test.describe("sem JavaScript", () => {
     const summary = page.locator("#contact summary");
     await summary.focus();
     await page.keyboard.press("Enter");
-    await expect(details).not.toHaveAttribute("open", "");
-    await page.keyboard.press("Enter");
     await expect(details).toHaveAttribute("open", "");
+    await page.keyboard.press("Enter");
+    await expect(details).not.toHaveAttribute("open", "");
   });
 });
 
@@ -134,8 +144,6 @@ test.describe("só com teclado", () => {
     await page.waitForLoadState("networkidle");
     const summary = page.locator("#contact summary");
     await summary.focus();
-    await page.keyboard.press("Enter");
-    await expect(page.locator("#contact details")).not.toHaveAttribute("open", "");
     await page.keyboard.press("Enter");
     await expect(page.locator("#contact details")).toHaveAttribute("open", "");
     await page.keyboard.press("Tab");

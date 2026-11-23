@@ -8,6 +8,8 @@ import { expect, test, type Page } from "@playwright/test";
 async function openForm(page: Page, locale: string) {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(`/${locale}`);
+  // O formulário fica dentro de "Prefere escrever por aqui?", fechado de início.
+  await page.locator("#contact summary").click();
   const form = page.locator("#contact form");
   await form.scrollIntoViewIfNeeded();
   return form;

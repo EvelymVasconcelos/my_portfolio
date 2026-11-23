@@ -53,6 +53,7 @@ import {
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { SIGNATURE } from "@/lib/brand/signature-data";
 
 export type SceneTheme = "light" | "dark";
@@ -585,7 +586,8 @@ export async function createHeroScene(
 
   /* ── Personagem: modelo 3D gerado no Blender por scripts/personagem/ (rosto do retrato da Evelym, cabelo, moletom) ── */
   const Z = -0.95;
-  const gltf = await new GLTFLoader().loadAsync(MODEL_URL);
+  // Modelo comprimido com meshopt (npm run personagem:comprimir): o decodificador tem cerca de 6 kB e roda em JavaScript.
+  const gltf = await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync(MODEL_URL);
   const evelym = gltf.scene;
   evelym.scale.setScalar(MODEL_SCALE);
   root.add(evelym);

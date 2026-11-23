@@ -25,6 +25,9 @@ test.describe("movimento reduzido", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/pt");
     await page.waitForLoadState("networkidle");
+    // O layout com movimento só vale depois desta marca; com a cena 3D carregando junto, ela pode chegar depois do
+    // "networkidle".
+    await page.waitForSelector('html[data-motion="ready"]', { state: "attached" });
     await scrollThrough(page);
 
     const state = await page.evaluate(() => {
@@ -74,6 +77,9 @@ test.describe("com movimento", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/pt");
     await page.waitForLoadState("networkidle");
+    // O layout com movimento só vale depois desta marca; com a cena 3D carregando junto, ela pode chegar depois do
+    // "networkidle".
+    await page.waitForSelector('html[data-motion="ready"]', { state: "attached" });
 
     const { top, height } = await page.evaluate(() => {
       const seq = document.querySelector<HTMLElement>(".seq")!;
@@ -124,6 +130,9 @@ test.describe("só com teclado", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/pt");
     await page.waitForLoadState("networkidle");
+    // O layout com movimento só vale depois desta marca; com a cena 3D carregando junto, ela pode chegar depois do
+    // "networkidle".
+    await page.waitForSelector('html[data-motion="ready"]', { state: "attached" });
     // A sequência não tem nada focável; o próximo Tab depois do último link antes dela já está em Projetos.
     await page.locator("#about-title").focus();
     let reached = false;
@@ -140,6 +149,9 @@ test.describe("só com teclado", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/pt");
     await page.waitForLoadState("networkidle");
+    // O layout com movimento só vale depois desta marca; com a cena 3D carregando junto, ela pode chegar depois do
+    // "networkidle".
+    await page.waitForSelector('html[data-motion="ready"]', { state: "attached" });
     const doi = page.locator("#research .paper a").first();
     await doi.focus();
     await expect(doi).toBeInViewport();

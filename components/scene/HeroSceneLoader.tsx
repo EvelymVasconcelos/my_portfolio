@@ -86,7 +86,9 @@ export function HeroSceneLoader({ labels }: { labels: SceneLabels }) {
         });
         window.addEventListener("scroll", onScroll, { passive: true });
         onScroll();
-      } catch {
+      } catch (error) {
+        // em desenvolvimento, o motivo aparece no console; em produção, a imagem estática fica no lugar em silêncio
+        if (process.env.NODE_ENV !== "production") console.error("[cena 3D]", error);
         if (!cancelled) setState("poster");
       }
     }
