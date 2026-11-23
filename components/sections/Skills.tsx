@@ -17,7 +17,7 @@ function TechIcon({ id }: { id: string }) {
 }
 
 /**
- * Competências, de servidor, como na referência: cabeçalho com a legenda do E2E-CIFlow e seis cartões com os
+ * Competências, de servidor, como na referência: cabeçalho e seis cartões com os
  * logotipos (public/icons/tech.svg). O logotipo ganha a cor da marca no hover (`--cl`/`--cd`).
  */
 export async function Skills() {
@@ -26,15 +26,9 @@ export async function Skills() {
 
   return (
     <div className="mt-20 lg:mt-28">
-      <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
-        <div>
-          <p className="type-eyebrow">{t("skills_title")}</p>
-          <h3 className="mt-3 max-w-[18ch] type-title text-text">{t("skills_heading")}</h3>
-        </div>
-        <p className="flex items-center gap-2.5 text-text-2">
-          <span aria-hidden="true" className="tech-cr" />
-          {t("skills_legend")}
-        </p>
+      <div>
+        <p className="type-eyebrow">{t("skills_title")}</p>
+        <h3 className="mt-3 max-w-[18ch] type-title text-text">{t("skills_heading")}</h3>
       </div>
 
       <div id="tech-grid" data-reveal="children" className="tech-grid mt-10">
@@ -63,11 +57,6 @@ export async function Skills() {
                     <li key={item.id} className="tech-chip" style={style}>
                       <TechIcon id={item.icon} />
                       <span>{items[item.id]}</span>
-                      {"e2e" in item && item.e2e ? (
-                        <span className="tech-cr">
-                          <span className="sr-only"> ({t("skills_e2e_sr")})</span>
-                        </span>
-                      ) : null}
                     </li>
                   );
                 })}

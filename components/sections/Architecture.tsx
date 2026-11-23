@@ -57,7 +57,7 @@ export async function Architecture() {
               {d("api")}
             </text>
             <text className="sub" x="200" y="80">
-              FastAPI · Django
+              FastAPI
             </text>
           </g>
           <path className="lnk" pathLength={1} style={from(0.15)} d="M128 66H186" />
@@ -93,8 +93,8 @@ export async function Architecture() {
           <g className="n" style={from(2.3)}>
             <path className="shape" d="M420 214a54 12 0 0 1 108 0v52a54 12 0 0 1-108 0Z" />
             <path className="shape" d="M420 214a54 12 0 0 0 108 0" style={{ fill: "none" }} />
-            <text x="436" y="252">
-              PostgreSQL
+            <text x="440" y="252">
+              MongoDB
             </text>
           </g>
           <g className="n" style={from(2.5)}>

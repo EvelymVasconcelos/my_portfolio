@@ -16,7 +16,7 @@ export interface Publication {
 
 /** Da mais recente para a mais antiga. */
 export const PUBLICATIONS: readonly Publication[] = [
-  // Publicado na ACM Digital Library (dona, 2026-11-19); o DOI entra quando ela enviar.
+  // Aceito; publicação prevista para 2027 na ACM Digital Library (dona, 2026-11-23). O DOI entra quando sair.
   {
     id: "icsca-2026",
     year: 2026,

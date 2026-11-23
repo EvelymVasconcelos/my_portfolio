@@ -4,20 +4,18 @@
  *
  * Ícones: `si-<slug>` vem do Simple Icons (logotipo da marca, CC0) e `lu-<nome>` do lucide, quando não há logotipo.
  * Os dois vivem em public/icons/tech.svg, gerado por scripts/tech-icons/build.mjs a partir desta lista.
- * `e2e`: usado no E2E-CIFlow, o projeto em destaque (marcado com um ponto e explicado na legenda).
  */
 
 export interface Skill {
   id: string;
   icon: string;
-  e2e?: boolean;
 }
 
 export const SKILL_GROUPS = [
   {
     id: "languages",
     items: [
-      { id: "python", icon: "si-python", e2e: true },
+      { id: "python", icon: "si-python" },
       { id: "fastapi", icon: "si-fastapi" },
       { id: "django", icon: "si-django" },
       { id: "flask", icon: "si-flask" },
@@ -47,7 +45,7 @@ export const SKILL_GROUPS = [
   {
     id: "infra",
     items: [
-      { id: "docker", icon: "si-docker", e2e: true },
+      { id: "docker", icon: "si-docker" },
       { id: "kubernetes", icon: "si-kubernetes" },
       { id: "aws", icon: "lu-cloud" },
       { id: "linux", icon: "si-linux" },
@@ -63,15 +61,15 @@ export const SKILL_GROUPS = [
       { id: "bdd", icon: "lu-list-checks" },
       { id: "clean_code", icon: "lu-code" },
       { id: "code_review", icon: "lu-git-pull-request" },
-      { id: "playwright", icon: "lu-drama", e2e: true },
+      { id: "playwright", icon: "lu-drama" },
     ],
   },
   {
     id: "delivery",
     items: [
-      { id: "github_actions", icon: "si-githubactions", e2e: true },
-      { id: "cicd", icon: "lu-infinity", e2e: true },
-      { id: "e2e_tests", icon: "lu-monitor-play", e2e: true },
+      { id: "github_actions", icon: "si-githubactions" },
+      { id: "cicd", icon: "lu-infinity" },
+      { id: "e2e_tests", icon: "lu-monitor-play" },
       { id: "agile", icon: "lu-kanban" },
     ],
   },

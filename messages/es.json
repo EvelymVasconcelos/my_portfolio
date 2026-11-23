@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Evelym Marinho · Ingeniera de software backend",
-    "description": "Portafolio de Evelym Marinho, ingeniera de software backend con más de 6 años de experiencia en Python, FastAPI, Django y microservicios, y autora de trabajos de investigación publicados en IEEE y ACM."
+    "description": "Portafolio de Evelym Marinho, ingeniera de software backend con más de 6 años de experiencia en Python, FastAPI, Django y microservicios, y autora de artículos científicos en IEEE y ACM."
   },
   "nav": {
     "about": "Acerca de",
@@ -44,7 +44,7 @@
     "title": "Ingeniera de software backend, investigadora y programadora en Python desde hace más de 6 años.",
     "lead": "Soy licenciada en Sistemas de Información por la UFAM y desarrollo backend en el ecosistema de Python: API RESTful con FastAPI y Django, en microservicios con Docker y Kubernetes, integrando PostgreSQL y bases de datos NoSQL.",
     "bio_1": "Actualmente soy ingeniera de software backend en Sidia, donde dirijo el desarrollo de API REST de alto rendimiento para productos globales. Anteriormente, en Bemol Digital, diseñé procesos ETL y optimicé consultas SQL en sistemas de alta disponibilidad para el sector minorista.",
-    "bio_2": "Aplico el mismo rigor a la investigación: soy autora principal de artículos sobre automatización de pruebas y CI/CD publicados en el IEEE SEAI 2024 y en el ICSCA 2026.",
+    "bio_2": "Aplico el mismo rigor a la investigación: soy autora principal de artículos sobre automatización de pruebas y CI/CD, uno publicado en el IEEE SEAI 2024 y otro aceptado en el ICSCA 2026, con publicación prevista para 2027.",
     "facts": {
       "location_label": "Ubicación",
       "location": "Manaos, Brasil",
@@ -57,8 +57,6 @@
     },
     "skills_title": "Competencias",
     "skills_heading": "De la solicitud al despliegue",
-    "skills_legend": "Usado en E2E-CIFlow",
-    "skills_e2e_sr": "utilizado en E2E-CIFlow",
     "skills": {
       "languages": {
         "label": "Lenguajes y frameworks",
@@ -131,7 +129,7 @@
       "steps": {
         "request": {
           "title": "Solicitud",
-          "text": "API RESTful escalables y de alta disponibilidad, con FastAPI y Django."
+          "text": "API RESTful escalables y de alta disponibilidad, con FastAPI."
         },
         "services": {
           "title": "Servicios",
@@ -139,7 +137,7 @@
         },
         "data": {
           "title": "Datos",
-          "text": "PostgreSQL y MySQL, Redis y MongoDB, y ETL para grandes volúmenes de datos."
+          "text": "MongoDB, MySQL y Redis para grandes volúmenes de datos."
         },
         "tests": {
           "title": "Pruebas",
@@ -151,12 +149,12 @@
         }
       },
       "diagram": {
-        "title": "Diagrama: cliente, API REST, tres servicios, cola, PostgreSQL y Redis, pruebas en cada parte y el conjunto empaquetado en un contenedor y entregado en un clúster de Kubernetes en producción.",
+        "title": "Diagrama: cliente, API REST, tres servicios, cola, MongoDB y Redis, pruebas en cada parte y el conjunto empaquetado en un contenedor y entregado en un clúster de Kubernetes en producción.",
         "client": "Cliente",
         "api": "API REST",
         "service": "servicio",
         "queue": "Cola",
-        "queue_sub": "eventos · ETL",
+        "queue_sub": "eventos",
         "tests": "Pruebas",
         "container": "contenedor Docker",
         "replicas": "réplicas",
@@ -175,7 +173,7 @@
         "title": "E2E-CIFlow",
         "context": "Investigación aplicada · autora principal",
         "description": "Proceso automatizado de pruebas End-to-End dentro del pipeline de CI/CD. Con él, el equipo entrega más rápido, despliega con más frecuencia y detecta los fallos antes.",
-        "did": "Propuse el proceso y lo integré en el pipeline con Playwright y GitHub Actions. Presenté el trabajo en el ICSCA 2026, en Langkawi, y el artículo se publicó en la ACM Digital Library."
+        "did": "Propuse el proceso y lo integré en el pipeline con Playwright y GitHub Actions. Presenté el trabajo en el ICSCA 2026, en Langkawi; el artículo fue aceptado y su publicación está prevista para 2027."
       },
       "sidia-apis": {
         "title": "API REST de alto rendimiento",
@@ -254,7 +252,7 @@
         "summary": "Un proceso práctico y automatizado para pruebas de extremo a extremo integradas en flujos de trabajo de CI/CD, con Playwright y GitHub Actions.",
         "role": "Autora principal",
         "place": "Langkawi, Malasia",
-        "status": "Publicado en la ACM Digital Library"
+        "status": "Aceptado; publicación prevista para 2027 en la ACM Digital Library"
       },
       "seai-2024": {
         "venue": "IEEE SEAI 2024",

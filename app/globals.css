@@ -486,16 +486,6 @@ a:hover > .signature .signature-letter {
   color: var(--c, var(--text));
 }
 
-/* Ponto do E2E-CIFlow, em orquídea (retoque decorativo; o sentido vem do texto para leitor de tela e da legenda). */
-.tech-cr {
-  display: inline-block;
-  width: 0.45rem;
-  height: 0.45rem;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--accent-2);
-}
-
 /* ─── Pesquisa (components/sections/Research.tsx) ─────────────────────────────
    Uma publicação por cartão, com o mesmo peso da Trajetória. A pilha presa à rolagem entra no bloco de movimento. */
 
