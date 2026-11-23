@@ -22,10 +22,11 @@ SAIDA = os.environ.get("PERSONAGEM_GLB", os.path.join(RAIZ, "public", "models", 
 
 EXPORTAR = {
     # Mãos no teclado: em relação ao centro da cabeça, em metros (x para o lado, y para a frente é negativo, z para cima).
-    "mao": Vector((0.12, -0.27, -0.47)),
+    # Mãos na largura dos ombros: mais perto do meio, o braço descia grudado no tronco (2026-11-23).
+    "mao": Vector((0.18, -0.3, -0.46)),
     # Para onde o cotovelo aponta (alvo do polo da cinemática inversa): para fora e um pouco à frente, como quem digita.
     # Com o cotovelo para trás, o braço descia colado ao corpo e sumia atrás do notebook (2026-11-23).
-    "cotovelo": Vector((0.65, -0.02, -0.42)),
+    "cotovelo": Vector((0.9, 0.05, -0.5)),
     "textura_da_pele": 2048,
 }
 
@@ -169,7 +170,8 @@ def cair_como_tecido(obj):
     faixas = {}
     for v, p in zip(obj.data.vertices, mundo):
         braco = sum(g.weight for g in v.groups if g.group in bracos)
-        if braco < 0.2 and p.y < eixo_y and p.z < ombros:
+        # só o meio do peito: puxar a lateral do tronco para a frente fazia uma aba ao lado do braço
+        if braco < 0.2 and p.y < eixo_y and p.z < ombros and abs(p.x) < 0.125:
             faixas.setdefault(round(p.x / 0.012), []).append(v.index)
     inversa = obj.matrix_world.inverted()
     for indices in faixas.values():
@@ -179,7 +181,9 @@ def cair_como_tecido(obj):
             p = mundo[i]
             if mais_a_frente is not None and p.y > mais_a_frente:
                 p = p.copy()
-                p.y = mais_a_frente
+                # some aos poucos na direção das laterais
+                lado = min(1.0, max(0.0, (abs(p.x) - 0.1) / 0.025))
+                p.y = mais_a_frente + (p.y - mais_a_frente) * lado
                 obj.data.vertices[i].co = inversa @ p
             mais_a_frente = p.y if mais_a_frente is None else min(mais_a_frente, p.y)
     obj.data.update()
