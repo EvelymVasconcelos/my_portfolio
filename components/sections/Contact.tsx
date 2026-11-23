@@ -4,7 +4,7 @@ import { SectionHeading } from "@/components/sections/SectionHeading";
 import { buttonVariants } from "@/components/ui/Button";
 import { ContactForm } from "./ContactForm";
 import { CHANNELS, scheduleLink } from "@/lib/contact/channels";
-import { CV_URL } from "@/lib/cv";
+import { CV_DISPONIVEL, CV_URL } from "@/lib/cv";
 import { cn } from "@/lib/utils";
 
 /**
@@ -63,20 +63,22 @@ export async function Contact() {
               })}
             </ul>
 
-            <a
-              href={cvUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonVariants({
-                variant: "secondary",
-                size: "lg",
-                className: "self-start",
-              })}
-            >
-              <Download className="h-4 w-4" aria-hidden />
-              {t("cv")}
-              {newTab}
-            </a>
+            {CV_DISPONIVEL && (
+              <a
+                href={cvUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonVariants({
+                  variant: "secondary",
+                  size: "lg",
+                  className: "self-start",
+                })}
+              >
+                <Download className="h-4 w-4" aria-hidden />
+                {t("cv")}
+                {newTab}
+              </a>
+            )}
           </div>
 
           <div className="flex flex-col gap-5">

@@ -57,3 +57,7 @@ pnpm-lock.yaml
 # Personagem 3D: arquivo do Blender gerado por scripts/personagem/gerar.py (refeito a qualquer momento)
 /.cache/
 __pycache__/
+
+# CVs com dados pessoais (telefone e endereço): ficam só nesta máquina (decisão da dona, 2026-11-23)
+/public/cv*.pdf
+/curriculum/*.pdf

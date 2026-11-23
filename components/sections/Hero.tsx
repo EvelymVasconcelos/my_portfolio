@@ -8,7 +8,7 @@ import { HeroSceneLoader } from "@/components/scene/HeroSceneLoader";
 import { HeroBackdrop } from "@/components/sections/HeroBackdrop";
 import { buttonVariants } from "@/components/ui/Button";
 import { BUILT_AT } from "@/lib/content/career";
-import { CV_URL } from "@/lib/cv";
+import { CV_DISPONIVEL, CV_URL } from "@/lib/cv";
 
 /** Estrelinhas de quatro pontas perto do nome ("detalhes delicados" do protótipo): posição, tamanho e atraso. */
 const SPARKLES = [
@@ -87,16 +87,18 @@ export async function Hero() {
               <ArrowRight className="h-4 w-4" aria-hidden />
               {t("cta_projects")}
             </a>
-            <a
-              href={cvUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonVariants({ variant: "secondary", size: "lg" })}
-            >
-              <Download className="h-4 w-4" aria-hidden />
-              {t("cta_cv")}
-              <span className="sr-only"> ({tA11y("open_link_new_tab")})</span>
-            </a>
+            {CV_DISPONIVEL && (
+              <a
+                href={cvUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonVariants({ variant: "secondary", size: "lg" })}
+              >
+                <Download className="h-4 w-4" aria-hidden />
+                {t("cta_cv")}
+                <span className="sr-only"> ({tA11y("open_link_new_tab")})</span>
+              </a>
+            )}
           </div>
         </div>
 

@@ -7,7 +7,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { buttonVariants } from "@/components/ui/Button";
 import { scheduleLink } from "@/lib/contact/channels";
-import { CV_URL } from "@/lib/cv";
+import { CV_DISPONIVEL, CV_URL } from "@/lib/cv";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 
@@ -102,18 +102,20 @@ export function Navbar({ logo }: { logo: ReactNode }) {
             {t("schedule")}
             {schedule.external && newTab}
           </a>
-          <a
-            href={cvUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              buttonVariants({ variant: "secondary", size: "sm" }),
-              "hidden nav:inline-flex"
-            )}
-          >
-            {t("download_cv")}
-            {newTab}
-          </a>
+          {CV_DISPONIVEL && (
+            <a
+              href={cvUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                buttonVariants({ variant: "secondary", size: "sm" }),
+                "hidden nav:inline-flex"
+              )}
+            >
+              {t("download_cv")}
+              {newTab}
+            </a>
+          )}
           <button
             ref={buttonRef}
             type="button"
@@ -166,15 +168,17 @@ export function Navbar({ logo }: { logo: ReactNode }) {
                 {t("schedule")}
                 {schedule.external && newTab}
               </a>
-              <a
-                href={cvUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={buttonVariants({ variant: "secondary", size: "sm" })}
-              >
-                {t("download_cv")}
-                {newTab}
-              </a>
+              {CV_DISPONIVEL && (
+                <a
+                  href={cvUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonVariants({ variant: "secondary", size: "sm" })}
+                >
+                  {t("download_cv")}
+                  {newTab}
+                </a>
+              )}
             </div>
           </div>
         </div>
