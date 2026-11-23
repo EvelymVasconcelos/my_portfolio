@@ -247,6 +247,45 @@ def cordoes_sobre_o_moletom():
             cordoes.data.vertices[i].co = inversa @ Vector((p.x, p.y + (frente - eixo_y), p.z))
 
 
+def cabelo_sobre_o_capuz():
+    """As pontas do cabelo apoiam por cima da gola do capuz e do moletom, em vez de atravessá-los (as mechas que passavam
+    por dentro da gola apareciam como pontinhos soltos sobre o tecido, 2026-11-23). Para cada vértice do cabelo, um raio
+    vem de fora, na horizontal, em direção ao eixo do pescoço; se o vértice estiver por dentro do primeiro tecido que o
+    raio encontra, ele vai para 4 mm por fora dele."""
+    from mathutils.bvhtree import BVHTree
+
+    armadura = next(o for o in bpy.data.objects if o.type == "ARMATURE")
+    eixo = armadura.matrix_world @ armadura.data.bones["neck_01"].head_local
+    verts, faces = [], []
+    for nome in ("evelym.capuz", "evelym.moletom"):
+        o = bpy.data.objects[nome]
+        base = len(verts)
+        verts += [o.matrix_world @ v.co for v in o.data.vertices]
+        faces += [[base + i for i in p.vertices] for p in o.data.polygons]
+    bvh = BVHTree.FromPolygons(verts, faces)
+    cabelo = bpy.data.objects["evelym.cabelo"]
+    inversa = cabelo.matrix_world.inverted()
+    folga = 0.006
+    movidos = set()
+    # Duas passadas: perto do tecido (ou por dentro dele), a ponta vai para fora a partir do ponto mais próximo, na
+    # direção da superfície. O empurrão só na horizontal deixava as mechas rentes ao alto dos ombros, inclinado.
+    for _ in range(2):
+        for v in cabelo.data.vertices:
+            p = cabelo.matrix_world @ v.co
+            if p.z > eixo.z + 0.03:
+                continue
+            perto, normal, _f, _d = bvh.find_nearest(p, 0.05)
+            if perto is None:
+                continue
+            fora = Vector((perto.x - eixo.x, perto.y - eixo.y, 0))
+            if normal.dot(fora) < 0:
+                normal = -normal  # a normal aponta para longe do pescoço
+            if (p - perto).dot(normal) < folga:
+                v.co = inversa @ (perto + normal * folga)
+                movidos.add(v.index)
+    print(f"CABELO sobre o capuz: {len(movidos)} vértices empurrados para fora")
+
+
 def forma_de_piscar():
     """Forma "piscar" nas pálpebras: a de cima desce até encontrar a de baixo, cobrindo o olho. Os cílios de cima descem
     junto. No site, a cena liga e desliga essa forma (morph target)."""
@@ -364,6 +403,7 @@ def main():
     moletom(material_da_roupa)
     bpy.data.objects.remove(roupa, do_unlink=True)
     cordoes_sobre_o_moletom()
+    cabelo_sobre_o_capuz()
     assar_pele()
     forma_de_piscar()
     ponto_da_cabeca(armadura)

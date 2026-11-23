@@ -596,47 +596,57 @@ export async function createHeroScene(
   evelym.position.add(
     new Vector3(0, 1.0, Z + 0.06).sub(root.worldToLocal(centro.getWorldPosition(new Vector3())))
   );
-  // Cabelo: cor quase preta, brilho de fio na direção das mechas (anisotropia) e transparência desenhada aqui, com pontas
-  // desfiadas de comprimentos diferentes. No modelo, a raiz de cada mecha fica no alto da textura e a ponta embaixo.
+  // Cabelo: cor quase preta, brilho de fio na direção das mechas (anisotropia) e transparência desenhada aqui. No modelo,
+  // a raiz de cada mecha fica no alto da textura e a ponta embaixo. As pontas são tufos que afinam de forma suave (colunas
+  // de 1 pixel, cada uma terminando numa altura, viravam pontinhos espetados de longe, 2026-11-23).
   const hairAlpha = tex(256, 512, (g, w, h) => {
     g.fillStyle = "#000";
     g.fillRect(0, 0, w, h);
-    for (let x = 0; x < w; x++) {
-      const fim = (rnd() < 0.05 ? 0.7 + rnd() * 0.2 : 0.88 + rnd() * 0.12) * h;
-      const fade = g.createLinearGradient(0, fim - 0.07 * h, 0, fim);
-      fade.addColorStop(0, "#fff");
-      fade.addColorStop(1, "rgba(255,255,255,0)");
-      g.fillStyle = "#fff";
-      g.fillRect(x, 0, 1, fim - 0.07 * h);
-      g.fillStyle = fade;
-      g.fillRect(x, fim - 0.07 * h, 1, 0.07 * h);
+    // Tufos largos, de borda nítida e sem degradê: com degradê, a ponta se desfazia em pontinhos sobre o capuz.
+    g.fillStyle = "#fff";
+    let x = 0;
+    while (x < w) {
+      const largura = 14 + Math.floor(rnd() * 18);
+      const ponta = (0.86 + rnd() * 0.12) * h; // onde o tufo termina
+      const bico = (0.03 + rnd() * 0.04) * h; // quanto o tufo afina até a ponta
+      g.beginPath();
+      g.moveTo(x, 0);
+      g.lineTo(x + largura, 0);
+      g.lineTo(x + largura, ponta - bico);
+      g.quadraticCurveTo(x + largura, ponta, x + largura / 2, ponta);
+      g.quadraticCurveTo(x, ponta, x, ponta - bico);
+      g.closePath();
+      g.fill();
+      x += largura;
     }
   });
-  // fios de tons diferentes, que quebram a superfície lisa do alto da cabeça
+  // fios de tons diferentes, em faixas de alguns pixels, que quebram a superfície lisa do alto da cabeça
   const hairStreaks = tex(256, 64, (g, w, h) => {
-    for (let x = 0; x < w; x++) {
-      const v = Math.round(120 + rnd() * 135);
+    for (let x = 0; x < w;) {
+      const largura = 2 + Math.floor(rnd() * 4);
+      const v = Math.round(150 + rnd() * 85);
       g.fillStyle = `rgb(${v},${v},${v})`;
-      g.fillRect(x, 0, 1, h);
+      g.fillRect(x, 0, largura, h);
+      x += largura;
     }
   });
   hairStreaks.colorSpace = SRGBColorSpace;
   const mModelHair = P({
     color: 0x1a1412,
     map: hairStreaks,
-    roughness: 0.38,
-    // faixa de brilho clara ao longo das mechas, como em cabelo preto liso
-    specularIntensity: 0.8,
+    roughness: 0.42,
+    // faixa de brilho clara ao longo das mechas, como em cabelo preto liso (mais baixa: a luz de recorte roxa pintava o
+    // alto da cabeça)
+    specularIntensity: 0.55,
     specularColor: 0xfff4ee,
     sheen: 0.3,
     sheenColor: 0x3a302c,
     sheenRoughness: 0.5,
-    anisotropy: 0.65,
+    anisotropy: 0.5,
     anisotropyRotation: PI / 2,
     alphaMap: hairAlpha,
-    // recorte suave nas pontas (com o antialias da cena), em vez de pontinhos soltos
-    alphaToCoverage: true,
-    alphaTest: 0.15,
+    // recorte comum: o recorte suave (alpha to coverage) deixava pontinhos soltos onde a ponta fica mais fina que um pixel
+    alphaTest: 0.5,
     side: DoubleSide,
     envMapIntensity: 0.45,
   });
@@ -662,6 +672,8 @@ export async function createHeroScene(
       mat.dispose();
     } else if (mat.name === "evelym.cabelo") {
       m.material = mModelHair;
+      // sem sombra própria: no mapa de sombra (1024 px), as mechas recortadas viravam pontinhos escuros no capuz
+      m.castShadow = false;
       mat.map?.dispose();
       mat.dispose();
     } else if (mat.name === "evelym.eyelashes02") {

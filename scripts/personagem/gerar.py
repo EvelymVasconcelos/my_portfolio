@@ -48,7 +48,7 @@ ROSTO = [
     {"target": "nose-flaring-incr", "value": 0.15},
     {"target": "mouth-cupidsbow-incr", "value": 0.8},
     {"target": "mouth-upperlip-middle-up", "value": 0.3},
-    {"target": "mouth-angles-up", "value": 0.15},
+    {"target": "mouth-angles-up", "value": 0.15},  # sem sorriso: a dona preferiu a expressão neutra (2026-11-23)
     {"target": "neck-scale-horiz-decr", "value": 0.2},
 ]
 

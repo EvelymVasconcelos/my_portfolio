@@ -22,7 +22,7 @@ from mathutils import Matrix, Vector
 from mathutils.bvhtree import BVHTree
 
 CABELO = {
-    "comprimento": 0.255,  # metros abaixo do topo da cabeça: pontas nos ombros
+    "comprimento": 0.255,  # metros abaixo do topo da cabeça: pontas nos ombros (a dona preferiu essa altura)
     "franja_ate": 0.17,  # a franja cortina termina na altura das maçãs do rosto
     "risca_x": 0.009,  # meia abertura da risca no meio: o couro cabeludo aparece numa linha fina
     "volume_alto": 0.009,  # quanto o cabelo do alto da cabeça se afasta dela (sem isso, parecia uma touca)
@@ -34,8 +34,8 @@ CABELO = {
     # Naturalidade (2026-11-23, a dona achou o cabelo liso e duro demais): ondulação leve ao longo da mecha, balanço de
     # cada mecha para os lados e pontas que viram para dentro ou para fora ao acaso.
     "onda": 0.0035,  # amplitude da ondulação, em metros
-    "balanco": 0.012,  # desvio lateral máximo na ponta, em metros
-    "ponta": 0.012,  # quanto a ponta vira, em metros
+    "balanco": 0.007,  # desvio lateral máximo na ponta, em metros
+    "ponta": 0.007,  # quanto a ponta vira, em metros
     "repicado": 0.035,  # variação de comprimento entre mechas, em metros
     "cor": (0.012, 0.009, 0.008),
     "brilho": (0.07, 0.05, 0.045),
@@ -206,7 +206,7 @@ def gerar(corpo, armadura):
             direcao = (pontos[min(k + 1, n - 1)] - pontos[max(k - 1, 0)]).normalized()
             normal = (p - centro).normalized()
             lado_v = direcao.cross(normal).normalized()
-            w = CABELO["largura"] * (1 - 0.35 * t)
+            w = CABELO["largura"] * (1 - 0.25 * t**2)  # afina pouco: ponta fina como agulha virava pontinhos de longe
             a = bm.verts.new(p - lado_v * w / 2)
             b = bm.verts.new(p + lado_v * w / 2)
             if anterior:
