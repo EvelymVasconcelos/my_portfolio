@@ -80,10 +80,11 @@ Termina com: a cena no navegador local com a personagem nova digitando, piscando
 > - sorriso animado (2026-11-23, ideia da dona): forma "sorriso" no corpo (cantos da boca, largura da boca e maçãs do
 >   rosto); ela fica séria e sorri de leve quando o selo vira "Em produção" (16 s), voltando a ficar séria antes do quadro
 >   do pôster (20 s), que segue neutro;
-> - gole de café (2026-11-23, ideia da dona): depois do deploy e do sorriso, o braço esquerdo pega a caneca (18 s), leva
->   à boca girando a alça para fora, ela bebe inclinando a cabeça (20 a 21,3 s), devolve (22,2 s) e volta ao teclado
->   (23,2 s), por cinemática inversa de dois ossos no código; o vapor some enquanto a caneca está na mão; o quadro do
->   pôster passou a 23,6 s (de volta ao teclado, séria);
+> - gole de café (2026-11-23, ideia da dona): depois do deploy e do sorriso, a mão esquerda segue uma curva contínua do
+>   teclado até a caneca (pega pelo corpo, pelo lado de fora, sem girar: o nome fica de frente) e dela até a boca (18 a
+>   19,9 s); ela bebe inclinando a cabeça (19,9 a 21,1 s) e volta pelo mesmo caminho (até 23 s). O braço segue a mão por
+>   cinemática inversa de dois ossos, com o cotovelo descendo na subida; o vapor some enquanto a caneca está na mão; o
+>   quadro do pôster passou a 23,6 s (de volta ao teclado, séria);
 > - falta: o carregamento em paralelo do modelo (4.2) e o resto do bloco 5.
 
 ## 5. Desempenho e fechamento
