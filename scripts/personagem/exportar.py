@@ -158,6 +158,33 @@ def coberto(o, v):
     )
 
 
+def cair_como_tecido(obj):
+    """Na frente do tronco, o tecido cai reto a partir do ponto mais saliente acima dele: não volta para dentro abaixo do
+    busto (moletom não marca o corpo). Só no tronco, de frente, abaixo dos ombros; as mangas ficam como estão."""
+    armadura = next(o for o in bpy.data.objects if o.type == "ARMATURE")
+    ombros = centro_da_cabeca(armadura).z - 0.2
+    bracos = {g.index for g in obj.vertex_groups if g.name.startswith(("upperarm_", "lowerarm_"))}
+    mundo = [obj.matrix_world @ v.co for v in obj.data.vertices]
+    eixo_y = sum(p.y for p in mundo) / len(mundo)
+    faixas = {}
+    for v, p in zip(obj.data.vertices, mundo):
+        braco = sum(g.weight for g in v.groups if g.group in bracos)
+        if braco < 0.2 and p.y < eixo_y and p.z < ombros:
+            faixas.setdefault(round(p.x / 0.012), []).append(v.index)
+    inversa = obj.matrix_world.inverted()
+    for indices in faixas.values():
+        indices.sort(key=lambda i: -mundo[i].z)  # de cima para baixo
+        mais_a_frente = None
+        for i in indices:
+            p = mundo[i]
+            if mais_a_frente is not None and p.y > mais_a_frente:
+                p = p.copy()
+                p.y = mais_a_frente
+                obj.data.vertices[i].co = inversa @ p
+            mais_a_frente = p.y if mais_a_frente is None else min(mais_a_frente, p.y)
+    obj.data.update()
+
+
 def moletom(material):
     """O moletom numa peça só: tronco até o quadril e mangas até o punho, na mesma folga. Duas peças com folgas diferentes
     deixavam dobras e manchas na emenda do ombro (2026-11-23). A blusa curta do pacote sai.
@@ -165,6 +192,7 @@ def moletom(material):
     Generoso no pescoço: a pele do alto do peito e do ombro também é puxada pelo osso do pescoço, e excluí-la abria
     buracos. O moletom sobe até a base do pescoço, por baixo da gola do capuz."""
     copiar_pele("evelym.moletom", material, coberto, 0.015, suavizar=10, folga_dos_bracos=0.008)
+    cair_como_tecido(bpy.data.objects["evelym.moletom"])
 
     # A pele que ficou inteira por baixo do moletom sai (como fazia a máscara da blusa): assim ela nunca atravessa o
     # tecido, e o modelo fica mais leve. Fica uma borda de pele perto das aberturas (punho e gola).

@@ -65,6 +65,9 @@ Termina com: a cena no navegador local com a personagem nova digitando, piscando
 >   ondulação e pontas irregulares, faces viradas para fora e material próprio na cena (preto com fios de tons
 >   variados, brilho discreto e pontas desfiadas), piscada (forma "piscar" nas pálpebras e nos cílios) e respiração;
 > - modelo agora com 2,77 MB e 53.734 triângulos: a compressão e o enxugamento do bloco 3 precisam trazê-lo à meta;
+> - braços (2026-11-23, decisão da dona): a tampa do notebook escondia antebraços e mãos, e os braços pareciam tocos. A
+>   tampa abriu mais (cerca de 125°), a câmera subiu (1,55 → 2,3) e os cotovelos abriram; o moletom cai reto na frente
+>   do tronco e não marca o corpo; os cordões descem por cima do tecido;
 > - falta: sorriso (2.6), o carregamento em paralelo do modelo (4.2) e o resto do bloco 5.
 
 ## 5. Desempenho e fechamento
