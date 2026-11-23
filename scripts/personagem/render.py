@@ -89,6 +89,21 @@ def main():
             bpy.ops.render.render(write_still=True)
             print("RENDER", cena.render.filepath)
 
+    medida = os.environ.get("PERSONAGEM_MEDIDA")
+    if medida:
+        # Modo de medição (scripts/personagem/ajustar_rosto.py): só o rosto, de frente, sem as variantes.
+        VISTAS.clear()
+        VISTAS["medida"] = (0, 0.55, 0.115)
+        cena.render.image_settings.file_format = "PNG"
+        pasta, cena_arquivo = os.path.dirname(medida), os.path.basename(medida)
+        mira = Vector((0, 0, topo - 0.115))
+        camera.location = mira + Vector((0, -0.55, 0.0))
+        camera.rotation_euler = (mira - camera.location).to_track_quat("-Z", "Y").to_euler()
+        cena.render.filepath = os.path.join(pasta, cena_arquivo)
+        bpy.ops.render.render(write_still=True)
+        print("RENDER", cena.render.filepath)
+        return
+
     fotografar()
     material = bpy.data.materials.get("evelym.cabelo")
     if material:

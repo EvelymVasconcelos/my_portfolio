@@ -76,28 +76,31 @@
   </head>
   <body>
     <main>
-      <p class="rodada">Rodada 4 · traços dos retratos estilizados</p>
+      <p class="rodada">Rodada 5 · proporções medidas nas fotos</p>
       <h1>Personagem 3D da Evelym</h1>
       <p>
-        Ajustes pelos retratos estilizados que a Evelym mandou em 2026-11-22, todos por parâmetro no
-        script (<code>scripts/personagem/</code>):
+        O rosto agora sai das medidas. O MediaPipe (gratuito, roda nesta máquina) marca 478 pontos
+        do rosto em 14 fotos da Evelym, as 8 reais e os 6 retratos estilizados, e um script ajusta a
+        personagem em ciclo (gera, renderiza de frente, mede e corrige) até as proporções baterem. O
+        alvo mistura 60% dos retratos e 40% das fotos reais.
       </p>
       <ul>
         <li>
-          olhos espichados: amendoados, mais estreitos e alongados para fora, com o canto de fora
-          subindo;
+          dentro de 3% das fotos: largura e altura do rosto, mandíbula, largura do olho, largura,
+          comprimento e projeção do nariz e largura da boca;
         </li>
         <li>
-          sobrancelhas grossas e escuras, retas no começo, com arco marcado e ponta fina, mais
-          baixas;
+          ainda um pouco longe: o olho está um pouco mais puxado, a sobrancelha um pouco mais baixa
+          e o lábio de cima um pouco mais grosso que nas fotos;
         </li>
-        <li>nariz de dorso reto e fino, um pouco mais longo, ponta pequena;</li>
-        <li>lábios cheios, com o arco do cupido desenhado e cor rosa-malva;</li>
-        <li>maçãs do rosto mais altas.</li>
+        <li>
+          as medidas usam a distância entre os olhos como unidade, então valem para qualquer foto,
+          de qualquer tamanho.
+        </li>
       </ul>
       <p>
         <strong>Para escolher:</strong> cabelo preto, como nas fotos, ou lilás, como nos retratos
-        (combina com o roxo do site). As duas versões estão abaixo.
+        (combina com o roxo do site).
       </p>
       <p>Ainda falta: moletom lilás com capuz, sorriso e piscada.</p>
       <div class="vistas">
