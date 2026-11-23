@@ -93,7 +93,7 @@ const CYCLE = 24;
  * Momento da história do pôster e do primeiro quadro ao vivo: código pronto, testes passando e "Em produção". Começar
  * daqui deixa a troca imagem → cena imperceptível; depois a história recomeça sozinha.
  */
-const POSTER_T = 20;
+const POSTER_T = 23.6;
 /** Personagem gerada por scripts/personagem/ (npm run personagem; exportar.py gera o arquivo). */
 const MODEL_URL = "/models/evelym.glb";
 /** O modelo sai em metros; a cena usa uma escala maior (a mesa tem 2,15 de largura). */
@@ -716,6 +716,69 @@ export async function createHeroScene(
     qInv.copy(qParent).invert();
     b.quaternion.copy(qInv).multiply(q).multiply(qParent).multiply(rest.get(b)!);
   }
+  /* Gole de café depois do deploy (ideia da dona, 2026-11-23): o braço esquerdo, do lado da caneca, vai do teclado à
+     caneca, leva à boca e devolve, por cinemática inversa de dois ossos calculada aqui. O polo é o cotovelo da pose de
+     digitar, então o braço sai do teclado e volta para ele sem salto. Fora do gole, o braço fica na pose do modelo. */
+  const armU = bone("upperarm_l");
+  const armL = bone("lowerarm_l");
+  root.updateMatrixWorld(true);
+  const restLocalU = armU.quaternion.clone();
+  const restLocalL = armL.quaternion.clone();
+  const restWorldU = armU.getWorldQuaternion(new Quaternion());
+  const restWorldL = armL.getWorldQuaternion(new Quaternion());
+  const S0 = armU.getWorldPosition(new Vector3());
+  const E0 = armL.getWorldPosition(new Vector3());
+  const W0 = hands[0].hand.getWorldPosition(new Vector3());
+  const lenU = S0.distanceTo(E0);
+  const lenL = E0.distanceTo(W0);
+  const dirU0 = E0.clone().sub(S0).normalize();
+  const dirL0 = W0.clone().sub(E0).normalize();
+  // polo no plano do braço em repouso, empurrado para o lado do cotovelo
+  const pole = E0.clone().multiplyScalar(2).sub(S0.clone().add(W0).multiplyScalar(0.5));
+  const mugHome = mug.position.clone();
+  const grabPoint = mug.localToWorld(new Vector3(-0.115, 0.1, 0)); // a alça
+  const wristGrab = grabPoint.clone().add(new Vector3(-0.09, 0, -0.05));
+  const mugFromWrist = mug.getWorldPosition(new Vector3()).sub(wristGrab);
+  const headCenter: Object3D = centro;
+  const mouthOffset = new Vector3(0, -0.075 * MODEL_SCALE, 0.1 * MODEL_SCALE);
+  const mugAtMouth = new Vector3(0.02, -0.215, 0.12); // centro da caneca em relação à boca, com a borda nos lábios
+  const vS = new Vector3();
+  const vE = new Vector3();
+  const vW = new Vector3();
+  const vT = new Vector3();
+  const vM = new Vector3();
+  const vDir = new Vector3();
+  const vN = new Vector3();
+  const vTmp = new Vector3();
+  const vHold = new Vector3();
+  const qArm = new Quaternion();
+  const mugTurn = mug.rotation.y;
+  /** Põe o punho esquerdo em `target` (cena), com o cotovelo para o lado de `pole`. */
+  function reach(target: Vector3) {
+    armU.getWorldPosition(vS);
+    vDir.subVectors(target, vS);
+    const d = Math.min(vDir.length(), lenU + lenL - 1e-3);
+    vDir.normalize();
+    const cos = Math.min(1, Math.max(-1, (lenU * lenU + d * d - lenL * lenL) / (2 * lenU * d)));
+    vN.subVectors(pole, vS);
+    vN.addScaledVector(vDir, -vN.dot(vDir)).normalize();
+    vE.copy(vS)
+      .addScaledVector(vDir, lenU * cos)
+      .addScaledVector(vN, lenU * Math.sqrt(1 - cos * cos));
+    vW.copy(vS).addScaledVector(vDir, d);
+    qArm.setFromUnitVectors(dirU0, vTmp.subVectors(vE, vS).normalize()).multiply(restWorldU);
+    armU.parent!.getWorldQuaternion(qParent);
+    armU.quaternion.copy(qParent.invert()).multiply(qArm);
+    armU.updateMatrixWorld(true);
+    qArm.setFromUnitVectors(dirL0, vTmp.subVectors(vW, vE).normalize()).multiply(restWorldL);
+    armL.parent!.getWorldQuaternion(qParent);
+    armL.quaternion.copy(qParent.invert()).multiply(qArm);
+  }
+  const ease = (u: number, a: number, b: number) => {
+    const x = Math.min(1, Math.max(0, (u - a) / (b - a)));
+    return x * x * (3 - 2 * x);
+  };
+
   // Os fones são da cena (já aprovados), presos ao centro da cabeça, no tamanho da cabeça do modelo.
   const head = new Group();
   head.scale.setScalar(PHONES_SCALE);
@@ -940,9 +1003,9 @@ export async function createHeroScene(
           ? Math.sin(((bt - 0.3) / 0.16) * PI)
           : 0;
     for (const m of blinkers) m.morphTargetInfluences![m.morphTargetDictionary!.piscar] = blink;
-    // sorriso leve quando o deploy vai para produção (16 s); séria de novo antes do quadro do pôster (20 s)
+    // sorriso leve quando o deploy vai para produção (16 s), até ela pegar o café
     const sorrir =
-      Math.min(1, Math.max(0, (u - 16.3) / 0.6)) * Math.min(1, Math.max(0, (19.6 - u) / 0.7));
+      Math.min(1, Math.max(0, (u - 16.3) / 0.6)) * Math.min(1, Math.max(0, (17.9 - u) / 0.5));
     const smile = sorrir * sorrir * (3 - 2 * sorrir);
     for (const m of smilers) m.morphTargetInfluences![m.morphTargetDictionary!.sorriso] = smile;
     // mãos e dedos digitando (calmos quando o código termina)
@@ -954,15 +1017,59 @@ export async function createHeroScene(
         turn(f, qTurn.setFromAxisAngle(AX, curl));
       });
     });
-    // cabeça: leve aceno de concentração, acompanhando o ponteiro
+    // gole de café: pega a caneca (18 s), leva à boca, bebe (20 a 21,3 s), devolve (22,2 s) e volta ao teclado (23,2 s)
+    let held = 0;
+    let sip = 0;
+    // A caneca gira meia volta na mão enquanto sobe: a alça vira para fora, e a mão fica do lado dela, sem cruzar o rosto.
+    const spin = PI * (ease(u, 19.1, 20) - ease(u, 21.3, 22.2));
+    vHold.copy(mugFromWrist).applyAxisAngle(AY, spin);
+    if (u >= 18 && u < 23.2) {
+      headCenter
+        .getWorldPosition(vM)
+        .add(mouthOffset)
+        .add(mugAtMouth)
+        .sub(vTmp.copy(mugFromWrist).applyAxisAngle(AY, PI));
+      if (u < 18.8) vT.lerpVectors(W0, wristGrab, ease(u, 18, 18.8));
+      else if (u < 19.1) vT.copy(wristGrab);
+      else if (u < 20) vT.lerpVectors(wristGrab, vM, ease(u, 19.1, 20));
+      else if (u < 21.3) vT.copy(vM);
+      else if (u < 22.2) vT.lerpVectors(vM, wristGrab, ease(u, 21.3, 22.2));
+      else if (u < 22.4) vT.copy(wristGrab);
+      else vT.lerpVectors(wristGrab, W0, ease(u, 22.4, 23.2));
+      reach(vT);
+      held = u >= 19.1 && u < 22.2 ? 1 : 0;
+      sip = u >= 20 && u < 21.3 ? Math.sin(((u - 20) / 1.3) * PI) : 0;
+      // dedos fechados na alça
+      if (u >= 18.8 && u < 22.4)
+        for (const f of hands[0].fingers) turn(f, qTurn.setFromAxisAngle(AX, 0.9));
+    } else {
+      armU.quaternion.copy(restLocalU);
+      armL.quaternion.copy(restLocalL);
+    }
+    if (held) {
+      hands[0].hand.getWorldPosition(vTmp).add(vHold);
+      mug.position.copy(root.worldToLocal(vTmp));
+      mug.rotation.y = mugTurn + spin;
+      mug.rotation.x = -0.6 * sip; // a borda inclina para a boca
+    } else {
+      mug.position.copy(mugHome);
+      mug.rotation.y = mugTurn;
+      mug.rotation.x = 0;
+    }
+    // cabeça: leve aceno de concentração, acompanhando o ponteiro (e inclinada para trás no gole)
     ptr.x += (ptr.tx - ptr.x) * 0.06;
     ptr.y += (ptr.ty - ptr.y) * 0.06;
     qTurn.setFromAxisAngle(AY, Math.sin(t * 0.33) * 0.05 + ptr.x * 0.1);
-    turn(headBone, qTurn.multiply(qNod.setFromAxisAngle(AX, 0.06 + Math.sin(t * 0.8) * 0.02)));
+    turn(
+      headBone,
+      qTurn.multiply(qNod.setFromAxisAngle(AX, 0.06 + Math.sin(t * 0.8) * 0.02 - 0.2 * sip))
+    );
+    // o vapor some enquanto a caneca está fora da mesa
+    const steamOn = 1 - ease(u, 18.6, 19.1) + ease(u, 22.2, 22.8);
     steam.forEach((m, i) => {
       const fz = (t * 0.22 + i / 3) % 1;
       m.position.set(0.74 + Math.sin(fz * 6 + i) * 0.025, 0.2 + fz * 0.4, -0.18);
-      (m.material as MeshBasicMaterial).opacity = Math.sin(fz * PI) * steamPeak;
+      (m.material as MeshBasicMaterial).opacity = Math.sin(fz * PI) * steamPeak * steamOn;
       m.scale.setScalar(0.6 + fz * 1.2);
     });
     editor.m.position.y = 1.2 + Math.sin(t * 0.6) * 0.025;
