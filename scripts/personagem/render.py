@@ -48,8 +48,8 @@ def main():
     fundo.inputs[1].default_value = 0.6
     cena.world = mundo
 
-    luz("principal", "AREA", 90, (1, 0.95, 0.9), (-0.9, -1.2, topo + 0.6), alvo, 0.8)
-    luz("preenchimento", "AREA", 25, (0.95, 0.95, 1), (1.1, -1.0, topo - 0.1), alvo, 1.2)
+    luz("principal", "AREA", 45, (1, 0.95, 0.9), (-0.9, -1.2, topo + 0.6), alvo, 0.8)
+    luz("preenchimento", "AREA", 12, (0.95, 0.95, 1), (1.1, -1.0, topo - 0.1), alvo, 1.2)
     luz("recorte", "AREA", 60, (0.62, 0.45, 1), (0.6, 1.1, topo + 0.3), alvo, 0.6)
 
     camera = bpy.data.objects.new("camera", bpy.data.cameras.new("camera"))
@@ -78,4 +78,5 @@ def main():
         print("RENDER", cena.render.filepath)
 
 
-main()
+if __name__ == "__main__":
+    main()

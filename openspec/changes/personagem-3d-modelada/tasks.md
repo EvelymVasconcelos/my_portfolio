@@ -15,11 +15,11 @@ Termina com: um render de teste da base do MPFB saindo do Blender por script, se
 
 Termina com: a página `design/prototipos/personagem-3d/index.html` com os renders, aberta no Chrome para a dona.
 
-- [ ] 2.1 Ajustar os parâmetros do MPFB pelas fotos da dona: rosto fino, queixo pequeno, nariz fino, olhos amendoados
+- [x] 2.1 Ajustar os parâmetros do MPFB pelas fotos da dona: rosto fino, queixo pequeno, nariz fino, olhos amendoados
       castanho-escuros, pele dourada (D2)
 - [ ] 2.2 Aplicar a forma extra do estilo de animação por regiões (olhos e órbitas maiores, mandíbula mais fina, queixo
       mais curto), com quedas suaves e sem emenda (D2)
-- [ ] 2.3 Cabelo preto até os ombros repartido ao meio, do pacote do MPFB ou em mechas geradas por script (D3)
+- [x] 2.3 Cabelo preto até os ombros repartido ao meio, do pacote do MPFB ou em mechas geradas por script (D3)
 - [ ] 2.4 Moletom lilás com capuz e cordões, do pacote do MPFB ou gerado a partir do corpo (D3)
 - [ ] 2.5 Renders de frente, três quartos e perfil, com luz parecida com a da cena, na página do protótipo (D8)
 - [ ] 2.6 A dona aprova os renders, ou pede ajustes (cada rodada é mudança de parâmetro e renders novos)
