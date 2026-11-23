@@ -24,7 +24,8 @@ from mathutils.bvhtree import BVHTree
 CABELO = {
     "comprimento": 0.255,  # metros abaixo do topo da cabeça: pontas nos ombros
     "franja_ate": 0.17,  # a franja cortina termina na altura das maçãs do rosto
-    "risca_x": 0.004,  # risca quase no meio
+    "risca_x": 0.009,  # meia abertura da risca no meio: o couro cabeludo aparece numa linha fina
+    "volume_alto": 0.009,  # quanto o cabelo do alto da cabeça se afasta dela (sem isso, parecia uma touca)
     "mechas_por_lado": 120,
     "mechas_da_nuca": 70,
     "largura": 0.017,
@@ -114,7 +115,13 @@ def gerar(corpo, armadura):
         for k in range(len(raios)):
             janela = raios[max(0, k - 2) : k + 3]
             suaves.append(max(raios[k], sum(janela) / len(janela)))
-        pontos = [centro + d.normalized() * (r + desvio) for d, r in zip(direcoes, suaves)]
+        pontos = []
+        for d, r in zip(direcoes, suaves):
+            p = centro + d.normalized() * (r + desvio)
+            # volume no alto da cabeça, que some perto da risca (para ela aparecer) e abaixo das têmporas
+            alto = min(1.0, max(0.0, (p.z - (topo - 0.15)) / 0.1))
+            longe_da_risca = min(1.0, abs(p.x) / 0.025)
+            pontos.append(p + d.normalized() * CABELO["volume_alto"] * alto * longe_da_risca)
         ultimo = pontos[-1]
         horizontal = Vector((ultimo.x - centro.x, ultimo.y - centro.y, 0))
         if horizontal.length < 1e-4:

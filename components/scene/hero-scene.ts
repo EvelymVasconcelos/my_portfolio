@@ -600,7 +600,7 @@ export async function createHeroScene(
     g.fillStyle = "#000";
     g.fillRect(0, 0, w, h);
     for (let x = 0; x < w; x++) {
-      const fim = (rnd() < 0.1 ? 0.6 + rnd() * 0.25 : 0.8 + rnd() * 0.2) * h;
+      const fim = (rnd() < 0.05 ? 0.7 + rnd() * 0.2 : 0.88 + rnd() * 0.12) * h;
       const fade = g.createLinearGradient(0, fim - 0.07 * h, 0, fim);
       fade.addColorStop(0, "#fff");
       fade.addColorStop(1, "rgba(255,255,255,0)");
@@ -622,17 +622,21 @@ export async function createHeroScene(
   const mModelHair = P({
     color: 0x1a1412,
     map: hairStreaks,
-    roughness: 0.5,
-    specularIntensity: 0.35,
+    roughness: 0.38,
+    // faixa de brilho clara ao longo das mechas, como em cabelo preto liso
+    specularIntensity: 0.8,
+    specularColor: 0xfff4ee,
     sheen: 0.3,
     sheenColor: 0x3a302c,
     sheenRoughness: 0.5,
-    anisotropy: 0.35,
+    anisotropy: 0.65,
     anisotropyRotation: PI / 2,
     alphaMap: hairAlpha,
-    alphaTest: 0.3,
+    // recorte suave nas pontas (com o antialias da cena), em vez de pontinhos soltos
+    alphaToCoverage: true,
+    alphaTest: 0.15,
     side: DoubleSide,
-    envMapIntensity: 0.3,
+    envMapIntensity: 0.45,
   });
 
   const blinkers: Mesh[] = [];

@@ -139,21 +139,45 @@ def copiar_pele(nome, material, fica, folga, suavizar=0):
     copia.data.materials.append(material)
 
 
-def moletom(material):
-    """O moletom numa peça só: tronco até o quadril e mangas até o punho, na mesma folga. Duas peças com folgas diferentes
-    deixavam dobras e manchas na emenda do ombro (2026-11-23). A blusa curta do pacote sai."""
-    copiar_pele(
-        "evelym.moletom",
-        material,
-        # Generoso no pescoço: a pele do alto do peito e do ombro também é puxada pelo osso do pescoço, e excluí-la abria
-        # buracos que a blusa antiga escondia. O moletom sobe até a base do pescoço, por baixo da gola do capuz.
-        lambda o, v: peso(o, v, ("upperarm_", "lowerarm_", "spine_", "pelvis", "clavicle_")) >= 0.35
+def coberto(o, v):
+    """A pele que vira moletom: braços e tronco, sem as mãos, o pescoço e a cabeça."""
+    return (
+        peso(o, v, ("upperarm_", "lowerarm_", "spine_", "pelvis", "clavicle_")) >= 0.35
         and peso(o, v, ("hand_",)) <= 0.15
         and peso(o, v, ("neck_",)) <= 0.6
-        and peso(o, v, ("head",)) <= 0.05,
-        0.015,
-        suavizar=10,
+        and peso(o, v, ("head",)) <= 0.05
     )
+
+
+def moletom(material):
+    """O moletom numa peça só: tronco até o quadril e mangas até o punho, na mesma folga. Duas peças com folgas diferentes
+    deixavam dobras e manchas na emenda do ombro (2026-11-23). A blusa curta do pacote sai.
+
+    Generoso no pescoço: a pele do alto do peito e do ombro também é puxada pelo osso do pescoço, e excluí-la abria
+    buracos. O moletom sobe até a base do pescoço, por baixo da gola do capuz."""
+    copiar_pele("evelym.moletom", material, coberto, 0.015, suavizar=10)
+
+    # A pele que ficou inteira por baixo do moletom sai (como fazia a máscara da blusa): assim ela nunca atravessa o
+    # tecido, e o modelo fica mais leve. Fica uma borda de pele perto das aberturas (punho e gola).
+    corpo = next(o for o in malhas() if o.name.endswith(".body"))
+    dentro = {v.index for v in corpo.data.vertices if coberto(corpo, v)}
+    vizinhos = {i: set() for i in dentro}
+    for aresta in corpo.data.edges:
+        a, b = aresta.vertices
+        if a in vizinhos:
+            vizinhos[a].add(b)
+        if b in vizinhos:
+            vizinhos[b].add(a)
+    miolo = dentro
+    for _ in range(2):  # duas voltas de margem a partir da borda
+        miolo = {i for i in miolo if vizinhos[i] <= miolo}
+    bm = bmesh.new()
+    bm.from_mesh(corpo.data)
+    bm.verts.ensure_lookup_table()
+    bmesh.ops.delete(bm, geom=[bm.verts[i] for i in miolo], context="VERTS")
+    bm.to_mesh(corpo.data)
+    bm.free()
+    print(f"MOLETOM pele escondida removida: {len(miolo)} vértices")
 
 
 def forma_de_piscar():
