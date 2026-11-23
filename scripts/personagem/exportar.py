@@ -22,8 +22,10 @@ SAIDA = os.environ.get("PERSONAGEM_GLB", os.path.join(RAIZ, "public", "models", 
 
 EXPORTAR = {
     # Mãos no teclado: em relação ao centro da cabeça, em metros (x para o lado, y para a frente é negativo, z para cima).
-    "mao": Vector((0.088, -0.27, -0.47)),
-    "cotovelo": Vector((0.26, 0.15, -0.5)),  # para onde o cotovelo aponta (alvo do polo da cinemática inversa)
+    "mao": Vector((0.12, -0.27, -0.47)),
+    # Para onde o cotovelo aponta (alvo do polo da cinemática inversa): para fora e um pouco à frente, como quem digita.
+    # Com o cotovelo para trás, o braço descia colado ao corpo e sumia atrás do notebook (2026-11-23).
+    "cotovelo": Vector((0.65, -0.02, -0.42)),
     "textura_da_pele": 2048,
 }
 
@@ -111,7 +113,7 @@ def cortar():
             bpy.data.objects.remove(o, do_unlink=True)
 
 
-def copiar_pele(nome, material, fica, folga, suavizar=0):
+def copiar_pele(nome, material, fica, folga, suavizar=0, folga_dos_bracos=None):
     """Peça do moletom feita da pele do corpo: copia os vértices em que fica(objeto, vértice) é verdadeiro e infla."""
     corpo = next(o for o in malhas() if o.name.endswith(".body"))
     copia = corpo.copy()
@@ -131,8 +133,15 @@ def copiar_pele(nome, material, fica, folga, suavizar=0):
     for _ in range(suavizar):
         bmesh.ops.smooth_vert(bm, verts=miolo, factor=0.6, use_axis_x=True, use_axis_y=True, use_axis_z=True)
     bm.normal_update()
+    camada = bm.verts.layers.deform.active
+    bracos = {g.index for g in copia.vertex_groups if g.name.startswith(("upperarm_", "lowerarm_"))}
     for v in bm.verts:
-        v.co += v.normal * folga
+        f = folga
+        if folga_dos_bracos is not None and camada is not None:
+            # mangas mais justas que o tronco, com transição pelo peso dos ossos do braço
+            braco = min(1.0, sum(w for g, w in v[camada].items() if g in bracos))
+            f = folga + (folga_dos_bracos - folga) * braco
+        v.co += v.normal * f
     bm.to_mesh(copia.data)
     bm.free()
     copia.data.materials.clear()
@@ -155,7 +164,7 @@ def moletom(material):
 
     Generoso no pescoço: a pele do alto do peito e do ombro também é puxada pelo osso do pescoço, e excluí-la abria
     buracos. O moletom sobe até a base do pescoço, por baixo da gola do capuz."""
-    copiar_pele("evelym.moletom", material, coberto, 0.015, suavizar=10)
+    copiar_pele("evelym.moletom", material, coberto, 0.015, suavizar=10, folga_dos_bracos=0.008)
 
     # A pele que ficou inteira por baixo do moletom sai (como fazia a máscara da blusa): assim ela nunca atravessa o
     # tecido, e o modelo fica mais leve. Fica uma borda de pele perto das aberturas (punho e gola).
@@ -178,6 +187,32 @@ def moletom(material):
     bm.to_mesh(corpo.data)
     bm.free()
     print(f"MOLETOM pele escondida removida: {len(miolo)} vértices")
+
+
+def cordoes_sobre_o_moletom():
+    """Os cordões saem do capuz e descem por cima do moletom, a 5 mm do tecido (o moletom, mais volumoso que a blusa do
+    pacote, passava por cima deles e eles apareciam cortados)."""
+    from mathutils.bvhtree import BVHTree
+
+    moletom = bpy.data.objects["evelym.moletom"]
+    malha = moletom.data
+    bvh = BVHTree.FromPolygons(
+        [moletom.matrix_world @ v.co for v in malha.vertices], [p.vertices[:] for p in malha.polygons]
+    )
+    cordoes = bpy.data.objects["evelym.cordoes"]
+    mundo = [cordoes.matrix_world @ v.co for v in cordoes.data.vertices]
+    inversa = cordoes.matrix_world.inverted()
+    for lado in (-1, 1):
+        indices = [i for i, p in enumerate(mundo) if p.x * lado > 0]
+        eixo_x = sum(mundo[i].x for i in indices) / len(indices)
+        eixo_y = sum(mundo[i].y for i in indices) / len(indices)
+        for i in indices:
+            p = mundo[i]
+            acerto, _n, _f, _d = bvh.ray_cast(Vector((eixo_x, p.y - 0.4, p.z)), Vector((0, 1, 0)))
+            if acerto is None:
+                continue
+            frente = acerto.y - 0.005 - 0.0045  # 5 mm do tecido, mais o raio do cordão
+            cordoes.data.vertices[i].co = inversa @ Vector((p.x, p.y + (frente - eixo_y), p.z))
 
 
 def forma_de_piscar():
@@ -296,6 +331,7 @@ def main():
     roupa_lisa(material_da_roupa, (0.5, 0.36, 0.78))
     moletom(material_da_roupa)
     bpy.data.objects.remove(roupa, do_unlink=True)
+    cordoes_sobre_o_moletom()
     assar_pele()
     forma_de_piscar()
     ponto_da_cabeca(armadura)
