@@ -18,8 +18,7 @@
 - [x] 2.2 Remover `lottie-react`, `components/animations/LottiePlayer.tsx` e `@anthropic-ai/sdk`, confirmando que nada os
       importa
 - [x] 2.3 Remover `public/cv.pdf` (cópia sem uso de `cv-pt.pdf`) e, com o ok da dona, o PDF de manual de fechadura em
-      `public/images/` (D12)
-      - `cv.pdf` removido. O PDF do manual fica com a dona, que vai cuidar dele depois (2026-11-18)
+      `public/images/` (D12) - `cv.pdf` removido. O PDF do manual fica com a dona, que vai cuidar dele depois (2026-11-18)
 - [x] 2.4 Corrigir `README.md` e `SETUP.md` para o estado real (DeepL, CVs em `public/cv-*.pdf`, Node 24)
 - [x] 2.5 `npm install`, `npm run lint` e `npm run build`. A dona confere `/pt`, `/en` e `/es` no navegador local
 
@@ -74,8 +73,8 @@
 - [x] 6.6 `components/sections/Contact.tsx`: schema compartilhado, campo isca fora do teclado e do leitor de tela,
       mensagens por status
 - [x] 6.7 Mensagens novas em `messages/pt.json`, `en.json` e `es.json`
-- [ ] 6.8 Teste de componente e de navegador: envio só com teclado, aviso anunciado e erros traduzidos em `/en` e `/es`
-- [ ] 6.9 Documentar `CONTACT_TO_EMAIL` e `CONTACT_FROM_EMAIL` no `SETUP.md`. A dona testa um envio real no navegador
+- [x] 6.8 Teste de componente e de navegador: envio só com teclado, aviso anunciado e erros traduzidos em `/en` e `/es`
+- [x] 6.9 Documentar `CONTACT_TO_EMAIL` e `CONTACT_FROM_EMAIL` no `SETUP.md`. A dona testa um envio real no navegador
       local
 
 > Feito em 2026-11-20. O schema usa `zod/mini` e o formulário saiu do React Hook Form (ver a decisão 6 da design): o
@@ -83,6 +82,9 @@
 > `CONTACT_FROM_EMAIL` estão no `SETUP.md`, no `.env.local.example` e no `.env.local` da dona. Por decisão da dona
 > (2026-11-20), os testes rodam todos juntos no fim: os de 6.5 e 6.8 estão escritos (`tests/unit/contact-*.test.ts*` e
 > `tests/e2e/contato.spec.ts`), e os de unidade passaram uma vez antes da pausa; o e2e ainda não rodou.
+
+> 6.8 e 6.9 concluídas em 2026-11-23: os testes de componente e de navegador do formulário passam, e a dona testou um
+> envio real pelo navegador local, com sucesso.
 
 ## 7. Cabeçalhos de segurança
 
