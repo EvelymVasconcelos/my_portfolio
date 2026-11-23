@@ -49,7 +49,7 @@ Termina com: a cena no navegador local com a personagem nova digitando, piscando
       painel de código, cabeça seguindo o ponteiro e piscada (D4)
 - [x] 4.6 Liberar geometrias, texturas e esqueleto ao destruir a cena
 - [x] 4.7 Gerar os pôsteres de novo (`npm run scene:posters`) e comparar com a cena rodando, nos dois temas
-- [ ] 4.8 A dona confere a cena no navegador local
+- [x] 4.8 A dona confere a cena no navegador local
 
 > Primeira integração em 2026-11-23, a pedido da dona ("vamos ver como fica na cena, com o moletom"), antes do fim do
 > bloco 2 e do bloco 3:
@@ -86,8 +86,8 @@ Termina com: a cena no navegador local com a personagem nova digitando, piscando
 >   quadros por segundo na Iris Xe, também com a CPU 4x mais lenta; Lighthouse de celular igual ou melhor que o
 >   `nova-versao` (TBT de 11,2 s para 1,7 s, com WebGL por software tratado como "sem GPU"); números em
 >   `docs/otimizacao-de-desempenho.md`. O LCP simulado (4,4 s) é do JavaScript inicial, pendência das outras changes;
-> - falta: a dona conferir a cena (4.8), a conferência manual em pt/en/es, celular, teclado e leitor de tela (5.3 e 5.4)
->   e, com a aprovação dela, juntar o branch ao `nova-versao` (5.7).
+> - a dona aprovou a personagem em 2026-11-23 (4.8) e o branch entrou no `nova-versao` (5.7); a conferência manual em
+>   pt/en/es, celular, teclado e leitor de tela (5.3 e 5.4) fica para o fechamento, com os testes.
 
 ## 5. Desempenho e fechamento
 
@@ -101,4 +101,4 @@ Termina com: a cena no navegador local com a personagem nova digitando, piscando
 - [x] 5.5 `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e` e `npm run build` passando
 - [x] 5.6 Lighthouse no perfil de celular em `/pt`: LCP abaixo de 2,5 s, CLS abaixo de 0,1, sem piora em relação ao
       `nova-versao`
-- [ ] 5.7 Rodar `graphify update .` e, com a aprovação da dona, juntar o branch ao `nova-versao`
+- [x] 5.7 Rodar `graphify update .` e, com a aprovação da dona, juntar o branch ao `nova-versao`
