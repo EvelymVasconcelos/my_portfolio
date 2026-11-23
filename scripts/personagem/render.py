@@ -50,7 +50,7 @@ def main():
 
     luz("principal", "AREA", 45, (1, 0.95, 0.9), (-0.9, -1.2, topo + 0.6), alvo, 0.8)
     luz("preenchimento", "AREA", 12, (0.95, 0.95, 1), (1.1, -1.0, topo - 0.1), alvo, 1.2)
-    luz("recorte", "AREA", 60, (0.62, 0.45, 1), (0.6, 1.1, topo + 0.3), alvo, 0.6)
+    luz("recorte", "AREA", 30, (0.78, 0.68, 1), (0.6, 1.1, topo + 0.3), alvo, 0.6)
 
     camera = bpy.data.objects.new("camera", bpy.data.cameras.new("camera"))
     camera.data.lens = 70

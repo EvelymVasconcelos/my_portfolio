@@ -23,9 +23,8 @@ to pay anything, include any copyright notices nor give attribution".
 | ------------------------------------------------------------------------------------------------------ | ------------------------------ | -------------------------------------------------------------- |
 | Malha base do corpo e do rosto, alvos de forma (rosto, queixo, nariz, olhos) e esqueleto `game_engine` | dentro da extensão MPFB 2.0.18 | `data/3dobjs/base.obj`, `data/targets/`, `data/rigs/standard/` |
 | Olhos                                                                                                  | pacote de sistema              | `eyes/high-poly`, material `eyes/materials/brown.mhmat`        |
-| Sobrancelhas                                                                                           | pacote de sistema              | `eyebrows/eyebrow005`                                          |
+| Sobrancelhas                                                                                           | pacote de sistema              | `eyebrows/eyebrow001`                                          |
 | Cílios                                                                                                 | pacote de sistema              | `eyelashes/eyelashes02`                                        |
-| Cabelo                                                                                                 | pacote de sistema              | `hair/bob02`                                                   |
 | Pele                                                                                                   | pacote de sistema              | `skins/young_asian_female`                                     |
 | Roupa provisória (até o moletom da tarefa 2.4)                                                         | pacote de sistema              | `clothes/female_sportsuit01`                                   |
 
@@ -34,8 +33,8 @@ https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehum
 https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html). 280.737.770 bytes, SHA-256
 `b542127a8e25547c7c29c19f2d1d2adb9a664c80396ecd694095dbc8028a0107`. O instalador confere o hash antes de instalar.
 
-O que for criado por script neste repositório (forma de estilo, moletom com capuz, mechas de cabelo, se houver) é obra
-própria do portfólio.
+O que é criado por script neste repositório é obra própria do portfólio: o cabelo (`scripts/personagem/cabelo.py`, mechas
+em faixas e a textura de fios, desde 2026-11-22) e, quando existirem, a forma de estilo e o moletom com capuz.
 
 ## Como gerar do zero
 

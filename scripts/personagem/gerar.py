@@ -8,8 +8,11 @@ no Git. A origem e a licença de cada peça estão em scripts/personagem/ORIGEM.
 """
 
 import os
+import sys
 
 import bpy
+
+sys.path.insert(0, os.path.dirname(__file__))
 
 RAIZ = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SAIDA = os.path.join(RAIZ, ".cache", "personagem", "evelym.blend")
@@ -20,30 +23,36 @@ def simetrico(nome, valor):
     return [{"target": f"{lado}-{nome}", "value": valor} for lado in ("l", "r")]
 
 
-# Rosto pelas fotos da dona (2026-11-22): oval puxando para coração, maçãs do rosto marcadas, mandíbula que afina até um
-# queixo delicado, olhos amendoados com o canto de fora levemente para cima, sobrancelhas com arco suave, nariz de dorso
-# reto e ponta definida, lábios cheios com o arco do cupido marcado e um leve sorriso.
+# Rosto pelas fotos da dona (2026-11-22, duas rodadas): rosto fino e longo, com maçãs do rosto marcadas e queixo pequeno e
+# pontudo; nariz de dorso reto e fino, com a ponta pontuda e levemente arrebitada; olhos amendoados e estreitos, com a
+# pálpebra de cima um pouco caída; sobrancelhas quase retas, de espessura média; boca de largura média, lábio de cima cheio,
+# arco do cupido marcado e um sorriso leve.
 ROSTO = [
-    {"target": "head-oval", "value": 0.7},
-    {"target": "head-scale-horiz-decr", "value": 0.15},
-    {"target": "head-invertedtriangular", "value": 0.25},
-    {"target": "chin-width-decr", "value": 0.35},
+    {"target": "head-oval", "value": 0.6},
+    {"target": "head-invertedtriangular", "value": 0.4},
+    {"target": "head-scale-horiz-decr", "value": 0.3},
+    {"target": "head-scale-vert-incr", "value": 0.1},
+    {"target": "chin-width-decr", "value": 0.5},
+    {"target": "chin-triangle", "value": 0.35},
     {"target": "chin-prominent-incr", "value": 0.15},
-    {"target": "chin-height-decr", "value": 0.1},
-    *simetrico("cheek-bones-incr", 0.45),
-    *simetrico("cheek-volume-decr", 0.35),
-    *simetrico("eye-corner2-up", 0.35),
-    *simetrico("eye-scale-incr", 0.15),
-    *simetrico("eye-height2-decr", 0.1),
-    {"target": "eyebrows-trans-up", "value": 0.15},
+    *simetrico("cheek-bones-incr", 0.4),
+    *simetrico("cheek-volume-decr", 0.5),
+    *simetrico("eye-corner2-up", 0.3),
+    *simetrico("eye-height2-decr", 0.3),
+    *simetrico("eye-eyefold-down", 0.3),
+    *simetrico("eye-epicanthus-in", 0.2),
+    {"target": "eyebrows-trans-down", "value": 0.1},
     {"target": "nose-hump-decr", "value": 0.4},
-    {"target": "nose-point-width-decr", "value": 0.15},
-    {"target": "nose-scale-horiz-decr", "value": 0.1},
-    {"target": "nose-point-up", "value": 0.15},
-    {"target": "mouth-upperlip-volume-incr", "value": 0.35},
-    {"target": "mouth-lowerlip-volume-incr", "value": 0.35},
-    {"target": "mouth-cupidsbow-incr", "value": 0.4},
-    {"target": "mouth-angles-up", "value": 0.5},
+    {"target": "nose-point-width-decr", "value": 0.35},
+    {"target": "nose-scale-horiz-decr", "value": 0.25},
+    {"target": "nose-nostrils-width-decr", "value": 0.3},
+    {"target": "nose-point-up", "value": 0.3},
+    {"target": "nose-scale-depth-incr", "value": 0.2},
+    {"target": "mouth-scale-horiz-decr", "value": 0.2},
+    {"target": "mouth-upperlip-volume-incr", "value": 0.4},
+    {"target": "mouth-lowerlip-volume-incr", "value": 0.3},
+    {"target": "mouth-cupidsbow-incr", "value": 0.5},
+    {"target": "mouth-angles-up", "value": 0.35},
     {"target": "neck-scale-horiz-decr", "value": 0.2},
 ]
 
@@ -63,12 +72,11 @@ PERSONAGEM = {
     "targets": ROSTO,
     "rig": "game_engine",
     "eyes": "high-poly/high-poly.mhclo",
-    "eyebrows": "eyebrow008/eyebrow008.mhclo",  # marcada, com arco, afinando no fim
+    "eyebrows": "eyebrow001/eyebrow001.mhclo",  # quase reta, espessura média, afinando no fim
     "eyelashes": "eyelashes02/eyelashes02.mhclo",
     "teeth": "",
     "tongue": "",
-    # Liso e repartido ao meio, como nas fotos; ele passa dos ombros e é cortado em ACABAMENTO.
-    "hair": "long01/long01.mhclo",
+    "hair": "",  # gerado por script em cabelo.py: nenhum cabelo do pacote tem o corte dela
     "proxy": "",
     # Agasalho do pacote enquanto o moletom lilás com capuz não existe (tarefa 2.4).
     "clothes": ["female_sportsuit01/female_sportsuit01.mhclo"],
@@ -83,12 +91,10 @@ PERSONAGEM = {
 
 # Cores e corte, aplicados depois que o MPFB monta a personagem. Cores lineares (R, G, B), de 0 a 1.
 ACABAMENTO = {
-    "corte_do_cabelo": 0.26,  # metros abaixo do topo da cabeça: as pontas encostam nos ombros
-    "cor_do_cabelo": (0.07, 0.055, 0.05),  # multiplica a textura castanha do cabelo: quase preto, com brilho
     "tom_da_pele": (0.8, 0.57, 0.42),  # multiplica a textura (que é de pele clara): morena clara, dourada
     "cor_da_roupa": (0.5, 0.36, 0.78),  # lilás do moletom, no lugar da textura do agasalho provisório
     "cor_dos_pelos": (0.07, 0.05, 0.045),  # multiplica sobrancelhas e cílios: escuros, como nas fotos
-    "opacidade_dos_pelos": 2.5,  # multiplica a transparência dos fios: sobrancelha marcada
+    "opacidade_dos_pelos": 2.0,  # multiplica a transparência dos fios: sobrancelha marcada
 }
 
 
@@ -149,27 +155,13 @@ def realcar_alfa(obj, fator):
         arvore.links.new(conta.outputs[0], entrada)
 
 
-def cortar_cabelo(obj, topo, abaixo_do_topo):
-    """Corte na altura dos ombros. As mechas do cabelo são faixas compridas (do alto da cabeça à ponta), então nada é
-    apagado: o que passa da linha do corte é encolhido para logo abaixo dela, e a ponta fica reta, como num corte."""
-    linha = topo - abaixo_do_topo
-    matriz = obj.matrix_world
-    inversa = matriz.inverted()
-    for v in obj.data.vertices:
-        mundo = matriz @ v.co
-        if mundo.z < linha:
-            mundo.z = linha - (linha - mundo.z) * 0.08
-            v.co = inversa @ mundo
-
-
 def acabamento():
-    from mathutils import Vector
+    import cabelo
 
     corpo = objeto(".body")
-    topo = max((corpo.matrix_world @ Vector(c)).z for c in corpo.bound_box)
-    cabelo = objeto("." + PERSONAGEM["hair"].split("/")[0])
-    cortar_cabelo(cabelo, topo, ACABAMENTO["corte_do_cabelo"])
-    tingir(cabelo, ACABAMENTO["cor_do_cabelo"])
+    armadura = next(o for o in bpy.data.objects if o.type == "ARMATURE")
+    _obj, mechas = cabelo.gerar(corpo, armadura)
+    print(f"CABELO {mechas} mechas")
     tingir(corpo, ACABAMENTO["tom_da_pele"])
     for pelos in ("eyebrows", "eyelashes"):
         pelo = objeto("." + PERSONAGEM[pelos].split("/")[0])
