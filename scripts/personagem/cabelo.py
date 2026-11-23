@@ -25,11 +25,17 @@ CABELO = {
     "comprimento": 0.255,  # metros abaixo do topo da cabeça: pontas nos ombros
     "franja_ate": 0.17,  # a franja cortina termina na altura das maçãs do rosto
     "risca_x": 0.004,  # risca quase no meio
-    "mechas_por_lado": 110,
+    "mechas_por_lado": 120,
     "mechas_da_nuca": 70,
-    "largura": 0.022,
-    "camadas": (0.004, 0.011),  # distância da pele de cada camada
-    "volume": 0.01,  # quanto as pontas se abrem para fora (liso e assentado)
+    "largura": 0.017,
+    "camadas": (0.004, 0.009, 0.015),  # distância da pele de cada camada (a de fora é mais curta: repicado)
+    "volume": 0.012,  # quanto as pontas se abrem para fora
+    # Naturalidade (2026-11-23, a dona achou o cabelo liso e duro demais): ondulação leve ao longo da mecha, balanço de
+    # cada mecha para os lados e pontas que viram para dentro ou para fora ao acaso.
+    "onda": 0.0035,  # amplitude da ondulação, em metros
+    "balanco": 0.012,  # desvio lateral máximo na ponta, em metros
+    "ponta": 0.012,  # quanto a ponta vira, em metros
+    "repicado": 0.035,  # variação de comprimento entre mechas, em metros
     "cor": (0.012, 0.009, 0.008),
     "brilho": (0.07, 0.05, 0.045),
     "semente": 7,
@@ -115,12 +121,20 @@ def gerar(corpo, armadura):
             return None
         horizontal.normalize()
         queda = max(0.0, ultimo.z - ate_z)
-        passos = max(2, int(queda / 0.025))
+        passos = max(2, int(queda / 0.03))
+        lateral = Vector((-horizontal.y, horizontal.x, 0))
+        balanco = random.uniform(-1, 1) * CABELO["balanco"]
+        fase = random.uniform(0, 2 * math.pi)
+        voltas = random.uniform(1.2, 2.2)
+        ponta = random.uniform(-0.6, 1.0) * CABELO["ponta"]  # positivo: a ponta vira para dentro
         for k in range(1, passos + 1):
             t = k / passos
-            # abre para fora (volume) e, no fim, a ponta volta um pouco para dentro
-            fora = abre * math.sin(t * math.pi * 0.8) * (1 - 0.35 * t**4)
-            pontos.append(ultimo + horizontal * (fora + 0.004 * t) + Vector((0, 0, -queda * t)))
+            # abre para fora (volume), ondula de leve, balança para o lado e, no fim, a ponta vira
+            fora = abre * math.sin(t * math.pi * 0.8) * (1 - 0.35 * t**4) + 0.004 * t
+            fora += CABELO["onda"] * math.sin(fase + t * voltas * 2 * math.pi) - ponta * t**3
+            pontos.append(
+                ultimo + horizontal * fora + lateral * (balanco * t**1.5) + Vector((0, 0, -queda * t))
+            )
         return pontos
 
     def direcao(polar, longitude, lado):
@@ -133,7 +147,8 @@ def gerar(corpo, armadura):
             )
         )
 
-    for desvio in CABELO["camadas"]:
+    for camada, desvio in enumerate(CABELO["camadas"]):
+        encurta = 0.02 * camada  # a camada de fora termina antes: o corte fica em camadas
         for lado in (-1, 1):
             # Mechas da risca: raiz ao longo da linha do meio, da testa (u = 0) ao alto da nuca (u = 1), indo até a
             # lateral pelo menor caminho sobre a cabeça (interpolação esférica entre a raiz e o ponto de chegada).
@@ -148,7 +163,7 @@ def gerar(corpo, armadura):
                 chegada = direcao(1.45 + 0.35 * u, math.radians(78 + 45 * u), lado)
                 direcoes = [raiz.slerp(chegada, k / 11) for k in range(12)]
                 frente = max(0.0, 1 - u / 0.28)  # 1 na testa, 0 a partir de um quarto da risca
-                ate = corte + random.uniform(-0.012, 0.008)
+                ate = corte + encurta + random.uniform(-CABELO["repicado"] / 2, CABELO["repicado"] / 2)
                 if frente > 0:
                     # franja cortina: termina nas maçãs do rosto e vai alongando até o comprimento do corte
                     curta = topo - CABELO["franja_ate"] + random.uniform(-0.01, 0.01)
@@ -163,7 +178,8 @@ def gerar(corpo, armadura):
             for k in range(8):
                 p = 0.6 + 1.25 * k / 7
                 direcoes.append(Vector((math.sin(p) * math.sin(lon), -math.sin(p) * math.cos(lon), math.cos(p))))
-            pontos = caminho(direcoes, desvio + 0.002, corte + random.uniform(-0.01, 0.012), CABELO["volume"], 1)
+            ate = corte + encurta + random.uniform(-CABELO["repicado"] / 2, CABELO["repicado"] / 2)
+            pontos = caminho(direcoes, desvio + 0.002, ate, CABELO["volume"], 1)
             if pontos:
                 faixas.append(pontos)
 
@@ -192,6 +208,12 @@ def gerar(corpo, armadura):
                     loop[uv].uv = (uu, vv)
             anterior = (a, b, t)
 
+    # Todas as faces viradas para fora da cabeça: as mechas de um lado da risca saíam com a face para dentro, e a luz
+    # deixava aquele lado escuro (o glTF guarda a normal; o site usa a frente da face para iluminar).
+    for face in bm.faces:
+        if face.normal.dot(face.calc_center_median() - centro) < 0:
+            face.normal_flip()
+    bm.normal_update()
     dados = bpy.data.meshes.new("evelym.cabelo")
     bm.to_mesh(dados)
     bm.free()

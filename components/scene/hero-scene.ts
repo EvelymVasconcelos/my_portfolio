@@ -594,9 +594,52 @@ export async function createHeroScene(
   evelym.position.add(
     new Vector3(0, 1.0, Z + 0.06).sub(root.worldToLocal(centro.getWorldPosition(new Vector3())))
   );
+  // Cabelo: cor quase preta, brilho de fio na direção das mechas (anisotropia) e transparência desenhada aqui, com pontas
+  // desfiadas de comprimentos diferentes. No modelo, a raiz de cada mecha fica no alto da textura e a ponta embaixo.
+  const hairAlpha = tex(256, 512, (g, w, h) => {
+    g.fillStyle = "#000";
+    g.fillRect(0, 0, w, h);
+    for (let x = 0; x < w; x++) {
+      const fim = (rnd() < 0.1 ? 0.6 + rnd() * 0.25 : 0.8 + rnd() * 0.2) * h;
+      const fade = g.createLinearGradient(0, fim - 0.07 * h, 0, fim);
+      fade.addColorStop(0, "#fff");
+      fade.addColorStop(1, "rgba(255,255,255,0)");
+      g.fillStyle = "#fff";
+      g.fillRect(x, 0, 1, fim - 0.07 * h);
+      g.fillStyle = fade;
+      g.fillRect(x, fim - 0.07 * h, 1, 0.07 * h);
+    }
+  });
+  // fios de tons diferentes, que quebram a superfície lisa do alto da cabeça
+  const hairStreaks = tex(256, 64, (g, w, h) => {
+    for (let x = 0; x < w; x++) {
+      const v = Math.round(120 + rnd() * 135);
+      g.fillStyle = `rgb(${v},${v},${v})`;
+      g.fillRect(x, 0, 1, h);
+    }
+  });
+  hairStreaks.colorSpace = SRGBColorSpace;
+  const mModelHair = P({
+    color: 0x1a1412,
+    map: hairStreaks,
+    roughness: 0.5,
+    specularIntensity: 0.35,
+    sheen: 0.3,
+    sheenColor: 0x3a302c,
+    sheenRoughness: 0.5,
+    anisotropy: 0.35,
+    anisotropyRotation: PI / 2,
+    alphaMap: hairAlpha,
+    alphaTest: 0.3,
+    side: DoubleSide,
+    envMapIntensity: 0.3,
+  });
+
+  const blinkers: Mesh[] = [];
   evelym.traverse((o) => {
     const m = o as Mesh;
     if (!m.isMesh) return;
+    if (m.morphTargetDictionary?.piscar !== undefined) blinkers.push(m);
     m.castShadow = m.receiveShadow = true;
     m.frustumCulled = false; // a caixa de uma malha com esqueleto não acompanha os ossos
     const mat = m.material as MeshStandardMaterial;
@@ -611,7 +654,11 @@ export async function createHeroScene(
         sheenRoughness: 0.55,
       });
       mat.dispose();
-    } else if (mat.name === "evelym.cabelo" || mat.name === "evelym.eyelashes02") {
+    } else if (mat.name === "evelym.cabelo") {
+      m.material = mModelHair;
+      mat.map?.dispose();
+      mat.dispose();
+    } else if (mat.name === "evelym.eyelashes02") {
       // transparência recortada: sem problema de ordem de desenho entre as mechas
       // (o carregador desliga a escrita de profundidade em material transparente; sem ela, o couro cabeludo cobre o cabelo)
       mat.transparent = false;
@@ -627,12 +674,13 @@ export async function createHeroScene(
     return b;
   };
   const headBone = bone("head");
+  const chest = bone("spine_02");
   const hands = (["l", "r"] as const).map((s) => ({
     hand: bone(`hand_${s}`),
     fingers: ["index", "middle", "ring", "pinky"].map((f) => bone(`${f}_01_${s}`)),
   }));
   const rest = new Map<Object3D, Quaternion>();
-  for (const b of [headBone, ...hands.flatMap((h) => [h.hand, ...h.fingers])])
+  for (const b of [headBone, chest, ...hands.flatMap((h) => [h.hand, ...h.fingers])])
     rest.set(b, b.quaternion.clone());
   const AX = new Vector3(1, 0, 0);
   const AY = new Vector3(0, 1, 0);
@@ -859,6 +907,17 @@ export async function createHeroScene(
     const live = u >= 16 ? 1 : 0;
     if (live !== lastBadge) drawBadge((lastBadge = live) === 1);
 
+    // respiração: o peito sobe e desce devagar (antes das mãos, que estão presas a ele)
+    turn(chest, qTurn.setFromAxisAngle(AX, Math.sin(t * 1.4) * 0.012));
+    // piscada a cada ~4 s, às vezes dupla
+    const bt = t % 4.3;
+    const blink =
+      bt < 0.16
+        ? Math.sin((bt / 0.16) * PI)
+        : t % 12.9 > 12.5 && bt > 0.3 && bt < 0.46
+          ? Math.sin(((bt - 0.3) / 0.16) * PI)
+          : 0;
+    for (const m of blinkers) m.morphTargetInfluences![m.morphTargetDictionary!.piscar] = blink;
     // mãos e dedos digitando (calmos quando o código termina)
     const typing = typed < TOTAL_CHARS ? 1 : 0.12;
     hands.forEach((side, i) => {

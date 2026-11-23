@@ -64,7 +64,10 @@ def pose_de_digitar(armadura):
     for o in malhas():
         bpy.context.view_layer.objects.active = o
         for mod in list(o.modifiers):
-            if mod.type in ("ARMATURE", "MASK"):
+            if mod.type == "MASK" and mod.vertex_group != "body":
+                # máscara da blusa do pacote (esconde a pele por baixo dela): a blusa sai, e o moletom é feito dessa pele
+                o.modifiers.remove(mod)
+            elif mod.type in ("ARMATURE", "MASK"):
                 bpy.ops.object.modifier_apply(modifier=mod.name)
     bpy.context.view_layer.objects.active = armadura
     bpy.ops.object.mode_set(mode="POSE")
@@ -108,7 +111,7 @@ def cortar():
             bpy.data.objects.remove(o, do_unlink=True)
 
 
-def copiar_pele(nome, material, fica, folga):
+def copiar_pele(nome, material, fica, folga, suavizar=0):
     """Peça do moletom feita da pele do corpo: copia os vértices em que fica(objeto, vértice) é verdadeiro e infla."""
     corpo = next(o for o in malhas() if o.name.endswith(".body"))
     copia = corpo.copy()
@@ -120,6 +123,13 @@ def copiar_pele(nome, material, fica, folga):
     bm.verts.ensure_lookup_table()
     fora = [bm.verts[v.index] for v in copia.data.vertices if not fica(copia, v)]
     bmesh.ops.delete(bm, geom=fora, context="VERTS")
+    # Normais coerentes e para fora antes de inflar: na malha do MakeHuman, parte do peito vinha com a normal para dentro,
+    # e o moletom afundava no corpo ali (a pele aparecia por cima).
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    # Tecido grosso não marca a anatomia: alisa a forma (sem mexer nas bordas) antes de inflar.
+    miolo = [v for v in bm.verts if not v.is_boundary]
+    for _ in range(suavizar):
+        bmesh.ops.smooth_vert(bm, verts=miolo, factor=0.6, use_axis_x=True, use_axis_y=True, use_axis_z=True)
     bm.normal_update()
     for v in bm.verts:
         v.co += v.normal * folga
@@ -130,19 +140,59 @@ def copiar_pele(nome, material, fica, folga):
 
 
 def moletom(material):
-    """Mangas compridas até o punho e o corpo do moletom até o quadril (a blusa do pacote é curta)."""
+    """O moletom numa peça só: tronco até o quadril e mangas até o punho, na mesma folga. Duas peças com folgas diferentes
+    deixavam dobras e manchas na emenda do ombro (2026-11-23). A blusa curta do pacote sai."""
     copiar_pele(
-        "evelym.mangas",
+        "evelym.moletom",
         material,
-        lambda o, v: peso(o, v, ("upperarm_", "lowerarm_")) >= 0.5 and peso(o, v, ("hand_",)) <= 0.15,
-        0.009,
+        # Generoso no pescoço: a pele do alto do peito e do ombro também é puxada pelo osso do pescoço, e excluí-la abria
+        # buracos que a blusa antiga escondia. O moletom sobe até a base do pescoço, por baixo da gola do capuz.
+        lambda o, v: peso(o, v, ("upperarm_", "lowerarm_", "spine_", "pelvis", "clavicle_")) >= 0.35
+        and peso(o, v, ("hand_",)) <= 0.15
+        and peso(o, v, ("neck_",)) <= 0.6
+        and peso(o, v, ("head",)) <= 0.05,
+        0.015,
+        suavizar=10,
     )
-    copiar_pele(
-        "evelym.tronco",
-        material,
-        lambda o, v: peso(o, v, ("spine_", "pelvis", "clavicle_")) >= 0.5 and peso(o, v, ("neck_", "head")) <= 0.1,
-        0.012,
-    )
+
+
+def forma_de_piscar():
+    """Forma "piscar" nas pálpebras: a de cima desce até encontrar a de baixo, cobrindo o olho. Os cílios de cima descem
+    junto. No site, a cena liga e desliga essa forma (morph target)."""
+    olhos = next(o for o in malhas() if o.name.endswith(".high-poly"))
+    pontos = [olhos.matrix_world @ v.co for v in olhos.data.vertices]
+    centros = []
+    for lado in (-1, 1):
+        lado_pts = [p for p in pontos if p.x * lado > 0]
+        centros.append(sum(lado_pts, Vector()) / len(lado_pts))
+    rx, altura, aberta = 0.019, 0.016, 0.0055  # largura da pálpebra, até onde ela se mexe e a abertura do olho
+
+    def descer(p):
+        for c in centros:
+            dx, dz = p.x - c.x, p.z - c.z
+            if abs(dx) >= rx or not -0.001 < dz < altura or p.y > c.y + 0.004:
+                continue
+            fx = 1 - (dx / rx) ** 2
+            # 1 na borda da pálpebra, caindo até 0 na altura limite
+            fz = 1.0 if dz <= aberta else max(0.0, 1 - (dz - aberta) / (altura - aberta)) ** 2
+            queda = (aberta + 0.0015) * fx * fz
+            return Vector((p.x, p.y - 0.002 * fx * fz, p.z - queda))
+        return None
+
+    for o in malhas():
+        if not (o.name.endswith(".body") or o.name.endswith(".eyelashes02")):
+            continue
+        if not o.data.shape_keys:
+            o.shape_key_add(name="Basis")
+        forma = o.shape_key_add(name="piscar")
+        inversa = o.matrix_world.inverted()
+        movidos = 0
+        for i, v in enumerate(o.data.vertices):
+            novo = descer(o.matrix_world @ v.co)
+            if novo is not None:
+                forma.data[i].co = inversa @ novo
+                movidos += 1
+        print(f"PISCAR {o.name}: {movidos} vértices")
 
 
 def roupa_lisa(material, cor):
@@ -221,7 +271,9 @@ def main():
     material_da_roupa = roupa.material_slots[0].material
     roupa_lisa(material_da_roupa, (0.5, 0.36, 0.78))
     moletom(material_da_roupa)
+    bpy.data.objects.remove(roupa, do_unlink=True)
     assar_pele()
+    forma_de_piscar()
     ponto_da_cabeca(armadura)
     os.makedirs(os.path.dirname(SAIDA), exist_ok=True)
     bpy.ops.export_scene.gltf(
@@ -230,7 +282,8 @@ def main():
         export_image_format="WEBP",
         export_skins=True,
         export_animations=False,
-        export_morph=False,
+        export_morph=True,
+        export_morph_normal=False,
         export_yup=True,
     )
     triangulos = sum(sum(len(p.vertices) - 2 for p in o.data.polygons) for o in malhas())

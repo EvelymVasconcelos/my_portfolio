@@ -60,7 +60,12 @@ Termina com: a cena no navegador local com a personagem nova digitando, piscando
 >   (3.2) e com o esqueleto inteiro (3.1). A meta de 1,5 MB e 40 mil triângulos fica para o bloco 3;
 > - a cena carrega o modelo pelo `GLTFLoader` (código da cena: 125,1 → 148,5 kB gzip), prende os fones ao centro da
 >   cabeça, usa o material do tema no moletom e mexe os dedos, as mãos e a cabeça pelos ossos;
-> - falta: piscada e sorriso (2.6 e 4.5), o carregamento em paralelo do modelo (4.2) e o resto do bloco 5.
+> - ajustes de 2026-11-23, pedidos pela dona: moletom numa peça só (tronco e mangas na mesma folga, alisado, sem a blusa
+>   curta do pacote; a máscara da blusa apagava a pele do peito e abria buracos), cabelo em três camadas repicadas, com
+>   ondulação e pontas irregulares, faces viradas para fora e material próprio na cena (preto com fios de tons
+>   variados, brilho discreto e pontas desfiadas), piscada (forma "piscar" nas pálpebras e nos cílios) e respiração;
+> - modelo agora com 2,77 MB e 53.734 triângulos: a compressão e o enxugamento do bloco 3 precisam trazê-lo à meta;
+> - falta: sorriso (2.6), o carregamento em paralelo do modelo (4.2) e o resto do bloco 5.
 
 ## 5. Desempenho e fechamento
 
