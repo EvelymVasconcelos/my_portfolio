@@ -49,8 +49,17 @@ export function HeroBackdrop() {
       shape = <path d={`M-${h},-${h}L${h},${h}M${h},-${h}L-${h},${h}`} />;
     }
 
+    // Em tela estreita, o texto ocupa a largura toda da parte de cima do Hero: as formas que caem ali somem (CSS
+    // `.hero-backdrop .atras-do-texto`), e ficam as das bordas e as de perto da cena, embaixo.
+    const behindText = y < 78 && x > 5 && x < 95;
     shapes.push(
-      <svg key={`f${i}`} x={`${f1(x)}%`} y={`${f1(y)}%`} overflow="visible">
+      <svg
+        key={`f${i}`}
+        x={`${f1(x)}%`}
+        y={`${f1(y)}%`}
+        overflow="visible"
+        className={behindText ? "atras-do-texto" : undefined}
+      >
         <g className={accent ? "f a" : "f"} style={{ "--d": depth } as CSSProperties}>
           <g transform={`rotate(${rot})`}>{shape}</g>
         </g>

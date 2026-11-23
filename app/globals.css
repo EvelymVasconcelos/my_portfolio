@@ -598,6 +598,13 @@ a:hover > .signature .signature-letter {
   opacity: 0.35;
 }
 
+/* No celular e no tablet, o texto do Hero ocupa a largura toda: sem formas atrás dele. */
+@media (max-width: 63.99rem) {
+  .hero-backdrop .atras-do-texto {
+    display: none;
+  }
+}
+
 .hero-glow {
   position: absolute;
   inset: 0;
