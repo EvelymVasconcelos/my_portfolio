@@ -676,6 +676,136 @@ a:hover > .signature .signature-letter {
   );
 }
 
+/* Camadas da foto (protótipo 3B): a foto na frente; atrás, um cartão em degradê com grão, girado, e uma retícula de
+   pontos saindo do canto; ao lado, o nome; no canto, um selo com texto girando. Com a inclinação, o
+   cartão fica mais fundo e o selo mais à frente. No mouse, o cartão se alinha à foto. */
+.foto-camadas {
+  /* Espaço para a legenda à direita e o selo à esquerda sem passar da margem no celular. */
+  width: min(100% - 3.5rem, 22rem);
+  margin-inline: 1.5rem auto;
+}
+@media (min-width: 64rem) {
+  .foto-camadas {
+    width: 100%;
+    margin-inline: 0;
+  }
+}
+
+.camadas-foto {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 2rem;
+  box-shadow: 0 40px 70px -35px rgb(0 0 0 / 0.55);
+}
+
+.camadas-cor,
+.camadas-pontos {
+  position: absolute;
+  pointer-events: none;
+  transition: transform 0.8s var(--ease-out-soft);
+}
+
+.camadas-cor {
+  inset: 0;
+  z-index: 1;
+  border-radius: 2rem;
+  transform: translateZ(-30px) rotate(-6deg) translate(-0.6rem, 0.8rem);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(150deg, var(--accent), var(--accent-2));
+  background-blend-mode: soft-light, normal;
+}
+
+.camadas-pontos {
+  inset: -1.4rem -1.8rem auto auto;
+  z-index: 0;
+  width: 70%;
+  height: 60%;
+  opacity: 0.7;
+  transform: translateZ(-50px);
+  background: radial-gradient(circle, var(--accent-text) 1.6px, transparent 1.9px) 0 0 / 12px 12px;
+  mask: radial-gradient(120% 120% at 100% 0, #000 30%, transparent 75%);
+}
+
+@media (hover: hover) {
+  .foto-3d:hover .camadas-cor {
+    transform: translateZ(-30px) rotate(-2.5deg) translate(-0.3rem, 0.4rem);
+  }
+  .foto-3d:hover .camadas-pontos {
+    transform: translateZ(-50px) translate(-0.5rem, 0.5rem);
+  }
+}
+
+.camadas-legenda {
+  position: absolute;
+  z-index: 3;
+  left: calc(100% + 0.9rem);
+  bottom: 0.5rem;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  font:
+    500 0.68rem var(--font-code),
+    ui-monospace,
+    monospace;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.camadas-selo {
+  position: absolute;
+  z-index: 3;
+  left: -1.4rem;
+  bottom: -1.4rem;
+  display: grid;
+  place-items: center;
+  width: 5.4rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 14px 30px -14px rgb(0 0 0 / 0.45);
+  transform: translateZ(40px);
+}
+.camadas-selo svg {
+  position: absolute;
+  inset: 0;
+}
+.camadas-selo text {
+  font:
+    500 9.4px var(--font-code),
+    ui-monospace,
+    monospace;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  fill: var(--text-2);
+}
+.camadas-selo > span {
+  font:
+    700 1.25rem var(--font-heading),
+    system-ui,
+    sans-serif;
+  color: var(--accent-text);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .camadas-selo svg {
+    animation: selo-gira 24s linear infinite;
+  }
+}
+@keyframes selo-gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .camadas-cor,
+  .camadas-pontos {
+    transition: none;
+  }
+}
+
 /* ─── Sequência presa da arquitetura (components/sections/Architecture.tsx) ───
    Trilho alto com a área presa (`position: sticky`) dentro; `--p` (0 a 1) vem do condutor de rolagem. Cada parte do
    diagrama acende a partir do seu `--from` (unidade = uma etapa). Sem `data-motion="ready"` (sem JavaScript) ou com

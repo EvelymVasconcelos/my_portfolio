@@ -45,6 +45,7 @@
     "lead": "I have a degree in Information Systems from UFAM, and I build backend systems in the Python ecosystem: RESTful APIs with FastAPI and Django, microservices with Docker and Kubernetes, integrating PostgreSQL and NoSQL databases.",
     "bio_1": "Today, I’m a backend software engineer at Sidia, where I lead the development of high-performance REST APIs for global products. Previously, at Bemol Digital, I designed ETL processes and optimized SQL queries in high-availability systems for the retail industry.",
     "bio_2": "I apply the same rigor to my research: I am the lead author of papers on test automation and CI/CD, one published at IEEE SEAI 2024 and another accepted at ICSCA 2026, with publication expected in 2027.",
+    "photo_seal": "Backend · Research · Python ·",
     "facts": {
       "location_label": "Location",
       "location": "Manaus, Brazil",

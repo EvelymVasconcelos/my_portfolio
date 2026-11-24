@@ -45,6 +45,7 @@
     "lead": "Soy licenciada en Sistemas de Información por la UFAM y desarrollo backend en el ecosistema de Python: API RESTful con FastAPI y Django, en microservicios con Docker y Kubernetes, integrando PostgreSQL y bases de datos NoSQL.",
     "bio_1": "Actualmente soy ingeniera de software backend en Sidia, donde dirijo el desarrollo de API REST de alto rendimiento para productos globales. Anteriormente, en Bemol Digital, diseñé procesos ETL y optimicé consultas SQL en sistemas de alta disponibilidad para el sector minorista.",
     "bio_2": "Aplico el mismo rigor a la investigación: soy autora principal de artículos sobre automatización de pruebas y CI/CD, uno publicado en el IEEE SEAI 2024 y otro aceptado en el ICSCA 2026, con publicación prevista para 2027.",
+    "photo_seal": "Backend · Investigación · Python ·",
     "facts": {
       "location_label": "Ubicación",
       "location": "Manaos, Brasil",

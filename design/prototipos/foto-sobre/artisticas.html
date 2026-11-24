@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="pt-BR" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foto artística: mais opções</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens copiados de app/globals.css */
+  :root {
+    --bg: #f6f4f9; --surface: #ffffff; --line: #e3dfea; --text: #17151c; --text-2: #4a4655; --text-3: #6b6677;
+    --accent: #7c3aed; --accent-text: #6d28d9; --accent-2: #b5179e; --accent-2-text: #9d1488;
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+  .dark {
+    --bg: #121117; --surface: #1a1920; --line: #34313d; --text: #f3f1f7; --text-2: #bfbacb; --text-3: #9b95a8;
+    --accent-text: #b39dff; --accent-2-text: #f5a8e8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 "Instrument Sans", system-ui, sans-serif; }
+  header { position: sticky; top: 0; z-index: 9; display: flex; gap: 1rem; align-items: center; justify-content: space-between;
+    padding: 1rem clamp(1rem, 4vw, 4rem); background: color-mix(in oklab, var(--bg) 88%, transparent); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line); }
+  header h1 { font: 700 1.1rem "Bricolage Grotesque"; margin: 0; }
+  button.tema { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: .4rem 1rem; cursor: pointer; }
+  button.tema:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+  main { padding: 4rem clamp(1rem, 4vw, 4rem) 6rem; display: grid; gap: 7rem; }
+  section { display: grid; gap: 4rem; align-items: center; grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); }
+  @media (max-width: 52rem) { section { grid-template-columns: 1fr; } }
+  .num { font: 500 .75rem "JetBrains Mono"; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-text); }
+  h2 { font: 700 clamp(1.6rem, 3vw, 2.2rem)/1.1 "Bricolage Grotesque"; margin: .4rem 0 .8rem; }
+  p { color: var(--text-2); max-width: 54ch; margin: 0 0 .6rem; }
+  .tag { display: inline-block; margin: .4rem .4rem 0 0; font: 500 .7rem "JetBrains Mono"; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--accent-2-text); border: 1px solid currentColor; border-radius: 999px; padding: .15rem .6rem; }
+  img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
+
+  /* Base: foto na frente, cartão atrás girado; no mouse, alinham. */
+  .pilha { position: relative; aspect-ratio: 4/5; isolation: isolate; }
+  .pilha .foto { position: absolute; inset: 0; border-radius: 2rem; overflow: hidden; z-index: 2; isolation: isolate;
+    box-shadow: 0 40px 70px -35px rgb(0 0 0 / .6); transition: transform .8s var(--ease); }
+  .pilha .tras { position: absolute; inset: 0; z-index: 1; border-radius: 2rem; overflow: hidden;
+    transform: rotate(-6deg) translate(-.6rem, .8rem); transition: transform .8s var(--ease); }
+  .pilha:hover .tras { transform: rotate(-2.5deg) translate(-.3rem, .4rem); }
+
+  /* 3D e 3E · Caleidoscópio: facetas sobre a foto, em multiplicar, como tinta sobre o retrato */
+  .facetas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .foto .facetas polygon { mix-blend-mode: multiply; transition: opacity .6s var(--ease); }
+  .foto .facetas .linhas { mix-blend-mode: normal; }
+  .kal:hover .foto .facetas polygon.vazio { opacity: 0; }
+
+  /* 3F · Tiras: a foto cortada em faixas desencontradas, com cor entre elas */
+  .tiras .foto { background: linear-gradient(180deg, var(--accent), var(--accent-2)); }
+  .tira { position: absolute; inset: 0; transition: transform .9s var(--ease); }
+  .tiras:hover .tira { transform: none !important; }
+  .tiras .tras { background: repeating-linear-gradient(-45deg, var(--text) 0 6px, transparent 6px 14px); opacity: .9; }
+
+  /* 3G · Grade pop em duotone */
+  .grade .foto { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--bg); }
+  .quad { position: relative; overflow: hidden; }
+  .quad { background: var(--claro); }
+  .quad img { filter: grayscale(1) contrast(1.35); mix-blend-mode: multiply; transition: transform .8s var(--ease); }
+  .quad::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--escuro); mix-blend-mode: lighten; }
+  .grade:hover .quad img { transform: scale(1.06); }
+  .grade .tras { background: linear-gradient(150deg, var(--accent), var(--accent-2)); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pilha *, .pilha .tras { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Foto do Sobre: mais 4 opções artísticas</h1>
+  <button class="tema" type="button" onclick="document.documentElement.classList.toggle('dark')">Alternar claro / escuro</button>
+</header>
+<main>
+  <section>
+    <div class="pilha kal" data-paleta="site">
+      <div class="tras"><svg class="facetas fundo" viewBox="0 0 400 500" preserveAspectRatio="none" aria-hidden="true"></svg></div>
+      <div class="foto">
+        <img src="../../../public/images/profile.jpeg" alt="Evelym Marinho sorrindo">
+        <svg class="facetas" viewBox="0 0 400 500" preserveAspectRatio="none" aria-hidden="true"></svg>
+      </div>
+    </div>
+    <div>
+      <span class="num">3D · Caleidoscópio nas cores do site</span>
+      <h2>Facetas geométricas sobre o retrato, em violeta e orquídea</h2>
+      <p>Inspirado na linguagem dos murais do Kobra: o retrato coberto de triângulos de cor, faixas e xadrez, como tinta transparente. O rosto continua legível porque a cor só tinge a foto.</p>
+      <p>Fica dentro da paleta do site (violeta, orquídea, lilás, preto e branco). No mouse, algumas facetas se apagam e revelam a foto.</p>
+      <span class="tag">Recomendado</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="pilha kal" data-paleta="multicor">
+      <div class="tras"><svg class="facetas fundo" viewBox="0 0 400 500" preserveAspectRatio="none" aria-hidden="true"></svg></div>
+      <div class="foto">
+        <img src="../../../public/images/profile.jpeg" alt="Evelym Marinho sorrindo">
+        <svg class="facetas" viewBox="0 0 400 500" preserveAspectRatio="none" aria-hidden="true"></svg>
+      </div>
+    </div>
+    <div>
+      <span class="num">3E · Caleidoscópio multicor</span>
+      <h2>A mesma ideia, com o arco-íris dos murais</h2>
+      <p>Amarelo, laranja, rosa, ciano, verde e violeta. É a versão mais fiel à referência e a que mais chama atenção.</p>
+      <p>Por outro lado, é a única cor forte fora do roxo, preto e branco em todo o site: vira o ponto mais colorido da página.</p>
+      <span class="tag">Foge da paleta</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="pilha tiras">
+      <div class="tras"></div>
+      <div class="foto"></div>
+    </div>
+    <div>
+      <span class="num">3F · Tiras</span>
+      <h2>A foto recortada em faixas desencontradas</h2>
+      <p>Colagem: a foto é fatiada em tiras verticais, cada uma um pouco deslocada, e o degradê violeta aparece entre elas. Atrás, um cartão listrado.</p>
+      <p>No mouse, as tiras se alinham e a foto se "monta", como um deploy que fecha.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="pilha grade">
+      <div class="tras"></div>
+      <div class="foto">
+        <div class="quad" style="--claro:#c4b5fd;--escuro:#2e1065"><img src="../../../public/images/profile.jpeg" alt=""></div>
+        <div class="quad" style="--claro:#f5a8e8;--escuro:#4a0540"><img src="../../../public/images/profile.jpeg" alt=""></div>
+        <div class="quad" style="--claro:#f3f1f7;--escuro:#121117"><img src="../../../public/images/profile.jpeg" alt=""></div>
+        <div class="quad" style="--claro:#a78bfa;--escuro:#5b1199"><img src="../../../public/images/profile.jpeg" alt="Evelym Marinho sorrindo"></div>
+      </div>
+    </div>
+    <div>
+      <span class="num">3G · Grade pop</span>
+      <h2>Quatro retratos em duotone, como serigrafia</h2>
+      <p>A foto repetida em quatro quadros, cada um em duas cores da paleta. É arte pop, bem gráfica, e resolve o fundo branco da foto: ele vira a cor clara de cada quadro.</p>
+    </div>
+  </section>
+</main>
+<script>
+  // Facetas: grade 5 × 6 com vértices deslocados, cada quadrado dividido em dois triângulos. Semente fixa: o desenho
+  // é sempre o mesmo. Algumas facetas recebem faixas ou xadrez, outras ficam vazias (marcadas para sumir no mouse).
+  const PALETAS = {
+    site: ["#7c3aed", "#b5179e", "#c4b5fd", "#f5a8e8", "#a78bfa", "#e9d5ff", "#5b21b6"],
+    multicor: ["#ffd23f", "#ff6b35", "#ef476f", "#00b4d8", "#06d6a0", "#7c3aed", "#f72585", "#ffbe0b"],
+  };
+  function rng(seed) { return () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646; }
+  const NS = "http://www.w3.org/2000/svg";
+  function el(name, attrs) { const e = document.createElementNS(NS, name); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+  function desenha(svg, paleta, seed, densidade) {
+    const r = rng(seed), C = 5, L = 6, W = 400, H = 500, pts = [];
+    for (let j = 0; j <= L; j++) for (let i = 0; i <= C; i++) {
+      const borda = i === 0 || j === 0 || i === C || j === L;
+      pts.push([i * W / C + (borda && (i === 0 || i === C) ? 0 : (r() - .5) * 60), j * H / L + (borda && (j === 0 || j === L) ? 0 : (r() - .5) * 60)]);
+    }
+    const id = "p" + seed;
+    const defs = el("defs", {});
+    defs.innerHTML = `
+      <pattern id="${id}f" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="14" fill="${paleta[0]}"/></pattern>
+      <pattern id="${id}x" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#17151c"/><rect x="10" y="10" width="10" height="10" fill="#17151c"/></pattern>
+      <pattern id="${id}p" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="2.2" fill="${paleta[1]}"/></pattern>`;
+    svg.append(defs);
+    const g = el("g", {});
+    const P = (i, j) => pts[j * (C + 1) + i];
+    for (let j = 0; j < L; j++) for (let i = 0; i < C; i++) {
+      const a = P(i, j), b = P(i + 1, j), c = P(i + 1, j + 1), d = P(i, j + 1);
+      const tris = (i + j) % 2 ? [[a, b, c], [a, c, d]] : [[a, b, d], [b, c, d]];
+      for (const t of tris) {
+        const s = r();
+        let fill, op = .85, cls = "";
+        if (s < 1 - densidade) { fill = paleta[Math.floor(r() * paleta.length)]; op = .18; cls = "vazio"; }
+        else if (s < 1 - densidade + .08) fill = `url(#${id}f)`;
+        else if (s < 1 - densidade + .13) { fill = `url(#${id}x)`; op = .55; }
+        else if (s < 1 - densidade + .18) fill = `url(#${id}p)`;
+        else fill = paleta[Math.floor(r() * paleta.length)];
+        g.append(el("polygon", { points: t.map((p) => p.join(",")).join(" "), fill, opacity: op, class: cls }));
+      }
+    }
+    svg.append(g);
+    // Contorno fino das facetas, como o traço que separa as cores no mural
+    const linhas = el("g", { class: "linhas", fill: "none", stroke: "rgba(255,255,255,.35)", "stroke-width": "1" });
+    for (const p of g.querySelectorAll("polygon")) linhas.append(el("polygon", { points: p.getAttribute("points") }));
+    svg.append(linhas);
+  }
+
+  document.querySelectorAll(".kal").forEach((box, k) => {
+    const paleta = PALETAS[box.dataset.paleta];
+    desenha(box.querySelector(".foto .facetas"), paleta, 7 + k, .55);
+    const fundo = box.querySelector(".facetas.fundo");
+    desenha(fundo, paleta, 31 + k, 1);
+    fundo.querySelectorAll("polygon").forEach((p) => p.setAttribute("opacity", "1"));
+  });
+
+  // Tiras: 7 faixas da mesma foto, com deslocamento vertical fixo
+  document.querySelectorAll(".tiras .foto").forEach((foto) => {
+    const N = 7, desloc = [10, -14, 6, -8, 16, -6, 12], gap = 0.6;
+    for (let i = 0; i < N; i++) {
+      // Cada tira é a foto inteira recortada numa faixa (clip-path), então as faixas juntas formam uma foto só.
+      const t = document.createElement("div");
+      t.className = "tira";
+      const esq = (i * 100) / N + (i ? gap / 2 : 0), dir = 100 - ((i + 1) * 100) / N + (i < N - 1 ? gap / 2 : 0);
+      t.style.clipPath = `inset(0 ${dir}% 0 ${esq}%)`;
+      t.style.transform = `translateY(${desloc[i]}px)`;
+      const img = document.createElement("img");
+      img.src = "../../../public/images/profile.jpeg";
+      img.alt = i === 3 ? "Evelym Marinho sorrindo" : "";
+      t.append(img);
+      foto.append(t);
+    }
+  });
+</script>
+</body>
+</html>

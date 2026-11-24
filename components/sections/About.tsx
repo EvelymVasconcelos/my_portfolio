@@ -28,18 +28,42 @@ export async function About() {
         />
 
         <div className="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-          <div id="about-photo" className="foto-3d self-start">
-            <div data-reveal="self" className="overflow-hidden rounded-xl border border-line">
-              <Image
-                src="/images/profile.jpeg"
-                alt={tA11y("profile_photo_alt")}
-                // Foto atual: 400 × 400 px. Uma versão maior (vertical, 4:5) deixaria a imagem mais nítida aqui.
-                width={400}
-                height={400}
-                sizes="(min-width: 1024px) 22rem, 100vw"
-                className="aspect-[4/5] h-auto w-full object-cover object-top"
-              />
-              <i aria-hidden="true" />
+          {/* Foto em camadas, como figura de artigo: cartão em degradê com grão e retícula atrás, o nome na lateral e um selo girando no canto (protótipo 3B em design/prototipos/foto-sobre/camadas.html). */}
+          <div id="about-photo" className="foto-3d foto-camadas self-start">
+            <div data-reveal="self">
+              <span aria-hidden="true" className="camadas-pontos" />
+              <span aria-hidden="true" className="camadas-cor" />
+              <div className="camadas-foto">
+                <Image
+                  src="/images/profile.jpeg"
+                  alt={tA11y("profile_photo_alt")}
+                  // Foto atual: 400 × 400 px. Uma versão maior (vertical, 4:5) deixaria a imagem mais nítida aqui.
+                  width={400}
+                  height={400}
+                  sizes="(min-width: 1024px) 22rem, 20rem"
+                  className="aspect-[4/5] h-auto w-full object-cover object-top"
+                />
+                <i aria-hidden="true" />
+              </div>
+              <span aria-hidden="true" className="camadas-legenda">
+                Evelym Marinho
+              </span>
+              <span aria-hidden="true" className="camadas-selo">
+                <svg viewBox="0 0 100 100">
+                  <defs>
+                    <path
+                      id="selo-circulo"
+                      d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0"
+                    />
+                  </defs>
+                  <text>
+                    <textPath href="#selo-circulo" textLength="224" lengthAdjust="spacing">
+                      {t("photo_seal")}
+                    </textPath>
+                  </text>
+                </svg>
+                <span>E</span>
+              </span>
             </div>
           </div>
           <TiltPhoto targetId="about-photo" />

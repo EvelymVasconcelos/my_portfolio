@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foto do Sobre: formatos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens copiados de app/globals.css */
+  :root {
+    --bg: #f6f4f9; --surface: #ffffff; --line: #e3dfea; --text: #17151c; --text-2: #4a4655; --text-3: #6b6677;
+    --accent: #7c3aed; --accent-text: #6d28d9; --accent-2: #b5179e; --accent-2-text: #9d1488;
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+  .dark {
+    --bg: #121117; --surface: #1a1920; --line: #34313d; --text: #f3f1f7; --text-2: #bfbacb; --text-3: #9b95a8;
+    --accent-text: #b39dff; --accent-2-text: #f5a8e8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 "Instrument Sans", system-ui, sans-serif; }
+  header { position: sticky; top: 0; z-index: 9; display: flex; gap: 1rem; align-items: center; justify-content: space-between;
+    padding: 1rem clamp(1rem, 4vw, 4rem); background: color-mix(in oklab, var(--bg) 88%, transparent); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line); }
+  header h1 { font: 700 1.1rem "Bricolage Grotesque"; margin: 0; }
+  button.tema { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: .4rem 1rem; cursor: pointer; }
+  button.tema:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+  main { padding: 2rem clamp(1rem, 4vw, 4rem) 6rem; display: grid; gap: 5rem; }
+  section { display: grid; gap: 3rem; align-items: center; grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); }
+  @media (max-width: 52rem) { section { grid-template-columns: 1fr; } }
+  .num { font: 500 .75rem "JetBrains Mono"; letter-spacing: .2em; text-transform: uppercase; color: var(--accent-text); }
+  h2 { font: 700 clamp(1.6rem, 3vw, 2.2rem)/1.1 "Bricolage Grotesque"; margin: .4rem 0 .8rem; }
+  p { color: var(--text-2); max-width: 52ch; margin: 0 0 .6rem; }
+  .rec { display: inline-block; margin-top: .4rem; font: 500 .7rem "JetBrains Mono"; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--accent-2-text); border: 1px solid currentColor; border-radius: 999px; padding: .15rem .6rem; }
+  img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
+
+  /* 1. Arco */
+  .arco { position: relative; aspect-ratio: 4/5; isolation: isolate; }
+  .arco .moldura { position: absolute; inset: 0; border-radius: 999px 999px 1.75rem 1.75rem; overflow: hidden; }
+  .arco::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 999px 999px 1.75rem 1.75rem;
+    border: 1.5px solid var(--accent-text); transform: translate(.9rem, .9rem); transition: transform .6s var(--ease); }
+  .arco:hover::before { transform: translate(.4rem, .4rem); }
+  .chip { position: absolute; left: -1rem; bottom: 1.6rem; display: flex; align-items: center; gap: .5rem; padding: .45rem .9rem;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px; font: 500 .72rem "JetBrains Mono";
+    letter-spacing: .12em; text-transform: uppercase; color: var(--text); box-shadow: 0 10px 30px -12px rgb(0 0 0 / .35); }
+  .chip b { width: .5rem; height: .5rem; border-radius: 50%; background: #5bc48a; box-shadow: 0 0 0 3px color-mix(in oklab, #5bc48a 25%, transparent); }
+
+  /* 2. Círculo com anel de texto */
+  .anel { position: relative; aspect-ratio: 1; width: 100%; }
+  .anel .foto { position: absolute; inset: 13%; border-radius: 50%; overflow: hidden; outline: 1px solid var(--line); outline-offset: 6px; }
+  .anel svg { position: absolute; inset: 0; width: 100%; height: 100%; animation: gira 28s linear infinite; }
+  .anel text { font: 500 7.6px "JetBrains Mono"; letter-spacing: 2.6px; fill: var(--text-2); text-transform: uppercase; }
+  .anel .ponto { position: absolute; right: 20%; top: 20%; width: 14%; aspect-ratio: 1; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: grid; place-items: center; color: #fff;
+    font: 700 1.1rem "Bricolage Grotesque"; box-shadow: 0 10px 30px -10px var(--accent); }
+  @keyframes gira { to { transform: rotate(360deg); } }
+
+  /* 3. Camadas deslocadas */
+  .camadas { position: relative; aspect-ratio: 4/5; isolation: isolate; }
+  .camadas .fundo { position: absolute; inset: 0; z-index: -1; border-radius: 2rem; transform: rotate(-5deg) translate(-.4rem, .6rem);
+    background: linear-gradient(150deg, var(--accent), var(--accent-2)); transition: transform .7s var(--ease); }
+  .camadas .fundo2 { position: absolute; inset: 0; z-index: -2; border-radius: 2rem; transform: rotate(4deg) translate(.6rem, .2rem);
+    border: 1.5px dashed var(--line); transition: transform .7s var(--ease); }
+  .camadas .foto { position: absolute; inset: 0; border-radius: 2rem; overflow: hidden; box-shadow: 0 30px 60px -30px rgb(0 0 0 / .55); }
+  .camadas:hover .fundo { transform: rotate(-2deg) translate(-.2rem, .3rem); }
+  .camadas:hover .fundo2 { transform: rotate(2deg); }
+
+  /* 4. Forma orgânica que respira */
+  .blob { position: relative; aspect-ratio: 4/5; padding: 3px; background: linear-gradient(140deg, var(--accent), var(--accent-2));
+    border-radius: 58% 42% 46% 54% / 44% 50% 50% 56%; animation: respira 14s ease-in-out infinite alternate; }
+  .blob .foto { width: 100%; height: 100%; overflow: hidden; border-radius: inherit; }
+  @keyframes respira {
+    50% { border-radius: 44% 56% 58% 42% / 56% 42% 58% 44%; }
+    100% { border-radius: 52% 48% 40% 60% / 48% 60% 40% 52%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anel svg, .blob { animation: none; }
+    .arco::before, .camadas .fundo, .camadas .fundo2 { transition: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Foto do Sobre: 4 formatos</h1>
+  <button class="tema" type="button" onclick="document.documentElement.classList.toggle('dark')">Alternar claro / escuro</button>
+</header>
+<main>
+  <section>
+    <div class="arco">
+      <div class="moldura"><img src="../../../public/images/profile.jpeg" alt="Evelym Marinho sorrindo"></div>
+      <span class="chip"><b></b>Manaus, Brasil</span>
+    </div>
+    <div>
+      <span class="num">01 · Arco</span>
+      <h2>Topo em arco, com contorno violeta deslocado</h2>
+      <p>Formato editorial, de revista. O contorno atrás ecoa a curva do sublinhado do título. No mouse, ele se aproxima da foto.</p>
+      <p>Um selo com a cidade fica sobre a borda e substitui o fato "Local" ao lado, se você quiser.</p>
+      <span class="rec">Recomendado</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="anel">
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <defs><path id="c" d="M100,100 m-88,0 a88,88 0 1,1 176,0 a88,88 0 1,1 -176,0"/></defs>
+        <text><textPath href="#c" textLength="548" lengthAdjust="spacing">Engenheira backend · Pesquisadora · Python · APIs · Microsserviços ·</textPath></text>
+      </svg>
+      <div class="foto"><img src="../../../public/images/profile.jpeg" alt="Evelym Marinho sorrindo"></div>
+      <span class="ponto" aria-hidden="true">E</span>
+    </div>
+    <div>
+      <span class="num">02 · Círculo com anel</span>
+      <h2>Foto redonda, com um texto girando em volta</h2>
+      <p>O anel gira devagar (para com movimento reduzido) e repete o que você faz. O selo violeta retoma o E do favicon.</p>
+      <p>A foto quadrada de 400 px cabe sem corte.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="camadas">
+      <div class="fundo2"></div>
+      <div class="fundo"></div>
+      <div class="foto"><img src="../../../public/images/profile.jpeg" alt="Evelym Marinho sorrindo"></div>
+    </div>
+    <div>
+      <span class="num">03 · Camadas</span>
+      <h2>Cartões empilhados atrás da foto</h2>
+      <p>Um cartão em degradê violeta e orquídea e outro tracejado, levemente girados. No mouse, eles se alinham. Lembra camadas de um sistema.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="blob"><div class="foto"><img src="../../../public/images/profile.jpeg" alt="Evelym Marinho sorrindo"></div></div>
+    <div>
+      <span class="num">04 · Forma orgânica</span>
+      <h2>Contorno que muda devagar, com borda em degradê</h2>
+      <p>A forma "respira" em 14 segundos (fica parada com movimento reduzido). É a mais suave, e a mais distante do resto do site, que é geométrico.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>
