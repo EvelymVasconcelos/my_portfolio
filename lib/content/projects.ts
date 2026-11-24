@@ -31,7 +31,7 @@ export const PROJECTS: readonly Project[] = [
   {
     id: "bemol-etl",
     url: null,
-    stack: ["Python", "PostgreSQL", "Redis", "ETL", "SQL"],
+    stack: ["Python", "PostgreSQL", "Redis", "SQL"],
   },
   {
     id: "agile-blueprint",

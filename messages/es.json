@@ -43,7 +43,7 @@
     "label": "Acerca de",
     "title": "Ingeniera de software backend, investigadora y programadora en Python desde hace más de 6 años.",
     "lead": "Soy licenciada en Sistemas de Información por la UFAM y desarrollo backend en el ecosistema de Python: API RESTful con FastAPI y Django, en microservicios con Docker y Kubernetes, integrando PostgreSQL y bases de datos NoSQL.",
-    "bio_1": "Actualmente soy ingeniera de software backend en Sidia, donde dirijo el desarrollo de API REST de alto rendimiento para productos globales. Anteriormente, en Bemol Digital, diseñé procesos ETL y optimicé consultas SQL en sistemas de alta disponibilidad para el sector minorista.",
+    "bio_1": "Actualmente soy ingeniera de software backend en Sidia, donde dirijo el desarrollo de API REST de alto rendimiento para productos globales. Anteriormente, en Bemol Digital, optimicé consultas SQL en sistemas de alta disponibilidad para el sector minorista.",
     "bio_2": "Aplico el mismo rigor a la investigación: soy autora principal de artículos sobre automatización de pruebas y CI/CD, uno publicado en el IEEE SEAI 2024 y otro aceptado en el ICSCA 2026, con publicación prevista para 2027.",
     "photo_seal": "Backend · Investigación · Python ·",
     "facts": {
@@ -85,8 +85,7 @@
           "postgresql": "PostgreSQL",
           "mysql": "MySQL",
           "redis": "Redis",
-          "mongodb": "MongoDB",
-          "etl": "ETL"
+          "mongodb": "MongoDB"
         }
       },
       "infra": {
@@ -122,7 +121,7 @@
       }
     },
     "skills_extra_label": "También",
-    "skills_extra": "liderazgo técnico en el desarrollo de API, integración segura entre API e interfaces, optimización de consultas SQL, procesos ETL para grandes volúmenes de datos y ciclos ágiles.",
+    "skills_extra": "liderazgo técnico en el desarrollo de API, integración segura entre API e interfaces, optimización de consultas SQL y ciclos ágiles.",
     "sequence": {
       "eyebrow": "Cómo trabajo",
       "title": "Cómo llevo un sistema a producción",
@@ -216,7 +215,7 @@
         "role": "Software Engineer, Backend",
         "organization": "Bemol Digital",
         "location": "Manaos",
-        "description": "Desarrollé sistemas de alta disponibilidad para el comercio minorista, con grandes volúmenes de datos. Diseñé procesos ETL, optimicé consultas SQL en PostgreSQL y NoSQL (Redis) y me encargué de la integración segura entre API e interfaces, en ciclos ágiles."
+        "description": "Desarrollé sistemas de alta disponibilidad para el comercio minorista, con grandes volúmenes de datos. Optimicé consultas SQL en PostgreSQL y NoSQL (Redis) y me encargué de la integración segura entre API e interfaces, en ciclos ágiles."
       }
     }
   },

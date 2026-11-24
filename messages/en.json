@@ -43,7 +43,7 @@
     "label": "About",
     "title": "Backend software engineer, researcher, and Python developer for over 6 years.",
     "lead": "I have a degree in Information Systems from UFAM, and I build backend systems in the Python ecosystem: RESTful APIs with FastAPI and Django, microservices with Docker and Kubernetes, integrating PostgreSQL and NoSQL databases.",
-    "bio_1": "Today, I’m a backend software engineer at Sidia, where I lead the development of high-performance REST APIs for global products. Previously, at Bemol Digital, I designed ETL processes and optimized SQL queries in high-availability systems for the retail industry.",
+    "bio_1": "Today, I’m a backend software engineer at Sidia, where I lead the development of high-performance REST APIs for global products. Previously, at Bemol Digital, I optimized SQL queries in high-availability systems for the retail industry.",
     "bio_2": "I apply the same rigor to my research: I am the lead author of papers on test automation and CI/CD, one published at IEEE SEAI 2024 and another accepted at ICSCA 2026, with publication expected in 2027.",
     "photo_seal": "Backend · Research · Python ·",
     "facts": {
@@ -85,8 +85,7 @@
           "postgresql": "PostgreSQL",
           "mysql": "MySQL",
           "redis": "Redis",
-          "mongodb": "MongoDB",
-          "etl": "ETL"
+          "mongodb": "MongoDB"
         }
       },
       "infra": {
@@ -122,7 +121,7 @@
       }
     },
     "skills_extra_label": "Also",
-    "skills_extra": "technical leadership in API development, secure integration between APIs and interfaces, SQL query optimization, ETL processes for large volumes of data, and agile cycles.",
+    "skills_extra": "technical leadership in API development, secure integration between APIs and interfaces, SQL query optimization, and agile cycles.",
     "sequence": {
       "eyebrow": "How I work",
       "title": "How I take a system to production",
@@ -216,7 +215,7 @@
         "role": "Software Engineer, Backend",
         "organization": "Bemol Digital",
         "location": "Manaus",
-        "description": "I developed high-availability systems for the retail sector that handle large volumes of data. I designed ETL processes, optimized SQL queries in PostgreSQL and NoSQL (Redis), and ensured secure integration between APIs and interfaces using agile development cycles."
+        "description": "I developed high-availability systems for the retail sector that handle large volumes of data. I optimized SQL queries in PostgreSQL and NoSQL (Redis) and ensured secure integration between APIs and interfaces using agile development cycles."
       }
     }
   },

@@ -39,7 +39,6 @@ export const SKILL_GROUPS = [
       { id: "mysql", icon: "si-mysql" },
       { id: "redis", icon: "si-redis" },
       { id: "mongodb", icon: "si-mongodb" },
-      { id: "etl", icon: "lu-workflow" },
     ],
   },
   {

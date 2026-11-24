@@ -43,7 +43,7 @@
     "label": "Sobre",
     "title": "Engenheira de software backend, pesquisadora e Python há mais de 6 anos.",
     "lead": "Sou formada em Sistemas de Informação pela UFAM e construo backend no ecossistema Python: APIs RESTful com FastAPI e Django, em microsserviços com Docker e Kubernetes, integrando PostgreSQL e bancos NoSQL.",
-    "bio_1": "Hoje sou engenheira de software backend no Sidia, onde lidero a criação de APIs REST de alta performance para produtos globais. Antes, na Bemol Digital, estruturei processos de ETL e otimizei consultas SQL em sistemas de alta disponibilidade para o varejo.",
+    "bio_1": "Hoje sou engenheira de software backend no Sidia, onde lidero a criação de APIs REST de alta performance para produtos globais. Antes, na Bemol Digital, otimizei consultas SQL em sistemas de alta disponibilidade para o varejo.",
     "bio_2": "Levo o mesmo rigor para a pesquisa: sou autora principal de artigos sobre automação de testes e CI/CD, um publicado no IEEE SEAI 2024 e outro aceito no ICSCA 2026, com publicação prevista para 2027.",
     "photo_seal": "Backend · Pesquisa · Python ·",
     "facts": {
@@ -85,8 +85,7 @@
           "postgresql": "PostgreSQL",
           "mysql": "MySQL",
           "redis": "Redis",
-          "mongodb": "MongoDB",
-          "etl": "ETL"
+          "mongodb": "MongoDB"
         }
       },
       "infra": {
@@ -122,7 +121,7 @@
       }
     },
     "skills_extra_label": "Também",
-    "skills_extra": "liderança técnica na criação de APIs, integração segura entre APIs e interfaces, otimização de consultas SQL, processos de ETL para grandes volumes de dados e ciclos ágeis.",
+    "skills_extra": "liderança técnica na criação de APIs, integração segura entre APIs e interfaces, otimização de consultas SQL e ciclos ágeis.",
     "sequence": {
       "eyebrow": "Como eu trabalho",
       "title": "Como levo um sistema à produção",
@@ -216,7 +215,7 @@
         "role": "Software Engineer, Backend",
         "organization": "Bemol Digital",
         "location": "Manaus",
-        "description": "Desenvolvi sistemas de alta disponibilidade para o varejo, com grandes volumes de dados. Estruturei processos de ETL, otimizei consultas SQL em PostgreSQL e NoSQL (Redis) e cuidei da integração segura entre APIs e interfaces, em ciclos ágeis."
+        "description": "Desenvolvi sistemas de alta disponibilidade para o varejo, com grandes volumes de dados. Otimizei consultas SQL em PostgreSQL e NoSQL (Redis) e cuidei da integração segura entre APIs e interfaces, em ciclos ágeis."
       }
     }
   },

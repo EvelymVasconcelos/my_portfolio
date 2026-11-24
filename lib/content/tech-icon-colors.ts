@@ -57,10 +57,6 @@ export const TECH_ICON_COLORS: Record<string, { light: string; dark: string }> =
     light: "#47A248",
     dark: "#47A248",
   },
-  "lu-workflow": {
-    light: "var(--accent-text)",
-    dark: "var(--accent-text)",
-  },
   "si-docker": {
     light: "#2496ED",
     dark: "#2496ED",
