@@ -646,6 +646,35 @@ a:hover > .signature .signature-letter {
   opacity: 0.85;
 }
 
+/* ─── Botões: luz que acompanha o ponteiro (components/ui/Button.tsx, components/motion/ButtonGlow.tsx) ───
+   Uma luz macia, por trás do texto, centrada em `--x`/`--y`. Aparece devagar no hover. Nos botões preenchidos a luz
+   é branca; nos de contorno, violeta. Sem ponteiro fino ou com movimento reduzido, fica só a troca de cor. */
+.btn-luz {
+  --luz: color-mix(in oklab, var(--accent) 30%, transparent);
+}
+.btn-luz-clara {
+  --luz: color-mix(in oklab, white 28%, transparent);
+}
+.btn-luz::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out-soft);
+  background: radial-gradient(
+    120px circle at var(--x, 50%) var(--y, 50%),
+    var(--luz),
+    transparent 70%
+  );
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .btn-luz:hover::before {
+    opacity: 1;
+  }
+}
+
 /* ─── Foto do Sobre com inclinação 3D e reflexo (components/motion/TiltPhoto.tsx) ─── */
 
 .foto-3d {

@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/
 import { notFound } from "next/navigation";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { ButtonGlow } from "@/components/motion/ButtonGlow";
 import { Providers } from "@/components/providers";
 import { ThemeScript } from "@/components/layout/ThemeScript";
 import "@/app/globals.css";
@@ -106,7 +107,9 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         {/* Tema antes da primeira pintura, sem piscar (components/layout/ThemeScript.tsx). */}
         <ThemeScript />
       </head>
-      <body className={`${heading.variable} ${body.variable} ${code.variable} font-sans antialiased`}>
+      <body
+        className={`${heading.variable} ${body.variable} ${code.variable} font-sans antialiased`}
+      >
         {/* Pular para o conteúdo: primeiro item do teclado, no idioma da página. */}
         <a
           href="#main-content"
@@ -118,6 +121,8 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         <Providers locale={locale} messages={messages}>
           {children}
         </Providers>
+        {/* Luz que segue o ponteiro dentro dos botões (components/motion/ButtonGlow.tsx). */}
+        <ButtonGlow />
       </body>
     </html>
   );

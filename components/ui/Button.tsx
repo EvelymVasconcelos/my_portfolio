@@ -3,21 +3,27 @@ import { Loader2 } from "lucide-react";
 import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
-/** Estilos de botão, como na referência; também usados em links com cara de botão (`<a className={buttonVariants()}>`). */
+/**
+ * Estilos de botão; também usados em links com cara de botão (`<a className={buttonVariants()}>`). O botão não se
+ * desloca no hover: a cor muda devagar e uma luz acompanha o ponteiro por dentro (`.btn-luz` em globals.css, posição
+ * gravada por components/motion/ButtonGlow.tsx). Ao clicar, ele afunda de leve.
+ */
 export const buttonVariants = cva(
   [
-    "inline-flex items-center justify-center gap-2 rounded-md font-semibold select-none",
-    "transition-[transform,background-color,border-color,color] duration-200 ease-out",
-    "motion-safe:hover:-translate-y-0.5",
+    "btn-luz relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-md font-semibold select-none",
+    "transition-[transform,background-color,border-color,color,box-shadow] duration-300 ease-(--ease-out-soft)",
+    "motion-safe:active:scale-[0.97]",
     "disabled:pointer-events-none disabled:opacity-50",
   ],
   {
     variants: {
       variant: {
-        primary: "bg-accent text-on-accent hover:bg-accent-hover",
-        secondary: "border border-line-strong bg-transparent text-text hover:bg-surface",
+        primary:
+          "btn-luz-clara bg-accent text-on-accent hover:shadow-[0_8px_26px_-10px_var(--accent)]",
+        secondary:
+          "border border-line-strong bg-transparent text-text hover:border-accent-text/70 hover:bg-surface",
         ghost: "text-text-2 hover:bg-surface hover:text-text",
-        danger: "bg-danger text-bg hover:opacity-90",
+        danger: "btn-luz-clara bg-danger text-bg hover:opacity-90",
       },
       size: {
         sm: "min-h-10 px-4 text-[0.92rem]",
