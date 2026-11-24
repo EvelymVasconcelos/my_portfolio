@@ -1,26 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Favicon: o "E" montado com peças, como camadas empilhadas, com a do meio em violeta, encaixando. Cores do tema
+       escuro do site: bg, text, accent, accent-2 (brilho) e line. Gerador do apple-icon: scripts/favicon/build.mjs. -->
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-      <stop offset="0%"   stop-color="#007AFF"/>
-      <stop offset="100%" stop-color="#5856D6"/>
-    </linearGradient>
+    <radialGradient id="glow" cx="1" cy="1" r="0.95">
+      <stop offset="0" stop-color="#b5179e" stop-opacity="0.28"/>
+      <stop offset="0.45" stop-color="#7c3aed" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
   </defs>
-
-  <!-- Handle -->
-  <path
-    d="M 36,32 C 36,14 64,14 64,32"
-    fill="none"
-    stroke="url(#g)"
-    stroke-width="7"
-    stroke-linecap="round"
-  />
-
-  <!-- Body -->
-  <rect x="10" y="32" width="80" height="54" rx="10" fill="url(#g)"/>
-
-  <!-- Center divider line -->
-  <rect x="10" y="56" width="80" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
-
-  <!-- Latch -->
-  <rect x="42" y="50" width="16" height="13" rx="4" fill="rgba(255,255,255,0.45)"/>
+  <rect width="64" height="64" rx="15" fill="#121117"/>
+  <rect width="64" height="64" rx="15" fill="url(#glow)"/>
+  <rect x="0.75" y="0.75" width="62.5" height="62.5" rx="14.25" fill="none" stroke="#34313d" stroke-width="1.5"/>
+  <rect x="17" y="13" width="11" height="38" rx="3" fill="#f3f1f7"/>
+  <rect x="17" y="13" width="31" height="9.5" rx="3" fill="#f3f1f7"/>
+  <rect x="17" y="41.5" width="31" height="9.5" rx="3" fill="#f3f1f7"/>
+  <rect x="32" y="27.25" width="14" height="9.5" rx="3" fill="#7c3aed"/>
 </svg>
